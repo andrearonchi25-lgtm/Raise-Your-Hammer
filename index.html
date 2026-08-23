@@ -137,6 +137,39 @@ label{color:#aeb9c9!important}
 .ryh-source-note{font-size:10px;color:#77869a;margin-top:8px}
 @media(max-width:600px){.ryh-card-grid{grid-template-columns:1fr}.ryh-avatar{width:50px;height:50px;flex-basis:50px}}
 </style>
+
+<style id="ryhV6Figurine">
+.ryh-figurine-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.ryh-figurine{
+ position:relative;overflow:hidden;min-height:260px;padding:0;border-radius:22px;
+ background:linear-gradient(145deg,#161d29,#080c12 75%);
+ border:1px solid #d6ad55;box-shadow:0 16px 42px #0009,inset 0 1px #fff3;
+}
+.ryh-figurine:before{
+ content:"";position:absolute;inset:0;
+ background:radial-gradient(circle at 80% 5%,#f1d68a25,transparent 30%),linear-gradient(120deg,transparent 55%,#d6ad5510);
+ pointer-events:none;
+}
+.ryh-figurine-top{display:flex;justify-content:space-between;align-items:center;padding:11px 12px;position:relative;z-index:2}
+.ryh-figurine-badge{font-size:10px;font-weight:1000;letter-spacing:.12em;color:#111;background:#d6ad55;border-radius:999px;padding:5px 8px}
+.ryh-figurine-role{font-size:10px;font-weight:900;color:#f1d68a}
+.ryh-figurine-photo{height:132px;display:flex;justify-content:center;align-items:flex-end;position:relative;z-index:1}
+.ryh-figurine-photo .ryh-avatar{width:132px;height:132px;flex-basis:132px;border-radius:50%;border:3px solid #d6ad55;background:#222;box-shadow:0 0 0 6px #d6ad5512,0 15px 30px #0008}
+.ryh-figurine-photo .ryh-player-img{object-fit:cover}
+.ryh-figurine-bottom{position:relative;z-index:2;padding:12px 14px 14px;background:linear-gradient(180deg,transparent,#070a0fdd 24%)}
+.ryh-figurine-name{font-size:18px;font-weight:1000;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ryh-figurine-meta{font-size:11px;color:#9aa8ba;margin-top:3px}
+.ryh-figurine-prices{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:10px}
+.ryh-figurine-price{background:#111925;border:1px solid #2d394a;border-radius:10px;padding:7px;text-align:center}
+.ryh-figurine-price small{display:block;color:#77869a;font-size:9px}
+.ryh-figurine-price b{font-size:15px;color:#fff}
+.ryh-figurine-price.max b{color:#ff8d94}.ryh-figurine-price.paid b{color:#f1d68a}
+.ryh-tier-TOP{border-color:#f1d68a;box-shadow:0 0 0 1px #f1d68a25,0 18px 45px #0009}
+.ryh-tier-ELITE{border-color:#9bc4ff;box-shadow:0 0 0 1px #9bc4ff20,0 18px 45px #0009}
+.ryh-tier-CORE{border-color:#70d99c}.ryh-tier-DEPTH{border-color:#64748b}
+.ryh-figurine-ribbon{position:absolute;right:-32px;top:28px;transform:rotate(35deg);font-size:9px;font-weight:1000;padding:5px 35px;background:#d6ad55;color:#111;z-index:3}
+@media(max-width:600px){.ryh-figurine-grid{grid-template-columns:1fr}.ryh-figurine{min-height:275px}}
+</style>
 </head>
 <body>
 <div class="app">
@@ -1077,6 +1110,50 @@ function ryhV5RenderExtras(){
 }
 document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{ryhLoadPlayerImages().then(ryhV5RenderExtras)},250)});
 setInterval(()=>{if(state.started)ryhV5RenderExtras()},1500);
+</script>
+
+<script id="ryhV6FigurineLogic">
+function ryhCardTier(x){
+ const p=Number(x.price||0), role=x.role||'';
+ if((role==='A'&&p>=35)||(role==='C'&&p>=30)||(role==='D'&&p>=20)||(role==='P'&&p>=15)) return 'TOP';
+ if(p>=20)return 'ELITE'; if(p>=10)return 'CORE'; return 'DEPTH';
+}
+function ryhTeamFromPlayer(x){
+ return x.team||x.squad||x.club||x.teamName||'Serie A';
+}
+function ryhRecommended(x){
+ const player=fastDB().find(a=>normName(a[1])===normName(x.player));
+ return player ? (player[4]||player[3]||'—') : '—';
+}
+function ryhFigurine(x){
+ const tier=ryhCardTier(x), rec=ryhRecommended(x);
+ const max=(typeof rec==='number')?Math.max(rec,Math.round(rec*1.15)):'—';
+ const img=ryhImageFor(x.player);
+ const avatar=img?`<div class="ryh-avatar"><img class="ryh-player-img" src="${img}" alt="${escapeHtml(x.player)}" loading="lazy" onerror="this.parentElement.innerHTML='${ryhInitials(x.player)}'"></div>`:ryhAvatarHTML(x.player);
+ const ribbon=tier==='TOP'?'TOP PLAYER':tier==='ELITE'?'ELITE':tier==='CORE'?'CORE':'SQUAD';
+ return `<div class="ryh-figurine ryh-tier-${tier}">
+   <div class="ryh-figurine-ribbon">${ribbon}</div>
+   <div class="ryh-figurine-top"><span class="ryh-figurine-badge">RYH • ${tier}</span><span class="ryh-figurine-role">${escapeHtml(x.role||'—')}</span></div>
+   <div class="ryh-figurine-photo">${avatar}</div>
+   <div class="ryh-figurine-bottom">
+     <div class="ryh-figurine-name">${escapeHtml(x.player)}</div>
+     <div class="ryh-figurine-meta">${escapeHtml(ryhTeamFromPlayer(x))}</div>
+     <div class="ryh-figurine-prices">
+       <div class="ryh-figurine-price paid"><small>PAGATO</small><b>${x.price}</b></div>
+       <div class="ryh-figurine-price"><small>CONSIGLIATO</small><b>${rec}</b></div>
+       <div class="ryh-figurine-price max"><small>MASSIMO</small><b>${max}</b></div>
+     </div>
+   </div>
+ </div>`;
+}
+function ryhRenderFigurines(){
+ const box=document.getElementById('ryhFigurines'); if(!box||!state.started)return;
+ const own=state.purchases.filter(x=>x.buyer===state.myTeam);
+ box.innerHTML=own.length?`<div class="ryh-figurine-grid">${own.map(ryhFigurine).join('')}</div>`:'<div class="ryh-source-note">Compra il primo giocatore per creare la tua collezione.</div>';
+ ryhLoadPlayerImages().then(()=>{box.innerHTML=own.length?`<div class="ryh-figurine-grid">${own.map(ryhFigurine).join('')}</div>`:box.innerHTML});
+}
+setInterval(()=>{try{ryhRenderFigurines()}catch(e){}},1800);
+document.addEventListener('DOMContentLoaded',()=>setTimeout(ryhRenderFigurines,300));
 </script>
 </body>
 </html>
