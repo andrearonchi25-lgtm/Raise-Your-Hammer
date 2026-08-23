@@ -98,6 +98,45 @@ button,input,select{font-size:16px}
  .fast-console-v2{top:0}
 }
 </style>
+
+<style id="ryhV4Beauty">
+:root{--ryh-bg:#070a0f;--ryh-panel:#101722;--ryh-line:#283344;--ryh-text:#f4f7fb;--ryh-muted:#9aa8ba;--ryh-accent:#d6ad55;--ryh-green:#45d483;--ryh-red:#ff626c}
+body{background:radial-gradient(circle at 10% 0%,#27354b 0,transparent 28%),radial-gradient(circle at 90% 10%,#4b3514 0,transparent 25%),linear-gradient(180deg,#070a0f,#0a0e15)!important;color:var(--ryh-text)!important}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.035;background-image:linear-gradient(45deg,#fff 1px,transparent 1px);background-size:9px 9px;z-index:-1}
+.card,.pill,.ryh-v3-card{background:linear-gradient(145deg,#121a26dd,#0d131ddd)!important;border-color:#2a3545!important;box-shadow:0 14px 40px #0006,inset 0 1px #ffffff08;backdrop-filter:blur(12px)}
+h1{font-size:clamp(30px,7vw,54px)!important;background:linear-gradient(90deg,#fff,#f0d58b,#fff);-webkit-background-clip:text;background-clip:text;color:transparent}
+button{border:1px solid #ffffff18!important;border-radius:12px!important;background:linear-gradient(180deg,#e7c66f,#b98d34)!important;color:#111!important;font-weight:900!important;box-shadow:0 7px 18px #0005,inset 0 1px #fff8}
+button.secondary{background:#17202d!important;color:#eef4fb!important;border-color:#334154!important}
+input,select{background:#090e15!important;color:#f4f7fb!important;border:1px solid #334154!important;border-radius:11px!important;min-height:44px}
+label{color:#aeb9c9!important}
+.fast-console-v2{border:1px solid #9e7a35!important;box-shadow:0 0 0 1px #d6ad5520,0 20px 55px #0009!important}
+.fast-console-v2 h2:before{content:"⚒️ ";color:var(--ryh-accent)}
+.ryh-alert{box-shadow:inset 0 0 25px #0004;border:1px solid #ffffff12}
+.ryh-alert.good{border-color:#45d48355!important}.ryh-alert.warn{border-color:#d6ad5555!important}.ryh-alert.bad{border-color:#ff626c55!important}
+.ryh-field{background:linear-gradient(90deg,#174a2b,#1c5b35 48%,#174a2b)!important;border-color:#e9f4df!important;box-shadow:inset 0 0 50px #001b0c55,0 12px 30px #0006}
+.ryh-player-chip{border:2px solid #d6ad55!important;background:linear-gradient(145deg,#fff,#e9eef5)!important;box-shadow:0 7px 18px #0007!important}
+.ryh-v3-card h3{color:#f3d27d}.ryh-stat{border:1px solid #2d394a;background:#0b1119!important}.ryh-stat b{color:#fff}
+.ryh-meter{background:#090e15!important}.ryh-meter>i{background:linear-gradient(90deg,#d6ad55,#f4dc9a)!important}
+.fast-match{display:inline-block;padding:7px 10px;margin:4px 4px 0 0;border-radius:999px;background:#17202d;border:1px solid #334154;color:#e9eef5;cursor:pointer}
+.resume-banner{background:linear-gradient(90deg,#17130b,#121925)!important;border-color:#8d6c32!important}
+#v3Dashboard>h2,#fastConsole>h2{position:relative;padding-bottom:10px}
+#v3Dashboard>h2:after,#fastConsole>h2:after{content:"";position:absolute;left:0;bottom:0;width:120px;height:2px;background:linear-gradient(90deg,#d6ad55,transparent)}
+@media(max-width:600px){.card{border-radius:18px!important}button{min-height:46px}}
+</style>
+
+<style id="ryhV5PlayerCards">
+.ryh-player-card{display:flex;align-items:center;gap:11px;padding:10px 12px;border:1px solid #334154;border-radius:16px;background:linear-gradient(145deg,#111a27,#0b1119);box-shadow:0 10px 25px #0005}
+.ryh-avatar{width:54px;height:54px;flex:0 0 54px;border-radius:50%;object-fit:cover;border:2px solid #d6ad55;background:radial-gradient(circle at 35% 25%,#f1d68a,#8d6c32 70%);display:grid;place-items:center;color:#15100a;font-weight:1000;font-size:16px;overflow:hidden}
+.ryh-player-card-main{min-width:0;flex:1}.ryh-player-name{font-weight:950;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ryh-player-sub{font-size:11px;color:#9aa8ba}.ryh-price{font-size:18px;font-weight:950;color:#f1d68a}
+.ryh-card-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.ryh-player-img{width:100%;height:100%;object-fit:cover}
+.ryh-mini-card{display:flex;align-items:center;gap:8px;padding:7px 9px;background:#111925;border:1px solid #2d394a;border-radius:14px}
+.ryh-mini-card .ryh-avatar{width:38px;height:38px;flex-basis:38px;font-size:12px}
+.ryh-card-actions{display:flex;gap:6px;align-items:center}
+.ryh-source-note{font-size:10px;color:#77869a;margin-top:8px}
+@media(max-width:600px){.ryh-card-grid{grid-template-columns:1fr}.ryh-avatar{width:50px;height:50px;flex-basis:50px}}
+</style>
 </head>
 <body>
 <div class="app">
@@ -149,7 +188,14 @@ button,input,select{font-size:16px}
     <button onclick="startAuction()" style="margin-top:12px">🚀 AVVIA ASTA</button>
   </div>
 
-  <div id="resumeBanner" class="resume-banner hidden"><span>💾 <b>Asta salvata automaticamente</b><br><small>Puoi riprendere da dove eri rimasto.</small></span><span><button onclick="resumeAuction()">Riprendi</button> <button class="secondary" onclick="discardSavedAuction()">Nuova asta</button></span></div>
+  
+<div class="card full" id="ryhHeroV4" style="text-align:center;padding:22px 14px">
+  <div style="font-size:42px;filter:drop-shadow(0 8px 20px #d6ad5544)">⚒️</div>
+  <div style="font-size:12px;letter-spacing:.25em;color:#d6ad55;font-weight:900">RAISE YOUR HAMMER</div>
+  <div style="font-size:13px;color:#9aa8ba;margin-top:6px">ASTA PRO · CONTROLLO TOTALE · NIENTE PANICO</div>
+</div>
+
+<div id="resumeBanner" class="resume-banner hidden"><span>💾 <b>Asta salvata automaticamente</b><br><small>Puoi riprendere da dove eri rimasto.</small></span><span><button onclick="resumeAuction()">Riprendi</button> <button class="secondary" onclick="discardSavedAuction()">Nuova asta</button></span></div>
 
   <div id="main" class="hidden">
     <div class="stats">
@@ -334,7 +380,7 @@ button,input,select{font-size:16px}
         <div class="lineup-note" id="ultimateLineupNote"></div><div class="bench-title">🪑 PANCHINA</div><div id="ultimateBench" class="bench"></div>
       </div>
 <div class="card full fast-console-v2" id="fastConsole">
-        <h2>⚡ ASTA RAPIDA — 2 SECONDI</h2>
+        <div style="font-size:11px;letter-spacing:.18em;color:#d6ad55;font-weight:900;margin-bottom:4px">RAISE YOUR HAMMER</div><h2>⚡ ASTA RAPIDA — 2 SECONDI</h2>
         <div class="fast-v2-grid">
           <div class="field"><label>Giocatore chiamato</label>
             <input id="fastPlayer" autocomplete="off" placeholder="Es. Lautaro, Paz, Dimarco..." oninput="fastSuggest()">
@@ -954,7 +1000,85 @@ function renderUltimateLineup(){let pitch=document.getElementById('ultimatePlaye
 function renderUltimateAll(){renderUltimateSummary();renderUltimateLineup()}
 
 </script>
-<script>if("serviceWorker" in navigator){navigator.serviceWorker.register("./sw.js").catch(()=>{});}</script></body>
+<script>if("serviceWorker" in navigator){navigator.serviceWorker.register("./sw.js").catch(()=>{});}</script>
+<div id="ryhQuickNav" style="position:fixed;left:50%;bottom:10px;transform:translateX(-50%);z-index:30;display:flex;gap:6px;padding:7px;background:#090e15eF;border:1px solid #334154;border-radius:18px;box-shadow:0 12px 35px #0009;backdrop-filter:blur(14px)">
+  <button class="secondary" onclick="ryhJump('v3Dashboard')">🧠</button>
+  <button class="secondary" onclick="ryhJump('fastConsole')">⚡</button>
+  <button class="secondary" onclick="ryhJump('v3Field')">🏟️</button>
+  <button class="secondary" onclick="ryhJump('v3Opponents')">👥</button>
+</div>
+<script>
+function ryhJump(id){const e=document.getElementById(id);if(e)e.scrollIntoView({behavior:'smooth',block:'start'})}
+document.addEventListener('DOMContentLoaded',()=>{const n=document.getElementById('ryhQuickNav');if(n)n.style.display=state.started?'flex':'none';setInterval(()=>{if(n)n.style.display=state.started?'flex':'none'},500)});
+</script>
+
+<script id="ryhV5PlayerCards">
+const RYH_PLAYER_IMAGE_SOURCE='https://cdn.jsdelivr.net/gh/bqit/fantaleghe-api-json@main/players.json';
+let ryhPlayerImageMap=null, ryhPlayerImageLoading=null;
+
+function ryhInitials(name){
+  return (name||'').split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]).join('').toUpperCase()||'⚽';
+}
+function ryhNorm(s){return normName(String(s||'')).replace(/[^a-z0-9]/g,'')}
+async function ryhLoadPlayerImages(){
+  if(ryhPlayerImageMap) return ryhPlayerImageMap;
+  if(ryhPlayerImageLoading) return ryhPlayerImageLoading;
+  ryhPlayerImageLoading=fetch(RYH_PLAYER_IMAGE_SOURCE,{cache:'force-cache'})
+    .then(r=>r.ok?r.json():Promise.reject(new Error('HTTP '+r.status)))
+    .then(data=>{
+      const arr=Array.isArray(data)?data:(data.players||data.data||[]);
+      const map={};
+      arr.forEach(p=>{
+        const name=p.name||p.nome||p.player||p.calciatore||'';
+        const img=p.image||p.image_url||p.img||p.photo||p.avatar||'';
+        if(name&&img)map[ryhNorm(name)]=img;
+      });
+      ryhPlayerImageMap=map;return map;
+    }).catch(()=>{ryhPlayerImageMap={};return ryhPlayerImageMap});
+  return ryhPlayerImageLoading;
+}
+function ryhImageFor(name){
+  return ryhPlayerImageMap?.[ryhNorm(name)]||'';
+}
+function ryhAvatarHTML(name, cls='ryh-avatar'){
+  const img=ryhImageFor(name);
+  const safe=escapeHtml(name);
+  return `<div class="${cls}">${img?`<img class="ryh-player-img" src="${img}" alt="${safe}" loading="lazy" onerror="this.parentElement.innerHTML='${ryhInitials(name)}'">`:escapeHtml(ryhInitials(name))}</div>`;
+}
+function ryhCardHTML(name,role,price,extra=''){
+  return `<div class="ryh-player-card">${ryhAvatarHTML(name)}<div class="ryh-player-card-main"><div class="ryh-player-name">${escapeHtml(name)}</div><div class="ryh-player-sub">${role||'—'}${extra?' · '+extra:''}</div></div><div class="ryh-price">${price??'—'}</div></div>`;
+}
+function ryhRefreshImages(){
+  document.querySelectorAll('[data-ryh-player]').forEach(el=>{
+    const n=el.dataset.ryhPlayer; const img=ryhImageFor(n); const av=el.querySelector('.ryh-avatar');
+    if(av&&img)av.innerHTML=`<img class="ryh-player-img" src="${img}" alt="${escapeHtml(n)}" loading="lazy" onerror="this.parentElement.innerHTML='${ryhInitials(n)}'">`;
+  });
+}
+function ryhPlayerCardsForOwn(){
+  const box=document.getElementById('ryhPlayerCards'); if(!box)return;
+  if(!state.started){box.innerHTML='';return;}
+  const own=state.purchases.filter(x=>x.buyer===state.myTeam);
+  box.innerHTML=own.length?`<div class="ryh-card-grid">${own.map(x=>`<div data-ryh-player="${escapeHtml(x.player)}">${ryhCardHTML(x.player,x.role,x.price)}</div>`).join('')}</div><div class="ryh-source-note">Foto calciatori: caricamento automatico quando disponibile; avatar con iniziali come fallback.</div>`:'<div class="ryh-source-note">I tuoi calciatori appariranno qui con la card personale.</div>';
+  ryhLoadPlayerImages().then(ryhRefreshImages);
+}
+function ryhPatchFieldCards(){
+  const chips=document.querySelectorAll('.ryh-player-chip');
+  chips.forEach(ch=>{
+    const name=(ch.textContent||'').split('\n')[0].trim();
+    if(!name||ch.dataset.ryhDone)return;
+    ch.dataset.ryhDone='1';
+    const img=ryhImageFor(name);
+    if(img)ch.innerHTML=`${ryhAvatarHTML(name,'ryh-avatar')}<div>${escapeHtml(name)}<br><small>${ch.textContent.split('\n')[1]||''}</small></div>`;
+  });
+}
+const _ryhV5OrigV3Render=window.v3Render;
+function ryhV5RenderExtras(){
+  try{ryhPlayerCardsForOwn();ryhPatchFieldCards()}catch(e){}
+}
+document.addEventListener('DOMContentLoaded',()=>{setTimeout(()=>{ryhLoadPlayerImages().then(ryhV5RenderExtras)},250)});
+setInterval(()=>{if(state.started)ryhV5RenderExtras()},1500);
+</script>
+</body>
 </html>
 <script>
 function renderLineup(){renderUltimateAll()}
