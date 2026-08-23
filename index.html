@@ -197,7 +197,19 @@ label{color:#aeb9c9!important}
 .ryh-live-hammer{position:absolute;left:12px;top:10px;font-size:28px;z-index:3}
 @media(max-width:450px){.ryh-live-name{font-size:25px}.ryh-live-price{font-size:45px}.ryh-live-photo .ryh-avatar{width:135px;height:135px;flex-basis:135px}}
 </style>
-</head>
+<style id="ryhV8Smart">
+.ryh-smart{background:linear-gradient(145deg,#111a27,#090e15);border:1px solid #334154;border-radius:20px;padding:14px;margin-top:12px;box-shadow:0 15px 40px #0006}
+.ryh-smart-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.ryh-smart-btn{min-height:58px!important;font-size:14px!important}
+.ryh-smart-result{margin-top:10px;padding:14px;border-radius:16px;background:#080d14;border:1px solid #2d394a}
+.ryh-smart-result.good{border-color:#45d48366}.ryh-smart-result.warn{border-color:#d6ad5566}.ryh-smart-result.bad{border-color:#ff626c66}
+.ryh-objectives{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.ryh-objective{padding:7px 9px;border-radius:999px;background:#171f2b;border:1px solid #39485c;font-size:11px}
+.ryh-final-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}
+.ryh-final-stat{padding:9px;border-radius:12px;background:#111925;border:1px solid #2d394a;text-align:center}
+.ryh-final-stat small{display:block;color:#77869a;font-size:9px}.ryh-final-stat b{font-size:17px}
+@media(max-width:600px){.ryh-smart-grid,.ryh-final-grid{grid-template-columns:1fr}}
+</style></head>
 <body>
 <div class="app">
   <div class="hero">
@@ -1183,6 +1195,18 @@ setInterval(()=>{try{ryhRenderFigurines()}catch(e){}},1800);
 document.addEventListener('DOMContentLoaded',()=>setTimeout(ryhRenderFigurines,300));
 </script>
 
+<div class="ryh-smart" id="ryhSmartAuction">
+<div style="font-size:11px;letter-spacing:.16em;color:#d6ad55;font-weight:1000">🧠 SMART AUCTION</div>
+<h3 style="margin:5px 0">Cosa faccio?</h3>
+<div class="ryh-smart-grid">
+<button class="ryh-smart-btn" onclick="ryhSmartDecision()">🤖 COSA FACCIO?</button>
+<button class="ryh-smart-btn" onclick="ryhCheckTrap()">🚨 TRAPPOLA ASTA</button>
+<button class="secondary ryh-smart-btn" onclick="ryhAddObjective()">🔥 OBIETTIVO</button>
+<button class="secondary ryh-smart-btn" onclick="ryhSimulateFinal()">🏆 SIMULA ROSA</button>
+</div>
+<div id="ryhSmartResult" class="ryh-smart-result">Seleziona un giocatore per ricevere il consiglio.</div>
+<div class="ryh-objectives" id="ryhObjectives"></div>
+</div>
 <div id="ryhLiveOverlay" onclick="if(event.target.id==='ryhLiveOverlay')ryhCloseLiveCard()">
   <div class="ryh-live-card">
     <div class="ryh-live-hammer">⚒️</div>
@@ -1248,7 +1272,66 @@ document.addEventListener('input',e=>{
  }
 });
 </script>
-</body>
+<script id="ryhV8SmartLogic">
+let ryhObjectives=JSON.parse(localStorage.getItem('ryhObjectives')||'[]');
+function ryhCurrent(){
+ const x=typeof v3CurrentPlayer==='function'?v3CurrentPlayer():null;
+ const price=+(document.getElementById('fastPrice')?.value||0);
+ if(!x)return null;
+ const target=+(x[4]||x[3]||20), max=Math.max(target,Math.round(target*1.15));
+ const info=typeof v3BudgetInfo==='function'?v3BudgetInfo():{spendable:state.budget||0};
+ return {x,price,target,max,info};
+}
+function ryhSmartDecision(){
+ const d=ryhCurrent(),box=document.getElementById('ryhSmartResult');
+ if(!d){box.textContent='Prima seleziona un giocatore.';return}
+ const {x,price,target,max,info}=d;
+ let advice='🔥 RILANCIA',cls='good';
+ if(price>max){advice='🔴 LASCIA — SOPRA IL MASSIMO';cls='bad'}
+ else if(price>target){advice='🟡 PUOI SALIRE, MA CON CAUTELA';cls='warn'}
+ box.className='ryh-smart-result '+cls;
+ box.innerHTML=`<b style="font-size:19px">${advice}</b><br>Offerta: <b>${price}</b> · Consigliato: <b>${target}</b> · Massimo: <b>${max}</b><br><small>Budget realmente spendibile: ${Math.round(info.spendable)}</small>`;
+}
+function ryhCheckTrap(){
+ const d=ryhCurrent(),box=document.getElementById('ryhSmartResult');
+ if(!d){box.textContent='Prima seleziona un giocatore.';return}
+ const ratio=d.target?d.price/d.target:0;
+ const cls=ratio>1.2?'bad':ratio>1.05?'warn':'good';
+ const txt=ratio>1.2?'🚨 TRAPPOLA: prezzo molto sopra valore':ratio>1.05?'⚠️ ASTA CALDA: prezzo sopra stima':'✅ PREZZO SANO: ancora dentro valore';
+ box.className='ryh-smart-result '+cls;
+ box.innerHTML=`<b style="font-size:18px">${txt}</b><br>Scostamento: <b>${Math.round((ratio-1)*100)}%</b>`;
+}
+function ryhRenderObjectives(){
+ const el=document.getElementById('ryhObjectives');if(!el)return;
+ el.innerHTML=ryhObjectives.map((o,i)=>`<span class="ryh-objective">🔥 ${escapeHtml(o.name)} · max ${o.max} <b onclick="ryhRemoveObjective(${i})" style="cursor:pointer">×</b></span>`).join('');
+}
+function ryhAddObjective(){
+ const d=ryhCurrent(),box=document.getElementById('ryhSmartResult');
+ if(!d){box.textContent='Seleziona il giocatore da mettere tra gli obiettivi.';return}
+ if(!ryhObjectives.some(o=>normName(o.name)===normName(d.x[1]))){
+   ryhObjectives.push({name:d.x[1],max:d.max});localStorage.setItem('ryhObjectives',JSON.stringify(ryhObjectives));
+ }
+ ryhRenderObjectives();box.innerHTML=`🔥 <b>${escapeHtml(d.x[1])}</b> aggiunto agli obiettivi.`;
+}
+function ryhRemoveObjective(i){ryhObjectives.splice(i,1);localStorage.setItem('ryhObjectives',JSON.stringify(ryhObjectives));ryhRenderObjectives()}
+function ryhSimulateFinal(){
+ const own=state.purchases.filter(x=>x.buyer===state.myTeam);
+ const counts={P:0,D:0,C:0,A:0};own.forEach(x=>counts[x.role]=(counts[x.role]||0)+1);
+ const spent=own.reduce((s,x)=>s+(+x.price||0),0);
+ const budget=Math.max(0,(state.budget||0)-spent);
+ const completeness=Math.min(100,Math.round(own.length/25*100));
+ const score=Math.min(9.9,Math.max(5,6+own.length*.09+(counts.A>=3?.6:0)+(counts.C>=4?.4:0)+(counts.D>=4?.4:0)));
+ const box=document.getElementById('ryhSmartResult');
+ box.className='ryh-smart-result good';
+ box.innerHTML=`<div style="font-size:46px;font-weight:1000;color:#f1d68a;text-align:center">${score.toFixed(1)}/10</div>
+ <div class="ryh-final-grid"><div class="ryh-final-stat"><small>ACQUISTI</small><b>${own.length}</b></div>
+ <div class="ryh-final-stat"><small>BUDGET RESIDUO</small><b>${budget}</b></div>
+ <div class="ryh-final-stat"><small>ATT</small><b>${counts.A||0}</b></div>
+ <div class="ryh-final-stat"><small>CC</small><b>${counts.C||0}</b></div></div>
+ <p style="text-align:center;margin:10px 0 0">Copertura rosa: <b>${completeness}%</b></p>`;
+}
+document.addEventListener('DOMContentLoaded',ryhRenderObjectives);
+</script></body>
 </html>
 <script>
 function renderLineup(){renderUltimateAll()}
