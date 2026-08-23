@@ -170,6 +170,33 @@ label{color:#aeb9c9!important}
 .ryh-figurine-ribbon{position:absolute;right:-32px;top:28px;transform:rotate(35deg);font-size:9px;font-weight:1000;padding:5px 35px;background:#d6ad55;color:#111;z-index:3}
 @media(max-width:600px){.ryh-figurine-grid{grid-template-columns:1fr}.ryh-figurine{min-height:275px}}
 </style>
+
+<style id="ryhV7LiveCard">
+#ryhLiveOverlay{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;padding:18px;background:#000b;backdrop-filter:blur(12px)}
+#ryhLiveOverlay.show{display:flex;animation:ryhFade .2s ease}
+@keyframes ryhFade{from{opacity:0}to{opacity:1}}
+.ryh-live-card{width:min(420px,96vw);position:relative;overflow:hidden;border-radius:28px;border:1px solid #d6ad55;background:linear-gradient(145deg,#182232,#080c12 78%);box-shadow:0 30px 90px #000;animation:ryhPop .32s cubic-bezier(.2,.8,.2,1)}
+@keyframes ryhPop{from{transform:scale(.84) translateY(25px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
+.ryh-live-card:before{content:"";position:absolute;inset:-30%;background:radial-gradient(circle at 50% 30%,#d6ad5540,transparent 35%);animation:ryhGlow 2s infinite alternate}
+@keyframes ryhGlow{from{opacity:.4;transform:scale(.9)}to{opacity:1;transform:scale(1.1)}}
+.ryh-live-top{position:relative;z-index:2;display:flex;justify-content:space-between;padding:13px 15px;font-size:11px;font-weight:1000;letter-spacing:.12em}
+.ryh-live-photo{position:relative;z-index:2;display:flex;justify-content:center;padding:10px 0 0}
+.ryh-live-photo .ryh-avatar{width:155px;height:155px;flex-basis:155px;border:4px solid #d6ad55;box-shadow:0 0 0 9px #d6ad5514,0 20px 45px #0009}
+.ryh-live-body{position:relative;z-index:2;text-align:center;padding:12px 20px 20px}
+.ryh-live-name{font-size:30px;font-weight:1000;letter-spacing:-.03em}
+.ryh-live-team{font-size:13px;color:#9aa8ba;margin-top:2px}
+.ryh-live-price{font-size:52px;font-weight:1000;color:#f1d68a;margin:9px 0}
+.ryh-live-price small{font-size:11px;color:#9aa8ba;display:block;letter-spacing:.12em}
+.ryh-live-advice{padding:12px;border-radius:15px;border:1px solid #ffffff16;background:#0c121b;font-size:17px;font-weight:1000}
+.ryh-live-advice.good{color:#63e49a}.ryh-live-advice.warn{color:#f1d68a}.ryh-live-advice.bad{color:#ff7d85}
+.ryh-live-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:10px}
+.ryh-live-stat{background:#121b28;border:1px solid #293649;border-radius:11px;padding:8px}
+.ryh-live-stat small{display:block;color:#77869a;font-size:9px}.ryh-live-stat b{font-size:17px}
+.ryh-live-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:13px}
+.ryh-live-close{position:absolute;right:10px;top:10px;z-index:4;width:38px;height:38px;border-radius:50%!important;background:#111925!important;color:#fff!important}
+.ryh-live-hammer{position:absolute;left:12px;top:10px;font-size:28px;z-index:3}
+@media(max-width:450px){.ryh-live-name{font-size:25px}.ryh-live-price{font-size:45px}.ryh-live-photo .ryh-avatar{width:135px;height:135px;flex-basis:135px}}
+</style>
 </head>
 <body>
 <div class="app">
@@ -1154,6 +1181,72 @@ function ryhRenderFigurines(){
 }
 setInterval(()=>{try{ryhRenderFigurines()}catch(e){}},1800);
 document.addEventListener('DOMContentLoaded',()=>setTimeout(ryhRenderFigurines,300));
+</script>
+
+<div id="ryhLiveOverlay" onclick="if(event.target.id==='ryhLiveOverlay')ryhCloseLiveCard()">
+  <div class="ryh-live-card">
+    <div class="ryh-live-hammer">⚒️</div>
+    <button class="ryh-live-close secondary" onclick="ryhCloseLiveCard()">✕</button>
+    <div class="ryh-live-top"><span>RAISE YOUR HAMMER</span><span>LIVE AUCTION</span></div>
+    <div id="ryhLivePhoto" class="ryh-live-photo"></div>
+    <div class="ryh-live-body">
+      <div id="ryhLiveName" class="ryh-live-name">—</div>
+      <div id="ryhLiveTeam" class="ryh-live-team">—</div>
+      <div class="ryh-live-price"><small>OFFERTA ATTUALE</small><span id="ryhLivePrice">0</span></div>
+      <div id="ryhLiveAdvice" class="ryh-live-advice">—</div>
+      <div class="ryh-live-grid">
+        <div class="ryh-live-stat"><small>CONSIGLIATO</small><b id="ryhLiveTarget">—</b></div>
+        <div class="ryh-live-stat"><small>MASSIMO</small><b id="ryhLiveMax">—</b></div>
+        <div class="ryh-live-stat"><small>TUO TETTO</small><b id="ryhLiveCap">—</b></div>
+      </div>
+      <div class="ryh-live-actions">
+        <button onclick="ryhLiveBid(1)">🔨 +1</button>
+        <button class="secondary" onclick="ryhLiveLeave()">LASCIA</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script id="ryhV7LiveLogic">
+let ryhLiveLastPlayer='';
+function ryhOpenLiveCard(){
+ const x=v3CurrentPlayer(), price=+(document.getElementById('fastPrice')?.value||0);
+ if(!x)return;
+ ryhLoadPlayerImages().then(()=>{
+   const ov=document.getElementById('ryhLiveOverlay');
+   const player=x[1], role=x[0]||'—', target=x[4]||x[3]||20, max=Math.max(target,Math.round(target*1.15));
+   const info=v3BudgetInfo(), needs=v3RoleNeeds().find(n=>n.r===role);
+   let cap=Math.min(max,Math.max(1,Math.round(info.spendable*.35)));
+   if(needs&&needs.need>=3)cap=Math.min(max,cap+4);
+   const img=ryhImageFor(player);
+   document.getElementById('ryhLivePhoto').innerHTML=img?`<div class="ryh-avatar"><img class="ryh-player-img" src="${img}" alt="${escapeHtml(player)}" onerror="this.parentElement.innerHTML='${ryhInitials(player)}'"></div>`:ryhAvatarHTML(player);
+   document.getElementById('ryhLiveName').textContent=player;
+   document.getElementById('ryhLiveTeam').textContent=(x[2]||x.team||'Serie A')+' · '+role;
+   document.getElementById('ryhLivePrice').textContent=price;
+   document.getElementById('ryhLiveTarget').textContent=target;
+   document.getElementById('ryhLiveMax').textContent=max;
+   document.getElementById('ryhLiveCap').textContent=cap;
+   const adv=document.getElementById('ryhLiveAdvice');
+   if(price<=target){adv.textContent='🔥 RILANCIA';adv.className='ryh-live-advice good'}
+   else if(price<=cap){adv.textContent='🟡 PUOI ANCORA SALIRE';adv.className='ryh-live-advice warn'}
+   else{adv.textContent='🔴 LASCIA';adv.className='ryh-live-advice bad'}
+   ov.classList.add('show');ryhLiveLastPlayer=player;
+ });
+}
+function ryhCloseLiveCard(){document.getElementById('ryhLiveOverlay')?.classList.remove('show')}
+function ryhLiveBid(n){
+ const el=document.getElementById('fastPrice');if(el){el.value=Math.max(0,(+el.value||0)+n);fastSuggest();ryhOpenLiveCard()}
+}
+function ryhLiveLeave(){ryhCloseLiveCard();v3Leave()}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')ryhCloseLiveCard()});
+
+// Make the main "suggest/decision" interaction open the visual card as well.
+document.addEventListener('input',e=>{
+ if(e.target?.id==='fastPlayer'||e.target?.id==='fastPrice'){
+   clearTimeout(window.ryhLiveTimer);
+   window.ryhLiveTimer=setTimeout(()=>{if(v3CurrentPlayer())ryhOpenLiveCard()},350);
+ }
+});
 </script>
 </body>
 </html>
