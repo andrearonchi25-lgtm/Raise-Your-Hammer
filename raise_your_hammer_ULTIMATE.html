@@ -1,0 +1,856 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Raise Your Hammer — Asta Fantacalcio</title>
+<style>
+:root{--bg:#0b0d12;--card:#141821;--card2:#1b202b;--text:#f5f7fb;--muted:#98a1b2;--accent:#f2b84b;--green:#45d483;--red:#ff6375;--blue:#5da9ff;--border:#2a3140}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#090b10,#121722);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif}
+.app{max-width:1100px;margin:auto;padding:20px}.hero{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:20px}.brand{font-size:27px;font-weight:900;letter-spacing:-1px}.brand span{color:var(--accent)}.sub{color:var(--muted);font-size:13px;margin-top:4px}
+button{border:0;border-radius:12px;padding:11px 15px;font-weight:800;cursor:pointer;color:#111;background:var(--accent)}button.secondary{background:var(--card2);color:var(--text);border:1px solid var(--border)}button.danger{background:#3a1820;color:#ff9aa6}
+.grid{display:grid;grid-template-columns:1.25fr .75fr;gap:16px}.card{background:rgba(20,24,33,.94);border:1px solid var(--border);border-radius:18px;padding:18px;box-shadow:0 12px 30px #0004}.card h2{margin:0 0 14px;font-size:17px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.stat{background:var(--card2);border-radius:14px;padding:14px}.stat small{color:var(--muted);display:block}.stat strong{font-size:22px;display:block;margin-top:4px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field{margin-bottom:10px}.field label{font-size:12px;color:var(--muted);display:block;margin-bottom:5px}input,select{width:100%;padding:12px;border-radius:11px;border:1px solid var(--border);background:#0e1219;color:var(--text);outline:none}
+.purchase{display:grid;grid-template-columns:1.4fr 1fr .7fr .7fr auto;gap:8px;align-items:end}
+.notice{padding:14px;border-radius:14px;background:var(--card2);border:1px solid var(--border);margin-top:12px}.suggest{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:10px}.pill{padding:12px;border-radius:12px;background:#0e1219;text-align:center}.pill b{display:block;font-size:20px}.good{color:var(--green)}.warn{color:var(--accent)}.bad{color:var(--red)}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;padding:10px 7px;border-bottom:1px solid var(--border)}th{color:var(--muted);font-weight:700}
+.participants{display:grid;gap:8px}.person{display:flex;justify-content:space-between;align-items:center;background:var(--card2);padding:11px 12px;border-radius:12px}.person small{color:var(--muted)}.empty{color:var(--muted);padding:16px;text-align:center}
+.full{grid-column:1/-1}.setup{display:flex;gap:10px;align-items:end}.setup>*{flex:1}.hidden{display:none!important}
+@media(max-width:800px){.grid{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}.purchase{grid-template-columns:1fr 1fr}.full{grid-column:auto}.hero{align-items:flex-start}.suggest{grid-template-columns:1fr}}
+</style>
+
+<style>
+.pro-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+.tag{display:inline-block;padding:5px 8px;border-radius:9px;background:#0e1219;border:1px solid var(--border);font-size:12px;margin:3px}
+@media(max-width:800px){.pro-grid{grid-template-columns:1fr 1fr}}
+</style>
+
+<style>
+.fast-result{margin-top:12px;padding:18px;border-radius:16px;text-align:center;font-size:28px;font-weight:1000;border:2px solid var(--border);background:#0b0f15}
+.fast-result small{display:block;font-size:12px;color:var(--muted);font-weight:600;margin-top:5px}
+.fast-matches{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.fast-match{padding:7px 10px;border-radius:10px;border:1px solid var(--border);background:#111722;cursor:pointer}
+.fast-actions{display:flex;gap:8px;margin-top:10px}
+.fast-hint{font-size:11px;color:var(--muted);margin-top:8px}
+</style>
+
+<style id="squadPitchStyles">
+.pitch-wrap{display:flex;justify-content:center;margin:12px 0}
+.pitch{position:relative;width:min(100%,560px);height:700px;max-height:72vh;border-radius:24px;overflow:hidden;
+background:repeating-linear-gradient(to bottom,#1d6f42 0,#1d6f42 70px,#237b49 70px,#237b49 140px);
+border:3px solid rgba(255,255,255,.75);box-shadow:0 14px 40px rgba(0,0,0,.35)}
+.pitch:before{content:"";position:absolute;inset:18px;border:2px solid rgba(255,255,255,.75);border-radius:8px}
+.pitch-line.center{position:absolute;left:18px;right:18px;top:50%;border-top:2px solid rgba(255,255,255,.75)}
+.pitch-circle{position:absolute;left:50%;top:50%;width:120px;height:120px;margin:-60px;border:2px solid rgba(255,255,255,.75);border-radius:50%}
+.box{position:absolute;left:50%;width:210px;height:95px;margin-left:-105px;border:2px solid rgba(255,255,255,.75)}
+.box.top{top:18px;border-top:0}.box.bottom{bottom:18px;border-bottom:0}
+.goal{position:absolute;left:50%;width:76px;height:18px;margin-left:-38px;border:2px solid rgba(255,255,255,.8)}
+.top-goal{top:2px}.bottom-goal{bottom:2px}
+.pitch-player{position:absolute;transform:translate(-50%,-50%);width:92px;text-align:center;z-index:2;cursor:pointer}
+.pitch-player .shirt{width:44px;height:44px;margin:auto;border-radius:50%;display:grid;place-items:center;background:#101722;color:#fff;border:3px solid #fff;font-weight:900;box-shadow:0 4px 12px rgba(0,0,0,.35)}
+.pitch-player .pname{margin-top:4px;font-size:11px;font-weight:900;background:rgba(0,0,0,.68);padding:3px 5px;border-radius:7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pitch-player .price{font-size:10px;color:#dbeafe}
+.bench-title{font-weight:1000;font-size:14px;margin-top:10px}
+.bench{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}
+.bench-card{padding:9px;border:1px solid var(--border);border-radius:12px;background:#10151e;text-align:center}
+.bench-card b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bench-card small{color:var(--muted)}
+@media(max-width:650px){.pitch{height:620px}.pitch-player{width:78px}.pitch-player .shirt{width:38px;height:38px}.pitch-player .pname{font-size:9px}.bench{grid-template-columns:repeat(3,1fr)}}
+</style>
+
+<style id="ultimateStyles">
+.ultimate-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.eyebrow{font-size:11px;letter-spacing:.16em;font-weight:1000;color:#9fb3c8}.overall{padding:10px 14px;border:1px solid var(--border);border-radius:14px;background:#0d141d;font-weight:1000}.live-grid{display:grid;grid-template-columns:minmax(0,2fr) minmax(220px,1fr);gap:12px}.live-main{padding:16px;border-radius:18px;background:#0a0f15;border:1px solid var(--border)}.live-label{font-size:11px;color:var(--muted);font-weight:900;letter-spacing:.1em}.giant-input{width:100%;font-size:30px;font-weight:1000;background:transparent;border:0;border-bottom:1px solid var(--border);padding:10px 0;outline:none;color:inherit}.price-line{display:flex;align-items:center;gap:8px;margin-top:10px;color:var(--muted)}.price-input{width:120px;font-size:24px;font-weight:1000}.decision{margin-top:14px;padding:18px;border-radius:18px;text-align:center;font-size:30px;font-weight:1000;border:2px solid var(--border)}.decision.fire{background:#132d1b}.decision.ok{background:#1c2817}.decision.stop{background:#321719}.decision.neutral{background:#111722}.decision-detail{text-align:center;color:var(--muted);font-size:12px;margin-top:6px}.ultimate-matches{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.ultimate-match{cursor:pointer;padding:7px 10px;border:1px solid var(--border);border-radius:10px;background:#121a24}.ultimate-buttons{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.live-side{display:grid;gap:8px}.mini-stat{padding:14px;border-radius:15px;border:1px solid var(--border);background:#10161f}.mini-stat span{display:block;font-size:10px;color:var(--muted);font-weight:900}.mini-stat b{display:block;font-size:20px;margin-top:4px}.rivals-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}.rival{padding:10px;border-radius:13px;background:#10161f;border:1px solid var(--border)}.rival b{display:block}.rival small{color:var(--muted)}.next-plan{margin-top:10px;padding:12px;border-radius:14px;background:#0f1b16;border:1px solid #294e39}.lineup-note{padding:10px;border-radius:12px;background:#10161f;border:1px solid var(--border);margin:8px 0;color:var(--muted);font-size:12px}@media(max-width:800px){.live-grid{grid-template-columns:1fr}.rivals-row{grid-template-columns:1fr 1fr}.giant-input{font-size:25px}}@media(max-width:480px){.rivals-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="hero">
+  <!-- PRO UPGRADE -->
+  <div class="card full" id="proControls" style="margin-bottom:16px">
+    <h2>🚀 PRO UPGRADE</h2>
+    <div class="row">
+      <div class="field"><label>Posti rosa totali</label><input id="totalSlots" type="number" min="1" value="25" onchange="renderAllPro()"></div>
+      <div class="field"><label>Modalità asta</label><select id="auctionMode" onchange="renderAllPro()"><option value="classic">Classica</option><option value="modified">Modificatore difesa</option><option value="value">Value / risparmio</option></select></div>
+    </div>
+    <div class="suggest">
+      <div class="pill"><small>Inflazione asta</small><b id="inflation">0%</b></div>
+      <div class="pill"><small>Budget consigliato da conservare</small><b id="reservePro">—</b></div>
+      <div class="pill"><small>Fase asta</small><b id="phasePro">Inizio</b></div>
+    </div>
+    <div class="notice">
+      <b>🎯 Piano dinamico</b>
+      <div id="planPro" style="margin-top:6px;color:var(--muted)">Registra gli acquisti: l'app imparerà l'andamento dei prezzi della tua asta e aggiornerà la strategia.</div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px">
+      <button class="secondary" onclick="exportAuction()">💾 Salva asta</button>
+      <button class="secondary" onclick="document.getElementById('importFile').click()">📥 Carica asta</button>
+      <button class="secondary" onclick="undoPurchase()">↩️ Annulla ultimo acquisto</button>
+      <input id="importFile" type="file" accept=".json" style="display:none" onchange="importAuction(event)">
+    </div>
+  </div>
+
+    <div><div class="brand">⚒️ RAISE <span>YOUR HAMMER</span></div><div class="sub">Assistente live per l'asta del Fantacalcio</div></div>
+    <button class="secondary" onclick="resetAll()">Reset asta</button>
+  </div>
+
+  <div class="card" id="setupCard">
+    <h2>⚙️ Configurazione asta</h2>
+    <div class="setup">
+      <div class="field"><label>Numero partecipanti</label>
+        <input id="nPlayers" type="number" min="2" max="20" value="10" oninput="buildParticipantInputs()">
+      </div>
+      <div class="field"><label>Crediti iniziali</label>
+        <input id="credits" type="number" min="1" value="500">
+      </div>
+    </div>
+    <h3 style="margin:16px 0 8px">👥 Nomi partecipanti</h3>
+    <div id="participantInputs" class="row"></div>
+    <div class="notice" style="margin-top:10px">
+      <b>⚒️ Il primo nome è la tua squadra</b>
+      <div style="color:var(--muted);margin-top:4px">Puoi cambiare tutti i nomi prima di iniziare l'asta.</div>
+    </div>
+    <button onclick="startAuction()" style="margin-top:12px">🚀 AVVIA ASTA</button>
+  </div>
+
+  <div id="main" class="hidden">
+    <div class="stats">
+      <div class="stat"><small>Budget residuo</small><strong id="myBudget">500</strong></div>
+      <div class="stat"><small>Speso</small><strong id="mySpent">0</strong></div>
+      <div class="stat"><small>Acquisti</small><strong id="myCount">0</strong></div>
+      <div class="stat"><small>Crediti medi avversari</small><strong id="avgBudget">500</strong></div>
+    </div>
+
+    <div class="grid" style="margin-top:16px">
+      <div class="card full">
+        <h2>🧠 Cockpit strategico</h2>
+        <div class="row">
+          <div class="field"><label>Strategia</label>
+            <select id="strategy" onchange="renderStrategy()">
+              <option value="balanced">⚖️ Equilibrata</option>
+              <option value="aggressive">🐺 Aggressiva</option>
+              <option value="value">🧠 Value</option>
+            </select>
+          </div>
+          <div class="field"><label>Prezzo attuale del giocatore chiamato</label>
+            <input id="livePrice" type="number" min="0" placeholder="es. 48" oninput="renderStrategy()">
+          </div>
+        </div>
+        <div class="stats" style="margin-top:8px">
+          <div class="stat"><small>Crediti realmente spendibili</small><strong id="spendable">—</strong></div>
+          <div class="stat"><small>Giocatori da comprare</small><strong id="remainingSlots">—</strong></div>
+          <div class="stat"><small>Stato</small><strong id="auctionMood">—</strong></div>
+          <div class="stat"><small>Forza rosa</small><strong id="squadScore">—</strong></div>
+        </div>
+        <div class="notice">
+          <div id="decision" style="font-size:19px;font-weight:900">Inserisci il prezzo attuale per ottenere la decisione.</div>
+          <div id="decisionReason" style="margin-top:5px;color:var(--muted)"></div>
+        </div>
+        <div class="suggest">
+          <div class="pill"><small>Target</small><b id="cockpitTarget">—</b></div>
+          <div class="pill"><small>Massimo</small><b id="cockpitMax">—</b></div>
+          <div class="pill"><small>Stop</small><b id="cockpitStop">—</b></div>
+        </div>
+        <h3 style="margin:16px 0 8px">⚔️ Avversari da tenere d'occhio</h3>
+        <div id="rivalBoard"></div>
+      </div>
+
+      <div class="card">
+        <h2>🔨 Nuovo acquisto</h2>
+        <div class="purchase">
+          <div class="field"><label>Giocatore</label><input id="player" placeholder="Es. Lautaro"></div>
+          <div class="field"><label>Acquistato da</label><select id="buyer"></select></div>
+          <div class="field"><label>Ruolo</label><select id="role"><option>P</option><option>D</option><option>C</option><option>A</option></select></div>
+          <div class="field"><label>Prezzo</label><input id="price" type="number" min="0" placeholder="30"></div>
+          <button onclick="addPurchase()">Registra</button>
+        </div>
+        <div class="notice">
+          <b>🎯 Suggerimento live</b>
+          <div id="suggestText" style="margin-top:6px;color:var(--muted)">Inserisci il nome del giocatore e un prezzo d'asta per ottenere una valutazione.</div>
+          <div class="suggest">
+            <div class="pill"><small>Obiettivo</small><b id="target">—</b></div>
+            <div class="pill"><small>Puoi arrivare a</small><b id="max">—</b></div>
+            <div class="pill"><small>STOP</small><b id="stop">—</b></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>📦 Rosa da completare</h2>
+        <div id="roleNeeds"></div>
+      </div>
+
+      <div class="card">
+        <h2>👥 Partecipanti</h2>
+        <div class="participants" id="participants"></div>
+      </div>
+
+
+      <div class="card full">
+        <h2>🏆 Rosa ideale — 500 crediti</h2>
+        <div style="color:var(--muted);font-size:13px;margin-bottom:12px">
+          Budget di riferimento per una lega da 10. I prezzi sono obiettivi d'asta, non quotazioni ufficiali.
+          La rosa privilegia bonus, titolarità e rapporto qualità/prezzo.
+        </div>
+        <div id="idealRoster"></div>
+        <div class="notice" id="liveBoard">
+          <b>🧠 Assistente strategico live</b>
+          <div id="liveBoardText" style="margin-top:7px;color:var(--muted)">
+            Registra gli acquisti per aggiornare automaticamente priorità e tetti di spesa.
+          </div>
+          <div id="priorityList" style="margin-top:10px"></div>
+        </div>
+      </div>
+
+      <div class="card full" id="fullListImport">
+        <h2>📥 Importa il listone completo</h2>
+        <div class="notice">
+          <b>514 giocatori · 2026/27</b>
+          <div style="margin-top:5px;color:var(--muted)">
+            Puoi incollare un CSV con le colonne: ruolo,nome,squadra,quotazione,atteso.
+            L'importazione sostituisce la base locale e salva i dati nell'app.
+          </div>
+          <textarea id="csvInput" rows="5" placeholder="A,Martinez L.,Inter,35,68&#10;D,Dimarco,Inter,32,62"></textarea>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+            <button onclick="importCSV()">Importa listone</button>
+            <button class="secondary" onclick="clearImportedDB()">Ripristina database base</button>
+          </div>
+          <div id="importStatus" style="margin-top:7px;color:var(--muted)"></div>
+        </div>
+      </div>
+
+
+      
+      <div class="card full" id="squadBuilder">
+        <h2>🏟️ LA TUA SQUADRA</h2>
+        <div class="row">
+          <div class="field"><label>Nome squadra</label>
+            <input id="squadNameEdit" value="Raise Your Hammer" oninput="saveSquadName()">
+          </div>
+          <div class="field"><label>Modulo</label>
+            <select id="formationSelect" onchange="setFormation(this.value)">
+              <option value="433">4-3-3</option>
+              <option value="442">4-4-2</option>
+              <option value="343">3-4-3</option>
+              <option value="352">3-5-2</option>
+              <option value="451">4-5-1</option>
+              <option value="532">5-3-2</option>
+              <option value="541">5-4-1</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="pitch-wrap">
+          <div class="pitch" id="pitch">
+            <div class="pitch-line center"></div>
+            <div class="pitch-circle"></div>
+            <div class="box top"></div>
+            <div class="box bottom"></div>
+            <div class="goal top-goal"></div>
+            <div class="goal bottom-goal"></div>
+            <div id="playersOnPitch"></div>
+          </div>
+        </div>
+
+        <div class="bench-title">🪑 PANCHINA IDEALE</div>
+        <div id="benchPlayers" class="bench"></div>
+
+        <div class="notice" style="margin-top:12px">
+          <b>🧠 Formazione ideale aggiornata automaticamente</b>
+          <div id="lineupReason" style="margin-top:5px;color:var(--muted)">
+            Ogni acquisto modifica modulo, titolari e panchina in base alla rosa.
+          </div>
+        </div>
+      </div>
+
+
+      <div class="card full" id="ultimateCockpit">
+        <div class="ultimate-head">
+          <div><div class="eyebrow">⚒️ RAISE YOUR HAMMER</div><h2 style="margin:2px 0">ASTA LIVE</h2><div class="muted">Un solo sguardo. Una sola decisione.</div></div>
+          <div class="overall" id="overallScore">ROSA 0/100</div>
+        </div>
+        <div class="live-grid">
+          <div class="live-main">
+            <div class="live-label">GIOCATORE CHIAMATO</div>
+            <input id="ultimatePlayer" class="giant-input" placeholder="Lautaro..." autocomplete="off" oninput="ultimateUpdate()">
+            <div class="price-line"><input id="ultimatePrice" class="price-input" type="number" min="0" inputmode="numeric" placeholder="52" oninput="ultimateUpdate()"><span>crediti attuali</span></div>
+            <div id="ultimateDecision" class="decision neutral">INSERISCI IL GIOCATORE</div>
+            <div id="ultimateDetail" class="decision-detail">L'app calcolerà target, massimo e convenienza.</div>
+            <div id="ultimateMatches" class="ultimate-matches"></div>
+            <div class="ultimate-buttons"><button onclick="ultimateRegister()">⚒️ REGISTRA</button><button class="secondary" onclick="ultimateClear()">Pulisci</button><button class="secondary" onclick="undoPurchase()">↩️ Annulla</button></div>
+          </div>
+          <div class="live-side">
+            <div class="mini-stat"><span>💰 TU</span><b id="uBudget">—</b></div>
+            <div class="mini-stat"><span>🔒 RISERVA</span><b id="uReserve">—</b></div>
+            <div class="mini-stat"><span>🎯 PROSSIMO</span><b id="uNext">—</b></div>
+            <div class="mini-stat"><span>🔥 FASE</span><b id="uPhase">—</b></div>
+          </div>
+        </div>
+        <div class="rivals-row" id="rivalsPanel"></div>
+        <div class="next-plan" id="nextPlan"></div>
+      </div>
+      <div class="card full" id="ultimateSquad">
+        <div class="ultimate-head"><div><div class="eyebrow">🏟️ SQUADRA DA TITOLO</div><h2 style="margin:2px 0">FORMAZIONE IDEALE</h2></div>
+        <select id="ultimateFormation" onchange="setFormation(this.value)"><option value="433">4-3-3</option><option value="442">4-4-2</option><option value="343">3-4-3</option><option value="352">3-5-2</option><option value="451">4-5-1</option><option value="532">5-3-2</option><option value="541">5-4-1</option></select></div>
+        <div class="pitch-wrap"><div class="pitch" id="ultimatePitch"><div class="pitch-line center"></div><div class="pitch-circle"></div><div class="box top"></div><div class="box bottom"></div><div class="goal top-goal"></div><div class="goal bottom-goal"></div><div id="ultimatePlayersOnPitch"></div></div></div>
+        <div class="lineup-note" id="ultimateLineupNote"></div><div class="bench-title">🪑 PANCHINA</div><div id="ultimateBench" class="bench"></div>
+      </div>
+<div class="card full" id="fastConsole">
+        <h2>⚡ MODALITÀ ASTA RAPIDA</h2>
+        <div class="row">
+          <div class="field" style="flex:2"><label>Giocatore chiamato</label>
+            <input id="fastPlayer" autocomplete="off" placeholder="Scrivi il nome..." oninput="fastSuggest()">
+          </div>
+          <div class="field" style="max-width:150px"><label>Prezzo attuale</label>
+            <input id="fastPrice" type="number" min="0" inputmode="numeric" placeholder="0" oninput="fastSuggest()">
+          </div>
+        </div>
+        <div id="fastResult" class="fast-result">
+          <b>SCRIVI IL GIOCATORE</b>
+        </div>
+        <div id="fastMatches" class="fast-matches"></div>
+        <div class="fast-actions">
+          <button onclick="fastRegister()">⚒️ REGISTRA ACQUISTO</button>
+          <button class="secondary" onclick="clearFast()">Pulisci</button>
+        </div>
+        <div class="fast-hint">Bastano poche lettere: l'app completa il nome e ti dà subito una sola indicazione.</div>
+      </div>
+
+      <div class="card full" id="playerDatabase">
+        <h2>🔎 Database giocatori 2026/27</h2>
+        <div class="row">
+          <div class="field"><label>Cerca giocatore</label><input id="dbSearch" placeholder="Es. Lautaro, Paz, Dimarco..." oninput="renderPlayerDB()"></div>
+          <div class="field"><label>Filtro ruolo</label><select id="dbRole" onchange="renderPlayerDB()"><option value="">Tutti</option><option>P</option><option>D</option><option>C</option><option>A</option></select></div>
+        </div>
+        <div id="dbResult"></div>
+        <div style="font-size:11px;color:var(--muted);margin-top:8px">
+          Benchmark basato sul listone 2026/27 e sul prezzo atteso d'asta; il “massimo” è un tetto calcolato dall'app, non una quotazione ufficiale.
+        </div>
+      </div>
+
+      <div class="card full">
+        <h2>📋 Registro asta</h2>
+        <div id="tableWrap"><div class="empty">Nessun acquisto registrato.</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let state={started:false,n:10,credits:500,myTeam:"Raise Your Hammer",teams:[],purchases:[]};
+
+function buildParticipantInputs(){
+  const n=Math.max(2,Math.min(20,+document.getElementById('nPlayers').value||10));
+  const box=document.getElementById('participantInputs');
+  if(!box)return;
+  const old=[...box.querySelectorAll('.teamName')].map(x=>x.value);
+  box.innerHTML='';
+  for(let i=0;i<n;i++){
+    const wrap=document.createElement('div');
+    wrap.className='field';
+    wrap.innerHTML=`<label>Partecipante ${i+1}${i===0?' · TU':''}</label>
+      <input class="teamName" value="${escapeHtml(old[i] || (i===0?'Raise Your Hammer':`Squadra ${i+1}`))}" placeholder="Nome squadra">`;
+    box.appendChild(wrap);
+  }
+}
+function startAuction(){
+  state.n=Math.max(2,Math.min(20,+document.getElementById('nPlayers').value||10));
+  state.credits=Math.max(1,+document.getElementById('credits').value||500);
+  const names=[...document.querySelectorAll('.teamName')].map(x=>x.value.trim());
+  state.teams=Array.from({length:state.n},(_,i)=>names[i]||`Squadra ${i+1}`);
+  state.myTeam=state.teams[0];
+  state.purchases=[];
+  state.started=true;
+  document.getElementById('setupCard').classList.add('hidden');
+  document.getElementById('main').classList.remove('hidden');
+  const sn=document.getElementById('squadNameEdit'); if(sn) sn.value=state.myTeam;
+  render(); suggest(); renderIdealRoster(); renderStrategy(); renderAllPro(); renderPlayerDB(); renderLineup();
+}
+function spent(team){return state.purchases.filter(x=>x.buyer===team).reduce((a,x)=>a+x.price,0)}
+function count(team){return state.purchases.filter(x=>x.buyer===team).length}
+function budget(team){return state.credits-spent(team)}
+function addPurchase(){
+  const player=document.getElementById('player').value.trim();
+  const buyer=document.getElementById('buyer').value;
+  const role=document.getElementById('role').value;
+  const price=+document.getElementById('price').value;
+  if(!player||!buyer||price<0||price>budget(buyer)){alert("Controlla giocatore, prezzo e budget disponibile.");return}
+  state.purchases.unshift({player,buyer,role,price});
+  document.getElementById('player').value=""; document.getElementById('price').value="";
+  render(); suggest(); renderIdealRoster(); renderStrategy(); renderAllPro(); renderPlayerDB(); renderLineup();
+}
+function render(){
+  const buyer=document.getElementById('buyer'); buyer.innerHTML=state.teams.map(t=>`<option>${t}</option>`).join("");
+  document.getElementById('myBudget').textContent=budget(state.myTeam);
+  document.getElementById('mySpent').textContent=spent(state.myTeam);
+  document.getElementById('myCount').textContent=count(state.myTeam);
+  const others=state.teams.filter(t=>t!==state.myTeam);
+  document.getElementById('avgBudget').textContent=Math.round(others.reduce((a,t)=>a+budget(t),0)/Math.max(1,others.length));
+  document.getElementById('participants').innerHTML=state.teams.map(t=>`<div class="person"><span><b>${escapeHtml(t)}</b><br><small>${count(t)} acquisti</small></span><b>${budget(t)} cr</b></div>`).join("");
+  const wrap=document.getElementById('tableWrap');
+  if(!state.purchases.length){wrap.innerHTML='<div class="empty">Nessun acquisto registrato.</div>';return}
+  wrap.innerHTML=`<table><thead><tr><th>Giocatore</th><th>Ruolo</th><th>Squadra</th><th>Prezzo</th></tr></thead><tbody>${state.purchases.map(x=>`<tr><td><b>${escapeHtml(x.player)}</b></td><td>${x.role}</td><td>${escapeHtml(x.buyer)}</td><td><b>${x.price}</b></td></tr>`).join("")}</tbody></table>`;
+}
+function suggest(){
+  if(!state.started)return;
+  const p=+document.getElementById('price').value||0;
+  const my=budget(state.myTeam);
+  const others=state.teams.filter(t=>t!==state.myTeam);
+  const avg=Math.round(others.reduce((a,t)=>a+budget(t),0)/Math.max(1,others.length));
+  const role=document.getElementById('role').value;
+  const countRole=state.purchases.filter(x=>x.buyer===state.myTeam&&x.role===role).length;
+  // Euristica semplice e trasparente: il budget e la scarsità di ruolo guidano il tetto.
+  const base=Math.max(1,Math.round(my*(role==="A"?0.075:role==="C"?0.055:role==="D"?0.04:0.03)));
+  const scarcity=Math.max(0,3-countRole);
+  const target=Math.min(Math.max(1,Math.round(base*(1+scarcity*.08))),Math.max(1,my-10));
+  const max=Math.min(Math.max(target+2,Math.round(target*1.15)),Math.max(1,my-5));
+  const stop=Math.min(Math.max(max+1,Math.round(target*1.25)),Math.max(1,my-1));
+  document.getElementById('target').textContent=target;
+  document.getElementById('max').textContent=max;
+  document.getElementById('stop').textContent=stop;
+  let msg="Valutazione basata sul tuo budget, sul ruolo e su quanto è già stato speso dagli avversari.";
+  if(p>stop) msg="🔴 Prezzo troppo alto: meglio lasciarlo andare.";
+  else if(p>max) msg="🟡 Sei oltre il prezzo consigliato: valuta solo se è un tuo obiettivo.";
+  else if(p>0) msg="🟢 Prezzo interessante: puoi continuare a seguirlo.";
+  else msg+=" Inserisci il prezzo attuale per una decisione live.";
+  document.getElementById('suggestText').textContent=msg;
+}
+document.getElementById('price').addEventListener('input',suggest);
+document.getElementById('role').addEventListener('change',suggest);
+document.getElementById('player').addEventListener('input',suggest);
+function resetAll(){if(confirm("Azzerare tutta l'asta?")){state={started:false,n:10,credits:500,myTeam:"Raise Your Hammer",teams:[],purchases:[]};document.getElementById('main').classList.add('hidden');document.getElementById('setupCard').classList.remove('hidden')}}
+function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
+
+const idealRoster = [
+ ["P","Svilar","Roma",24,30],["P","Carnesecchi","Atalanta",16,21],["P","Butez","Como",8,12],
+ ["D","Dimarco","Inter",48,55],["D","Wesley","Roma",30,37],["D","Pavlovic","Milan",20,25],
+ ["D","Cuenca","Como",7,11],["D","Kossounou","Atalanta",5,9],["D","Hien","Atalanta",5,8],["D","Djimsiti","Atalanta",2,5],
+ ["C","Nico Paz","Como",43,50],["C","McTominay","Napoli",39,46],["C","Calhanoglu","Inter",35,42],
+ ["C","Pulisic","Milan",31,38],["C","Orsolini","Bologna",27,34],["C","Da Cunha","Como",12,17],["C","Baturina","Como",9,14],["C","Unai Gomez","Udinese",3,7],
+ ["A","Lautaro Martinez","Inter",62,72],["A","Malen","Roma",55,65],["A","Thuram","Inter",48,58],
+ ["A","Hojlund","Napoli",42,50],["A","Ramos G.","Milan",37,45],["A","Kean","Fiorentina",28,35],["A","Douvikas","Como",13,18],["A","Scamacca","Atalanta",10,15]
+];
+
+
+function rosterSlots(){ return {P:3,D:8,C:8,A:6}; }
+function myRemaining(){
+  const slots=rosterSlots();
+  return Object.entries(slots).reduce((n,[r,max])=>{
+    return n + Math.max(0,max-state.purchases.filter(x=>x.buyer===state.myTeam&&x.role===r).length);
+  },0);
+}
+function minimumReserve(){
+  const slots=rosterSlots();
+  const roleMin={P:1,D:1,C:1,A:3};
+  let reserve=0;
+  for(const [r,max] of Object.entries(slots)){
+    const have=state.purchases.filter(x=>x.buyer===state.myTeam&&x.role===r).length;
+    reserve += Math.max(0, Math.min(max-have, roleMin[r]));
+  }
+  return reserve;
+}
+function renderStrategy(){
+  if(!state.started)return;
+  const strategy=document.getElementById('strategy').value;
+  const live=+document.getElementById('livePrice').value||0;
+  const my=budget(state.myTeam);
+  const slots=myRemaining();
+  const reserve=Math.max(slots, minimumReserve());
+  const spendable=Math.max(0,my-reserve);
+  const others=state.teams.filter(t=>t!==state.myTeam);
+  const avg=Math.round(others.reduce((a,t)=>a+budget(t),0)/Math.max(1,others.length));
+  const pressure=my>avg*1.15?'PUOI ATTACCARE':my<avg*.75?'RISPARMIA':'IN EQUILIBRIO';
+  document.getElementById('spendable').textContent=spendable;
+  document.getElementById('remainingSlots').textContent=slots;
+  document.getElementById('auctionMood').textContent=pressure;
+  let score=60;
+  score += Math.min(20, state.purchases.filter(x=>x.buyer===state.myTeam).length*2);
+  if(my>avg) score+=8;
+  score=Math.min(99,score);
+  document.getElementById('squadScore').textContent=score+"/100";
+
+  const targetBase=Math.max(1,Math.round(spendable/(slots||1)));
+  const multiplier=strategy==='aggressive'?1.25:strategy==='value'?.82:1.0;
+  const target=Math.min(spendable,Math.max(1,Math.round(targetBase*multiplier)));
+  const max=Math.min(spendable,Math.max(target,Math.round(target*1.12)));
+  const stop=Math.min(spendable,Math.max(max,Math.round(target*1.22)));
+  document.getElementById('cockpitTarget').textContent=target;
+  document.getElementById('cockpitMax').textContent=max;
+  document.getElementById('cockpitStop').textContent=stop;
+  let decision="⏳ ATTENDI";
+  let reason="Inserisci il prezzo attuale per decidere.";
+  if(live){
+    if(live<=target){decision="🔥 ATTACCA";reason="Sei dentro il prezzo obiettivo e hai ancora margine strategico."}
+    else if(live<=max){decision="🟢 RILANCIA";reason="Prezzo ancora sostenibile, ma non inseguire oltre il massimo."}
+    else if(live<=stop){decision="🟡 ULTIMO RILANCIO";reason="Se è un obiettivo prioritario puoi fare un ultimo tentativo."}
+    else {decision="🛑 LASCIA";reason="Il prezzo supera il tetto strategico: conserva crediti per completare la rosa."}
+  }
+  document.getElementById('decision').textContent=decision;
+  document.getElementById('decisionReason').textContent=reason;
+
+  const rivalBox=document.getElementById('rivalBoard');
+  const rivals=others.map(t=>({t,b:budget(t),need:myRemainingFor(t)})).sort((a,b)=>b.b-a.b);
+  rivalBox.innerHTML=rivals.slice(0,5).map(x=>{
+    const danger=x.b>my? "🔥 Forte concorrente":"🧊 Budget inferiore";
+    return `<div class="person"><span><b>${escapeHtml(x.t)}</b><br><small>${x.need} slot circa da completare</small></span><b>${x.b} cr · ${danger}</b></div>`;
+  }).join("");
+  renderRoleNeeds();
+}
+function myRemainingFor(team){
+  const slots=rosterSlots();
+  return Object.entries(slots).reduce((n,[r,max])=>n+Math.max(0,max-state.purchases.filter(x=>x.buyer===team&&x.role===r).length),0);
+}
+function renderRoleNeeds(){
+  const box=document.getElementById('roleNeeds');
+  if(!box||!state.started)return;
+  const slots=rosterSlots();
+  box.innerHTML=Object.entries(slots).map(([r,max])=>{
+    const have=state.purchases.filter(x=>x.buyer===state.myTeam&&x.role===r).length;
+    const rem=Math.max(0,max-have);
+    return `<div class="person"><span><b>${r}</b><br><small>${have}/${max} acquistati</small></span><b>${rem} da prendere</b></div>`;
+  }).join("");
+  const q=document.getElementById("buyerQuick");
+  if(q) q.innerHTML=Array.from({length:n},(_,i)=>`<span class="fast-match" onclick="setQuickBuyer(${i})">${i===0?"⚒️ ":""}${box.querySelectorAll(".teamName")[i].value}</span>`).join("");
+}
+
+function renderIdealRoster(){
+  const wrap=document.getElementById('idealRoster');
+  if(!wrap)return;
+  const groups={P:[],D:[],C:[],A:[]};
+  idealRoster.forEach(x=>groups[x[0]].push(x));
+  const names={P:"Portieri",D:"Difensori",C:"Centrocampisti",A:"Attaccanti"};
+  let html='';
+  for(const r of ['P','D','C','A']){
+    html+=`<h3 style="margin:14px 0 7px">${names[r]}</h3>
+    <table><thead><tr><th>Giocatore</th><th>Squadra</th><th>Prezzo consigliato</th><th>Prezzo massimo live</th><th>Stato</th></tr></thead><tbody>`;
+    groups[r].forEach(x=>{
+      const bought=state.purchases.some(p=>p.player.toLowerCase()===x[1].toLowerCase());
+      const my=budget(state.myTeam);
+      const avg=state.teams.filter(t=>t!==state.myTeam).reduce((a,t)=>a+budget(t),0)/Math.max(1,state.teams.length-1);
+      const scarcity=Math.min(1.18,1+(avg<my?.08:0));
+      const liveMax=Math.min(Math.max(1,Math.round(x[4]*scarcity)),Math.max(1,my-5));
+      let status=bought?'❌ Preso':liveMax>=x[3]?'🟢 Obiettivo':'🟡 Attesa';
+      html+=`<tr><td><b>${x[1]}</b></td><td>${x[2]}</td><td class="good"><b>${x[3]}</b></td><td class="warn"><b>${liveMax}</b></td><td>${status}</td></tr>`;
+    });
+    html+='</tbody></table>';
+  }
+  const target=idealRoster.reduce((a,x)=>a+x[3],0);
+  html+=`<div class="notice"><b>🎯 Regola d'oro:</b> il prezzo massimo non è fisso. Dopo ogni acquisto l'app ricalcola il budget disponibile e la pressione sugli avversari, così puoi spostare il budget verso gli obiettivi ancora liberi.</div>`;
+  wrap.innerHTML=html;
+  renderPriorities();
+}
+
+function renderPriorities(){
+  const box=document.getElementById('priorityList');
+  const text=document.getElementById('liveBoardText');
+  if(!box||!state.started)return;
+  const my=budget(state.myTeam);
+  const others=state.teams.filter(t=>t!==state.myTeam);
+  const avg=Math.round(others.reduce((a,t)=>a+budget(t),0)/Math.max(1,others.length));
+  const free=idealRoster.filter(x=>!state.purchases.some(p=>p.player.toLowerCase()===x[1].toLowerCase()));
+  const scored=free.map(x=>{
+    const spentByMe=count(state.myTeam);
+    const roleNeed=x[0]==='A'?(4-(state.purchases.filter(p=>p.buyer===state.myTeam&&p.role==='A').length)):
+      x[0]==='C'?(4-(state.purchases.filter(p=>p.buyer===state.myTeam&&p.role==='C').length)):
+      x[0]==='D'?(5-(state.purchases.filter(p=>p.buyer===state.myTeam&&p.role==='D').length)):1;
+    const score=(x[3]/Math.max(1,x[4]))*100 + Math.max(0,roleNeed)*7 + (my>avg?6:0);
+    return {x,score};
+  }).sort((a,b)=>b.score-a.score).slice(0,5);
+  text.textContent=`Budget tuo: ${my} cr · media avversari: ${avg} cr · ${state.purchases.length} acquisti registrati. Le priorità cambiano dopo ogni acquisto.`;
+  box.innerHTML=scored.map(({x})=>`<span style="display:inline-block;background:#0e1219;border:1px solid var(--border);border-radius:10px;padding:8px 10px;margin:3px"><b>${x[1]}</b> · ${x[0]} · target ${x[3]} · max ${x[4]}</span>`).join("");
+}
+
+renderIdealRoster();
+
+
+function allSpent(){
+  return state.purchases.reduce((a,x)=>a+x.price,0);
+}
+function idealInflation(){
+  if(!state.purchases.length) return 0;
+  const refs=state.purchases.map(p=>{
+    const found=idealRoster.find(x=>x[1].toLowerCase()===p.player.toLowerCase());
+    return found ? p.price/found[3] : null;
+  }).filter(x=>x!==null && isFinite(x));
+  if(!refs.length) return 0;
+  return Math.round((refs.reduce((a,x)=>a+x,0)/refs.length-1)*100);
+}
+function rolePressure(role){
+  const slots=rosterSlots();
+  const mine=state.purchases.filter(x=>x.buyer===state.myTeam&&x.role===role).length;
+  const remaining=Math.max(0,(slots[role]||0)-mine);
+  return remaining;
+}
+function renderAllPro(){
+  if(!state.started) return;
+  const inf=idealInflation();
+  const my=budget(state.myTeam);
+  const slots=myRemaining();
+  const reserve=Math.max(slots, minimumReserve());
+  const phase=state.purchases.length<Math.max(5,state.n)?'Inizio':state.purchases.length<Math.max(12,state.n*2)?'Centrale':'Finale';
+  document.getElementById('inflation').textContent=(inf>=0?'+':'')+inf+'%';
+  document.getElementById('reservePro').textContent=reserve+' cr';
+  document.getElementById('phasePro').textContent=phase;
+  const roles=['P','D','C','A'];
+  const pressures=roles.map(r=>r+': '+rolePressure(r)).join(' · ');
+  let action='Mantieni flessibilità e osserva i prezzi.';
+  if(inf>15) action='⚠️ Asta molto inflazionata: evita di inseguire i top e conserva budget.';
+  else if(inf<-10) action='🔥 Prezzi sotto target: puoi sfruttare il mercato e comprare valore.';
+  if(my>0 && slots<=4) action+=' Sei nella fase finale: puoi concentrare il budget sugli ultimi obiettivi.';
+  document.getElementById('planPro').textContent=action+' Fabbisogno: '+pressures+'.';
+  renderStrategy();
+}
+function undoPurchase(){
+  if(!state.purchases.length){alert('Non ci sono acquisti da annullare.');return}
+  state.purchases.shift();
+  render(); suggest(); renderIdealRoster(); renderAllPro();
+}
+function exportAuction(){
+  const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='raise-your-hammer-asta.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+function importAuction(ev){
+  const file=ev.target.files[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=()=>{
+    try{
+      const data=JSON.parse(reader.result);
+      if(!data.teams||!Array.isArray(data.purchases)) throw new Error();
+      state=data;
+      state.started=true;
+      document.getElementById('setupCard').classList.add('hidden');
+      document.getElementById('main').classList.remove('hidden');
+      render(); suggest(); renderIdealRoster(); renderAllPro(); renderPlayerDB(); renderLineup();
+    }catch(e){alert('File asta non valido.');}
+  };
+  reader.readAsText(file);
+}
+
+buildParticipantInputs();
+
+const playerDB=[['A','Martinez L.','Inter',35,68],['A','Malen','Roma',34,66],['D','Dimarco','Inter',32,62],['C','Paz N.','Como',30,58],['A','Thuram','Inter',29,56],['A','Hojlund','Napoli',28,54],['C','McTominay','Napoli',28,54],['C','Calhanoglu','Inter',27,52],['A','Ramos G.','Milan',27,52],['A','Kolo Muani','Juventus',26,50],['C','Orsolini','Bologna',26,50],['A','Kean','Fiorentina',25,48],['C','Pulisic','Milan',25,48],['A','Yildiz','Juventus',23,44],['C','Rabiot','Milan',22,42],['A','Douvikas','Como',20,38],['C','Baturina','Como',19,37],['A','Davis K.','Udinese',19,37],['C','Mora','Roma',19,37],['A','Scamacca','Atalanta',19,37],['A','Berardi','Sassuolo',18,35],['C','Da Cunha','Como',18,35],['A','Krstovic','Atalanta',18,35],['A','Leao','Milan',18,35],['D','Molina N.','Roma',18,35],['P','Svilar','Roma',18,35],['C','Zaniolo','Udinese',18,35],['C','Atta','Fiorentina',17,33],['C','Barella','Inter',17,33],['A','De Ketelaere','Atalanta',17,33],['P','Martinez Jo.','Inter',17,33],['C','McKennie','Juventus',17,33],['D','Wesley','Roma',17,33],['D','Akanji','Inter',16,31],['P','Butez','Como',16,31],['P','Carnesecchi','Atalanta',16,31],['A','Dovbyk','Bologna',16,31],['A','Esposito F.P.','Inter',16,31],['P','Vicario','Juventus',16,31],['C','Zaccagni','Lazio',16,31],['D','Bremer','Juventus',15,29],['C','De Bruyne','Napoli',15,29],['A','Laurientè','Sassuolo',15,29],['P','Maignan','Milan',15,29],['D','Mancini','Roma',15,29],['A','Pellegrino M.','Fiorentina',15,29],['A','Simeone','Torino',15,29],['D','Bastoni','Inter',14,27],['A','Castro S.','Roma',14,27],['A','Dybala','Roma',14,27],['D','Pavlovic','Milan',14,27],['D','Rrahmani','Napoli',14,27],['A','Santos A.','Napoli',14,27],['C','Vlasic','Torino',14,27],['P','De Gea','Fiorentina',13,25],['A','Esposito Se.','Cagliari',13,25],['C','Gudmundsson A.','Fiorentina',13,25],['D','Kalulu','Juventus',13,25],['A','Kevin Carlos','Cagliari',13,25],['D',"N'Dicka",'Roma',13,25],['A','Nkunku','Milan',13,25],['A','Pinamonti','Sassuolo',13,25],['A','Raspadori','Atalanta',13,25],['D','Solet','Udinese',13,25],['C','Taylor K.','Lazio',13,25],['A','Adams A.','Venezia',12,23],['C','Alajbegovic','Juventus',12,23],['C','Conceicao','Juventus',12,23],['D','Di Lorenzo','Napoli',12,23],['C','Ederson D.S.','Atalanta',12,23],['D','Gila','Milan',12,23],['C','Mastantuono','Fiorentina',12,23],['C','Modric','Milan',12,23],['C','Moreira','Milan',12,23],['C','Rodriguez Je.','Como',12,23],['C','Samardzic','Atalanta',12,23],['A','Soulè','Roma',12,23],['D','Spence','Inter',12,23],['D','Stones','Inter',12,23],['C','Baldanzi','Genoa',11,21],['D','Bisseck','Inter',11,21],['A','Colombo','Genoa',11,21],['A','Diao','Como',11,21],['P','Meret','Napoli',11,21],['D','Ostigard','Genoa',11,21],['C','Rowe','Bologna',11,21],['A','Tourè E.','Parma',11,21],['C','Zambo Anguissa','Napoli',11,21],['A','Bowie','Sassuolo',10,19],['C','Casadei','Torino',10,19],['A','Dia','Lazio',10,19],['D','Dodò','Fiorentina',10,19],['C','Ekkelenkamp','Udinese',10,19],['D','Hermoso','Roma',10,19],['C','Konè M.','Roma',10,19],['C','Pellegrini Lo.','Roma',10,19],['C','Perrone','Como',10,19],['C','Politano','Napoli',10,19],['D','Ramon','Como',10,19],['A','Ratkov','Lazio',10,19],['A','Romero D.','Parma',10,19],['C','Saelemaekers','Milan',10,19],['D','Scalvini','Atalanta',10,19],['P','Skorupski','Bologna',10,19],['C','Thorstvedt','Sassuolo',10,19],['C','Thuram K.','Juventus',10,19],['C','Zielinski','Inter',10,19]];
+
+function normName(x){return (x||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');}
+function playerMax(expected, q) {
+  const infl=1+(idealInflation()/100);
+  const strategy=document.getElementById('strategy')?.value||'balanced';
+  const mult=strategy==='aggressive'?1.08:strategy==='value'?.94:1.02;
+  return Math.max(q,Math.round(expected*mult*Math.max(.85,Math.min(1.2,infl))));
+}
+function renderPlayerDB(){
+  const box=document.getElementById('dbResult'); if(!box)return;
+  const q=normName(document.getElementById('dbSearch')?.value);
+  const role=document.getElementById('dbRole')?.value||'';
+  const my=state.started?budget(state.myTeam):500;
+  const rows=getDB().filter(x=>(!q||normName(x[1]).includes(q))&&(!role||x[0]===role)).slice(0,40);
+  if(!rows.length){box.innerHTML='<div class="empty">Nessun giocatore trovato.</div>';return;}
+  box.innerHTML=`<table><thead><tr><th>Ruolo</th><th>Giocatore</th><th>Squadra</th><th>Qt.</th><th>Target</th><th>Max</th><th>Azioni</th></tr></thead><tbody>`+
+    rows.map(x=>{
+      const max=Math.min(Math.max(1,playerMax(x[4],x[3])),Math.max(1,my-5));
+      const bought=state.purchases.some(p=>normName(p.player)===normName(x[1]));
+      return `<tr><td>${x[0]}</td><td><b>${x[1]}</b></td><td>${x[2]}</td><td>${x[3]}</td><td class="good"><b>${x[4]}</b></td><td class="warn"><b>${max}</b></td><td><button class="secondary" onclick="selectPlayer('${x[1].replace(/'/g,"\\'")}','${x[0]}')">${bought?'Preso':'Usa'}</button></td></tr>`;
+    }).join('')+'</tbody></table>';
+}
+function selectPlayer(name,role){
+  const p=document.getElementById('player'); const r=document.getElementById('role');
+  if(p)p.value=name; if(r)r.value=role; suggest(); renderStrategy();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+
+function getDB(){
+  try{
+    const saved=JSON.parse(localStorage.getItem('ryh_player_db')||'null');
+    if(Array.isArray(saved)&&saved.length) return saved;
+  }catch(e){}
+  return playerDB;
+}
+function importCSV(){
+  const raw=document.getElementById('csvInput').value.trim();
+  if(!raw){alert('Incolla prima il CSV del listone.');return}
+  const rows=raw.split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
+  const parsed=[];
+  for(const line of rows){
+    const parts=line.split(',').map(x=>x.trim());
+    if(parts.length<5) continue;
+    const [r,n,t,q,a]=parts;
+    if(!['P','D','C','A'].includes(r)||!n||isNaN(+q)||isNaN(+a)) continue;
+    parsed.push([r,n,t,+q,+a]);
+  }
+  if(parsed.length<20){alert('Formato non riconosciuto: servono almeno 20 righe valide.');return}
+  localStorage.setItem('ryh_player_db',JSON.stringify(parsed));
+  document.getElementById('importStatus').textContent=`✅ Importati ${parsed.length} giocatori.`;
+  renderPlayerDB();
+}
+function clearImportedDB(){
+  localStorage.removeItem('ryh_player_db');
+  document.getElementById('importStatus').textContent='Database base ripristinato.';
+  renderPlayerDB();
+}
+function playerIntel(name){
+  const x=getDB().find(p=>normName(p[1])===normName(name));
+  if(!x)return null;
+  const infl=1+idealInflation()/100;
+  const strat=document.getElementById('strategy')?.value||'balanced';
+  const stratMult=strat==='aggressive'?1.08:strat==='value'?.94:1.0;
+  const target=Math.max(1,Math.round(x[4]*Math.max(.82,Math.min(1.22,infl))*stratMult));
+  const max=Math.max(target,Math.round(target*1.12));
+  const current=+document.getElementById('livePrice')?.value||0;
+  let action='ATTENDI';
+  if(current){ action=current<=target?'ATTACCA':current<=max?'RILANCIA':'LASCIA'; }
+  return {x,target,max,current,action};
+}
+
+
+function fastDB(){ return typeof getDB==='function' ? getDB() : playerDB; }
+function fastSuggest(){
+  const name=(document.getElementById('fastPlayer')?.value||'').trim();
+  const price=+(document.getElementById('fastPrice')?.value||0);
+  const result=document.getElementById('fastResult'), matches=document.getElementById('fastMatches');
+  if(!name){result.innerHTML='<b>SCRIVI IL GIOCATORE</b>'; matches.innerHTML=''; return;}
+  const q=normName(name);
+  const rows=fastDB().filter(x=>normName(x[1]).includes(q)).slice(0,5);
+  matches.innerHTML=rows.map(x=>`<span class="fast-match" onclick="chooseFast('${x[1].replace(/'/g,"\\'")}')">${x[1]} · ${x[0]}</span>`).join('');
+  if(!rows.length){result.innerHTML='<b>GIOCATORE NON TROVATO</b><small>Prova con meno lettere</small>';return;}
+  const x=rows[0];
+  const expected=x[4]||x[3];
+  const max=typeof playerMax==='function'?playerMax(expected,x[3]):Math.round(expected*1.05);
+  let action='ATTENDI';
+  if(price){ action=price<=expected?'🔥 RILANCIA':price<=max?'🟢 PUOI RILANCIARE':'🛑 LASCIA'; }
+  result.innerHTML=`<b>${action}</b><small>${x[1]} · Target ${expected} · Massimo ${max}${price?' · Attuale '+price:''}</small>`;
+}
+function chooseFast(name){
+  document.getElementById('fastPlayer').value=name;
+  fastSuggest();
+  document.getElementById('fastPrice')?.focus();
+}
+function clearFast(){
+  document.getElementById('fastPlayer').value='';
+  document.getElementById('fastPrice').value='';
+  fastSuggest();
+}
+function fastRegister(){
+  const player=(document.getElementById('fastPlayer')?.value||'').trim();
+  const price=+(document.getElementById('fastPrice')?.value||0);
+  if(!player||!price){alert('Inserisci giocatore e prezzo.');return;}
+  const buyer=window._quickBuyer || prompt('Chi lo ha acquistato?', state.myTeam);
+  if(!buyer)return;
+  const x=fastDB().find(p=>normName(p[1])===normName(player));
+  const role=x?x[0]:'A';
+  state.purchases.unshift({buyer,player,price,role});
+  render(); suggest(); renderIdealRoster(); renderStrategy(); renderAllPro(); renderPlayerDB(); renderLineup();
+  clearFast();
+}
+
+
+const FORMATIONS = {
+  "433": ["P","D","D","D","D","C","C","C","A","A","A"],
+  "442": ["P","D","D","D","D","C","C","C","C","A","A"],
+  "343": ["P","D","D","D","C","C","C","C","A","A","A"],
+  "352": ["P","D","D","D","C","C","C","C","C","A","A"],
+  "451": ["P","D","D","D","D","C","C","C","C","C","A"],
+  "532": ["P","D","D","D","D","D","C","C","C","A","A"],
+  "541": ["P","D","D","D","D","D","C","C","C","C","A"]
+};
+const PITCH_POS = {
+  "433":[[50,91],[18,73],[38,78],[62,78],[82,73],[25,52],[50,57],[75,52],[18,27],[50,20],[82,27]],
+  "442":[[50,91],[18,73],[38,78],[62,78],[82,73],[15,51],[38,57],[62,57],[85,51],[35,24],[65,24]],
+  "343":[[50,91],[25,73],[50,79],[75,73],[15,52],[38,56],[62,56],[85,52],[18,25],[50,20],[82,25]],
+  "352":[[50,91],[25,74],[50,79],[75,74],[13,51],[33,56],[50,50],[67,56],[87,51],[34,24],[66,24]],
+  "451":[[50,91],[18,73],[38,78],[62,78],[82,73],[12,52],[31,56],[50,50],[69,56],[88,52],[50,23]],
+  "532":[[50,91],[12,72],[30,79],[50,81],[70,79],[88,72],[25,51],[50,56],[75,51],[35,24],[65,24]],
+  "541":[[50,91],[12,72],[30,79],[50,81],[70,79],[88,72],[20,52],[40,56],[60,56],[80,52],[50,23]]
+};
+
+function saveSquadName(){
+  const el=document.getElementById("squadNameEdit");
+  if(!el)return;
+  const v=el.value.trim()||"Raise Your Hammer";
+  if(state.started) state.myTeam=v;
+  localStorage.setItem("ryh_squad_name",v);
+  if(typeof render==='function') render();
+}
+function setFormation(v){
+  localStorage.setItem("ryh_formation",v);
+  renderLineup();
+}
+function lineupPool(){
+  if(!state.started)return [];
+  return state.purchases.filter(x=>x.buyer===state.myTeam);
+}
+function playerScore(p){
+  const db=typeof getDB==='function'?getDB():[];
+  const found=db.find(x=>normName(x[1])===normName(p.player));
+  const expected=found?+found[4]:+p.price;
+  const roleBonus={P:1,D:2,C:3,A:4}[p.role]||1;
+  const value=(expected/(+p.price||1))*10;
+  return expected*2 + value + roleBonus;
+}
+function renderLineup(){
+  const pitch=document.getElementById("playersOnPitch");
+  const bench=document.getElementById("benchPlayers");
+  if(!pitch||!bench)return;
+  const formation=document.getElementById("formationSelect")?.value||localStorage.getItem("ryh_formation")||"433";
+  const pool=lineupPool();
+  const positions=FORMATIONS[formation]||FORMATIONS["433"];
+  const used=[];
+  const starters=[];
+  for(const role of positions){
+    const candidates=pool.filter(p=>p.role===role&&!used.includes(p));
+    candidates.sort((a,b)=>playerScore(b)-playerScore(a));
+    const pick=candidates[0];
+    if(pick){starters.push(pick);used.push(pick);}
+    else starters.push(null);
+  }
+  pitch.innerHTML='';
+  starters.forEach((p,i)=>{
+    if(!p)return;
+    const pos=PITCH_POS[formation][i];
+    const el=document.createElement("div");
+    el.className="pitch-player";
+    el.style.left=pos[0]+"%"; el.style.top=pos[1]+"%";
+    el.innerHTML=`<div class="shirt">${p.role}</div><div class="pname">${p.player}</div><div class="price">${p.price} cr</div>`;
+    el.title=`${p.player} · ${p.role} · ${p.price} crediti`;
+    pitch.appendChild(el);
+  });
+  const benchPlayers=pool.filter(p=>!used.includes(p)).sort((a,b)=>playerScore(b)-playerScore(a)).slice(0,7);
+  bench.innerHTML=benchPlayers.length?benchPlayers.map(p=>`<div class="bench-card"><b>${p.player}</b><small>${p.role} · ${p.price} cr</small></div>`).join("")
+    : `<div class="bench-card" style="grid-column:1/-1"><b>La panchina si riempirà con i tuoi prossimi acquisti.</b></div>`;
+  const missing=positions.filter((r,i)=>!starters[i]).length;
+  const names=starters.filter(Boolean).map(p=>p.player).join(", ");
+  const reason=document.getElementById("lineupReason");
+  if(reason) reason.textContent=pool.length
+    ? `Modulo ${formation}. ${missing?`Mancano ${missing} titolari per completare l'undici. `:"Undici completo. "}La formazione viene scelta automaticamente in base a ruolo, valore e prezzo pagato.`
+    : "Ogni acquisto aggiornerà automaticamente titolari e panchina.";
+}
+
+window.addEventListener('error', function(e){
+  const box=document.getElementById('fastResult');
+  if(box && !state.started) box.innerHTML='<b>PRONTO</b><small>Configura i partecipanti e avvia l\'asta.</small>';
+});
+
+function uDB(){return typeof getDB==='function'?getDB():playerDB}
+function uNorm(x){return(x||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')}
+function uFind(n){let q=uNorm(n);return q?uDB().filter(x=>uNorm(x[1]).includes(q)).slice(0,6):[]}
+function uExp(x){return +(x&&x[4]||x&&x[3]||0)}
+function uTarget(x){let inf=typeof idealInflation==='function'?idealInflation()/100:0,st=document.getElementById('strategy')?.value||'balanced',m=st==='aggressive'?1.07:st==='value'?.94:1;return Math.max(1,Math.round(uExp(x)*Math.max(.82,Math.min(1.22,1+inf))*m))}
+function uMax(x){let t=uTarget(x),b=typeof budget==='function'?budget(state.myTeam):500,r=typeof minimumReserve==='function'?minimumReserve():Math.max(10,Math.ceil(b*.12));return Math.max(t,Math.min(Math.round(t*1.12),Math.max(t,b-r)))}
+function ultimateUpdate(){let n=document.getElementById('ultimatePlayer').value.trim(),p=+document.getElementById('ultimatePrice').value||0,d=document.getElementById('ultimateDecision'),dt=document.getElementById('ultimateDetail'),m=document.getElementById('ultimateMatches'),rows=uFind(n);m.innerHTML=rows.map(x=>`<span class="ultimate-match" onclick="ultimateChoose('${x[1].replace(/'/g,"\\'")}')">${x[1]} · ${x[0]}</span>`).join('');if(!n){d.className='decision neutral';d.textContent='INSERISCI IL GIOCATORE';dt.textContent="L'app farà tutto il resto.";return}if(!rows.length){d.className='decision stop';d.textContent='GIOCATORE NON TROVATO';dt.textContent='Prova con meno lettere.';return}let x=rows[0],t=uTarget(x),mx=uMax(x);d.className='decision '+(p<=t&&p?'fire':p<=mx&&p?'ok':'neutral');d.textContent=!p?'PRONTO':p<=t?'🔥 RILANCIA':p<=mx?'🟢 PUOI RILANCIARE':'🛑 LASCIA';if(p>mx)d.className='decision stop';dt.textContent=`${x[1]} · Target ${t} · Massimo ${mx}${p?' · Attuale '+p:''}`;renderUltimateSummary()}
+function ultimateChoose(n){document.getElementById('ultimatePlayer').value=n;ultimateUpdate();document.getElementById('ultimatePrice').focus()}
+function ultimateClear(){document.getElementById('ultimatePlayer').value='';document.getElementById('ultimatePrice').value='';ultimateUpdate()}
+function ultimateRegister(){let n=document.getElementById('ultimatePlayer').value.trim(),p=+document.getElementById('ultimatePrice').value||0,r=uFind(n);if(!n||!p||!r.length){alert('Inserisci giocatore e prezzo.');return}let x=r[0];state.purchases.unshift({buyer:window._quickBuyer||state.myTeam,player:x[1],price:p,role:x[0]});render();if(typeof suggest==='function')suggest();if(typeof renderIdealRoster==='function')renderIdealRoster();if(typeof renderStrategy==='function')renderStrategy();if(typeof renderAllPro==='function')renderAllPro();if(typeof renderPlayerDB==='function')renderPlayerDB();renderUltimateAll();ultimateClear()}
+function uPool(){return(state.purchases||[]).filter(p=>p.buyer===state.myTeam)}
+function uScore(p){let x=uDB().find(q=>uNorm(q[1])===uNorm(p.player)),e=x?uExp(x):p.price;return e*2+e/Math.max(1,p.price)*20}
+function renderUltimateSummary(){if(!state.started)return;let b=typeof budget==='function'?budget(state.myTeam):0,r=typeof minimumReserve==='function'?minimumReserve():Math.max(10,Math.ceil(b*.12));document.getElementById('uBudget').textContent=b+' cr';document.getElementById('uReserve').textContent=r+' cr';document.getElementById('uPhase').textContent=(state.purchases||[]).length<Math.max(6,state.n)?'INIZIO':state.purchases.length<Math.max(15,state.n*2)?'CENTRALE':'FINALE';let pool=uPool(),score=Math.min(100,Math.round(pool.reduce((a,p)=>a+uScore(p),0)/Math.max(1,state.credits*5)*100));document.getElementById('overallScore').textContent='ROSA '+score+'/100';let cand=uDB().filter(x=>!pool.some(p=>uNorm(p.player)===uNorm(x[1])));let need=cand.find(x=>pool.filter(p=>p.role===x[0]).length<({P:1,D:4,C:3,A:3}[x[0]]||1))||cand[0];document.getElementById('uNext').textContent=need?need[1]:'—';document.getElementById('nextPlan').innerHTML=need?`🎯 <b>PROSSIMO OBIETTIVO:</b> ${need[1]} · Target ${uTarget(need)} · Max ${uMax(need)}`:'🎯 Rosa completa';let rivals=(state.teams||[]).filter(t=>t!==state.myTeam).slice(0,4);document.getElementById('rivalsPanel').innerHTML=rivals.map(t=>`<div class="rival"><b>${t}</b><small>💰 ${budget(t)} cr · 👤 ${(state.purchases||[]).filter(p=>p.buyer===t).length}</small></div>`).join('')}
+function renderUltimateLineup(){let pitch=document.getElementById('ultimatePlayersOnPitch'),bench=document.getElementById('ultimateBench');if(!pitch||!bench)return;let f=document.getElementById('ultimateFormation')?.value||'433',roles=FORMATIONS[f],pos=PITCH_POS[f],pool=uPool(),used=[],starters=[];pitch.innerHTML='';roles.forEach(r=>{let c=pool.filter(p=>p.role===r&&!used.includes(p)).sort((a,b)=>uScore(b)-uScore(a))[0]||null;starters.push(c);if(c)used.push(c)});starters.forEach((p,i)=>{if(!p)return;let e=document.createElement('div');e.className='pitch-player';e.style.left=pos[i][0]+'%';e.style.top=pos[i][1]+'%';e.innerHTML=`<div class="shirt">${p.role}</div><div class="pname">${p.player}</div><div class="price">${p.price} cr</div>`;pitch.appendChild(e)});let bp=pool.filter(p=>!used.includes(p)).sort((a,b)=>uScore(b)-uScore(a)).slice(0,7);bench.innerHTML=bp.length?bp.map(p=>`<div class="bench-card"><b>${p.player}</b><small>${p.role} · ${p.price} cr</small></div>`).join(''):'<div class="bench-card" style="grid-column:1/-1"><b>La panchina si riempirà con gli acquisti.</b></div>';document.getElementById('ultimateLineupNote').textContent=`Modulo ${f} · ${starters.filter(Boolean).length}/11 titolari`}
+function renderUltimateAll(){renderUltimateSummary();renderUltimateLineup()}
+
+</script>
+</body>
+</html>
+<script>function renderLineup(){renderUltimateAll()}document.addEventListener('DOMContentLoaded',()=>{try{renderUltimateAll()}catch(e){}})</script>
