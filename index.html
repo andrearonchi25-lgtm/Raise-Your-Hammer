@@ -253,7 +253,48 @@ label{color:#aeb9c9!important}
 .ryh12-trade{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .ryh12-select{width:100%;padding:9px;border-radius:11px;background:#101925;color:#fff;border:1px solid #334154}
 @media(max-width:600px){.ryh12-tabs{grid-template-columns:repeat(2,1fr)}.ryh12-dashboard,.ryh12-trade{grid-template-columns:1fr}}
-</style></head>
+</style>
+<style id="ryhV13FinalPolish">
+:root{--ryh-gold:#d6ad55;--ryh-gold2:#f1d68a;--ryh-bg:#080d14;--ryh-card:#0e1621;--ryh-line:#29384a}
+*{box-sizing:border-box}
+body{background:radial-gradient(circle at 50% -10%,#1a293d 0,#080d14 46%,#060a10 100%)!important}
+button{transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease,background .16s ease}
+button:active{transform:scale(.97)}
+.ryh13-shell{margin:12px auto;max-width:980px;border:1px solid #35465b;border-radius:26px;background:linear-gradient(145deg,#0d1520eF,#080d14f5);box-shadow:0 24px 80px #0009;overflow:hidden}
+.ryh13-head{padding:18px 16px 12px;background:linear-gradient(180deg,#162335,#0d1520);border-bottom:1px solid #27374a}
+.ryh13-brand{font-size:11px;letter-spacing:.18em;color:var(--ryh-gold);font-weight:1000}
+.ryh13-title{font-size:24px;font-weight:1000;margin-top:4px;letter-spacing:-.02em}
+.ryh13-sub{font-size:11px;color:#8796a9;margin-top:4px}
+.ryh13-nav{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;padding:9px;background:#090f17}
+.ryh13-nav button{min-height:44px!important;padding:6px!important;border:1px solid #263547!important;background:#0d151f!important;font-size:10px!important}
+.ryh13-nav button.active{border-color:var(--ryh-gold)!important;background:#19150d!important;color:var(--ryh-gold2)!important;box-shadow:0 0 18px #d6ad5520}
+.ryh13-page{display:none;padding:13px}.ryh13-page.active{display:block}
+.ryh13-hero{display:grid;grid-template-columns:1.25fr .75fr;gap:9px}
+.ryh13-card{padding:14px;border:1px solid var(--ryh-line);border-radius:18px;background:linear-gradient(145deg,#101a27,#0b121b);box-shadow:inset 0 1px #ffffff08}
+.ryh13-kicker{font-size:9px;letter-spacing:.15em;color:var(--ryh-gold);font-weight:1000}
+.ryh13-score{font-size:48px;line-height:1;font-weight:1000;color:var(--ryh-gold2);margin-top:5px}
+.ryh13-statgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:9px}
+.ryh13-stat{padding:9px 5px;text-align:center;border:1px solid #263547;border-radius:12px;background:#0b131d}
+.ryh13-stat b{display:block;font-size:16px}.ryh13-stat small{color:#718095;font-size:8px}
+.ryh13-alert{padding:10px;border-radius:12px;background:#101a26;border:1px solid #27374a;margin-top:6px;font-size:10px}
+.ryh13-alert.red{border-color:#ff687355}.ryh13-alert.green{border-color:#56db9355}.ryh13-alert.gold{border-color:#d6ad5555}
+.ryh13-pitch{min-height:470px;position:relative;border-radius:22px;overflow:hidden;border:1px solid #4d6a54;background:repeating-linear-gradient(90deg,#103b25 0,#103b25 12%,#124129 12%,#124129 24%);padding:22px 8px}
+.ryh13-pitch:before{content:"";position:absolute;inset:12px;border:2px solid #ffffff32;border-radius:12px}
+.ryh13-pitch .mid{position:absolute;left:12px;right:12px;top:50%;border-top:2px solid #ffffff27}
+.ryh13-pitch .circle{position:absolute;width:80px;height:80px;border:2px solid #ffffff27;border-radius:50%;left:50%;top:50%;transform:translate(-50%,-50%)}
+.ryh13-line{position:relative;z-index:2;display:flex;justify-content:center;gap:7px;flex-wrap:wrap;margin:13px 0}
+.ryh13-player{min-width:66px;padding:7px 5px;border-radius:13px;background:#08111aeF;border:1px solid #ffffff28;text-align:center;box-shadow:0 8px 20px #0005}
+.ryh13-player b{display:block;font-size:9px;max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ryh13-player small{font-size:8px;color:#9fb0a2}
+.ryh13-two{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.ryh13-btnrow{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:9px}
+.ryh13-mini{font-size:10px;color:#9aa8ba}
+.ryh13-pill{display:inline-flex;align-items:center;gap:4px;padding:6px 8px;border-radius:999px;border:1px solid #2d3d50;background:#111b28;font-size:9px;margin:3px 2px 0 0}
+.ryh13-toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%) translateY(20px);opacity:0;pointer-events:none;z-index:9999;padding:11px 14px;border:1px solid #d6ad5588;border-radius:14px;background:#111a27f5;color:#f1d68a;font-size:11px;box-shadow:0 12px 35px #0008;transition:.25s}
+.ryh13-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(max-width:700px){.ryh13-hero,.ryh13-two{grid-template-columns:1fr}.ryh13-nav{grid-template-columns:repeat(3,1fr)}.ryh13-nav button:nth-child(4),.ryh13-nav button:nth-child(5){grid-column:span 1}.ryh13-title{font-size:21px}.ryh13-score{font-size:42px}}
+@media(max-width:420px){.ryh13-nav{grid-template-columns:repeat(2,1fr)}.ryh13-statgrid{grid-template-columns:repeat(2,1fr)}.ryh13-pitch{min-height:440px}.ryh13-player{min-width:58px}}
+</style>
+</head>
 <body>
 <div class="app">
   <div class="hero">
@@ -1310,6 +1351,79 @@ document.addEventListener('DOMContentLoaded',()=>setTimeout(ryhRenderFigurines,3
  </div>
 </div>
 </div>
+
+<div class="ryh13-shell" id="ryh13FinalShell">
+  <div class="ryh13-head">
+    <div class="ryh13-brand">⚒️ RAISE YOUR HAMMER</div>
+    <div class="ryh13-title">Fantasy Manager</div>
+    <div class="ryh13-sub">Asta · Rosa · Campo · Analisi · Mercato</div>
+  </div>
+  <div class="ryh13-nav">
+    <button class="ryh13-navbtn active" data-page="home" onclick="ryh13Go('home',this)">🏆 HOME</button>
+    <button class="ryh13-navbtn" data-page="pitch" onclick="ryh13Go('pitch',this)">🏟️ CAMPO</button>
+    <button class="ryh13-navbtn" data-page="analysis" onclick="ryh13Go('analysis',this)">📊 ANALISI</button>
+    <button class="ryh13-navbtn" data-page="market" onclick="ryh13Go('market',this)">🧠 MERCATO</button>
+    <button class="ryh13-navbtn" data-page="share" onclick="ryh13Go('share',this)">📸 CONDIVIDI</button>
+  </div>
+
+  <section class="ryh13-page active" id="ryh13-home">
+    <div class="ryh13-hero">
+      <div class="ryh13-card">
+        <div class="ryh13-kicker">ROAD TO SCUDETTO</div>
+        <div id="ryh13Score" class="ryh13-score">—</div>
+        <div id="ryh13Verdict" style="font-weight:1000;margin-top:4px">Analizzo la tua rosa...</div>
+        <div class="ryh13-statgrid" id="ryh13Stats"></div>
+      </div>
+      <div class="ryh13-card">
+        <div class="ryh13-kicker">🚨 CENTRO NOTIFICHE</div>
+        <div id="ryh13Alerts"><div class="ryh13-alert gold">Analisi in corso...</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ryh13-page" id="ryh13-pitch">
+    <div class="ryh13-card">
+      <div class="ryh13-kicker">FORMAZIONE IDEALE</div>
+      <h3 style="margin:4px 0 9px">4-3-3 · La tua squadra</h3>
+      <div class="ryh13-pitch" id="ryh13Pitch"><div class="mid"></div><div class="circle"></div></div>
+    </div>
+  </section>
+
+  <section class="ryh13-page" id="ryh13-analysis">
+    <div class="ryh13-two">
+      <div class="ryh13-card"><div class="ryh13-kicker">💎 ACQUISTI</div><div id="ryh13Deals"></div></div>
+      <div class="ryh13-card"><div class="ryh13-kicker">⚔️ POWER RANKING</div><div id="ryh13Ranking"></div></div>
+    </div>
+  </section>
+
+  <section class="ryh13-page" id="ryh13-market">
+    <div class="ryh13-two">
+      <div class="ryh13-card"><div class="ryh13-kicker">🧠 DIRETTORE SPORTIVO</div><div id="ryh13DS"></div></div>
+      <div class="ryh13-card"><div class="ryh13-kicker">🔄 SIMULATORE SCAMBI</div>
+        <div class="ryh13-mini" style="margin-top:6px">DARE</div>
+        <select id="ryh13Give" class="ryh12-select"></select>
+        <div class="ryh13-mini" style="margin-top:7px">RICEVERE</div>
+        <select id="ryh13Get" class="ryh12-select"></select>
+        <button style="width:100%;margin-top:8px" onclick="ryh13Trade()">ANALIZZA SCAMBIO</button>
+        <div id="ryh13TradeResult" class="ryh13-alert gold">Seleziona due giocatori.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ryh13-page" id="ryh13-share">
+    <div class="ryh13-card">
+      <div class="ryh13-kicker">📸 SHARE CARD</div>
+      <h2 style="margin:6px 0">RAISE YOUR HAMMER</h2>
+      <div id="ryh13ShareText" class="ryh13-alert">Genera il riepilogo della tua rosa.</div>
+      <div class="ryh13-btnrow">
+        <button onclick="ryh13Share()">📲 CONDIVIDI</button>
+        <button class="secondary" onclick="ryh13Copy()">📋 COPIA</button>
+      </div>
+    </div>
+  </section>
+</div>
+<div id="ryh13Toast" class="ryh13-toast"></div>
+
 <div id="ryhLiveOverlay" onclick="if(event.target.id==='ryhLiveOverlay')ryhCloseLiveCard()">
   <div class="ryh-live-card">
     <div class="ryh-live-hammer">⚒️</div>
@@ -1582,7 +1696,83 @@ function ryh12Trade(){
 function ryh12Refresh(){try{ryh12Alerts();ryh12DS();ryh12RenderPitch();ryh12TradeSetup()}catch(e){}}
 document.addEventListener('DOMContentLoaded',()=>setTimeout(ryh12Refresh,800));
 setInterval(ryh12Refresh,3500);
-</script></body>
+</script>
+<script id="ryhV13FinalLogic">
+function ryh13Go(page,btn){
+ document.querySelectorAll('.ryh13-page').forEach(x=>x.classList.remove('active'));
+ document.getElementById('ryh13-'+page)?.classList.add('active');
+ document.querySelectorAll('.ryh13-navbtn').forEach(x=>x.classList.remove('active'));
+ btn.classList.add('active');
+ if(page==='pitch') ryh13RenderPitch();
+}
+function ryh13Data(){
+ const own=(state.purchases||[]).filter(x=>x.buyer===state.myTeam);
+ const roles={P:[],D:[],C:[],A:[]};
+ own.forEach(x=>{(roles[x.role]||roles.A).push(x)});
+ const score=Math.min(9.9,Math.max(5,6+own.length*.1+(roles.A.length>=3?.5:0)+(roles.C.length>=4?.35:0)+(roles.D.length>=4?.3:0)+(roles.P.length>=2?.15:0)));
+ const s={A:Math.min(10,6.2+roles.A.length*.65),C:Math.min(10,6.1+roles.C.length*.48),D:Math.min(10,6.1+roles.D.length*.43),P:Math.min(10,6+roles.P.length*.8)};
+ return {own,roles,score,s};
+}
+function ryh13Name(x){return x.player||x.name||'Giocatore'}
+function ryh13Alerts(){
+ const d=ryh13Data(),el=document.getElementById('ryh13Alerts'),a=[];
+ if(d.roles.D.length<5)a.push(['red','🛡️ Difesa poco coperta']);
+ if(d.roles.C.length<4)a.push(['gold','🎯 Centrocampo da rinforzare']);
+ if(d.roles.A.length>=4)a.push(['green','🔥 Attacco molto competitivo']);
+ if(!a.length)a.push(['green','✅ Nessuna criticità evidente']);
+ el.innerHTML=a.map(x=>`<div class="ryh13-alert ${x[0]}">${x[1]}</div>`).join('');
+}
+function ryh13RefreshHome(){
+ const d=ryh13Data();
+ document.getElementById('ryh13Score').textContent=d.score.toFixed(1)+'/10';
+ document.getElementById('ryh13Verdict').textContent=d.score>=8.7?'🏆 Corsa al titolo':d.score>=8?'🔥 Rosa competitiva':'🛠️ Rosa da completare';
+ document.getElementById('ryh13Stats').innerHTML=Object.entries({ATT:d.s.A,CC:d.s.C,DIF:d.s.D,POR:d.s.P}).map(([k,v])=>`<div class="ryh13-stat"><b>${v.toFixed(1)}</b><small>${k}</small></div>`).join('');
+ ryh13Alerts();
+}
+function ryh13RenderPitch(){
+ const d=ryh13Data(),p=document.getElementById('ryh13Pitch');if(!p)return;
+ p.innerHTML='<div class="mid"></div><div class="circle"></div>'+
+ [['A','🔥',3],['C','🎯',3],['D','🛡️',4],['P','🧤',1]].map(([r,ic,n])=>`<div class="ryh13-line">${d.roles[r].slice(0,n).map(x=>`<div class="ryh13-player">${ic}<b>${escapeHtml(ryh13Name(x))}</b><small>${escapeHtml(x.role||r)}</small></div>`).join('')}</div>`).join('');
+}
+function ryh13Analysis(){
+ const d=ryh13Data(),deals=document.getElementById('ryh13Deals');
+ const vals=d.own.map(x=>({name:ryh13Name(x),price:+x.price||0,value:+(x.target||x.recommended||x.value||0)})).filter(x=>x.price);
+ vals.sort((a,b)=>(b.value-b.price)-(a.value-a.price));
+ deals.innerHTML=vals.slice(0,5).map(x=>`<div class="ryh13-alert ${x.value&&x.price<=x.value?'green':'gold'}">💎 <b>${escapeHtml(x.name)}</b><br><small>Pagato ${x.price}${x.value?' · Stima '+x.value:''}</small></div>`).join('')||'<div class="ryh13-alert">Nessun dato sufficiente.</div>';
+ const parts=typeof ryhParticipants==='function'?ryhParticipants():[];
+ const rows=parts.map(t=>{const name=ryhTeamName(t),num=(state.purchases||[]).filter(x=>x.buyer===name).length;return{name,score:Math.min(10,6+num*.11)}}).sort((a,b)=>b.score-a.score);
+ document.getElementById('ryh13Ranking').innerHTML=rows.slice(0,8).map((r,i)=>`<div class="ryh13-pill"><b>${i+1}.</b> ${escapeHtml(r.name)} · ${r.score.toFixed(1)}</div>`).join('')||'<div class="ryh13-alert">Nessun partecipante.</div>';
+}
+function ryh13DS(){
+ const d=ryh13Data(),priority=d.roles.D.length<5?'🛡️ Difesa':d.roles.C.length<4?'🎯 Centrocampo':d.roles.A.length<3?'🔥 Attacco':'✅ Nessuna priorità urgente';
+ document.getElementById('ryh13DS').innerHTML=`<div class="ryh13-alert gold"><b>🎯 Priorità: ${priority}</b><br><small>La priorità viene aggiornata automaticamente.</small></div><div class="ryh13-alert green">💎 Cerca valore prima di spendere per piccoli upgrade.</div>`;
+}
+function ryh13TradeSetup(){
+ const d=ryh13Data(),g=document.getElementById('ryh13Give'),r=document.getElementById('ryh13Get');
+ if(!g||!r)return;
+ g.innerHTML=d.own.map((x,i)=>`<option value="${i}">${escapeHtml(ryh13Name(x))}</option>`).join('');
+ window.ryh13Others=(state.purchases||[]).filter(x=>x.buyer!==state.myTeam);
+ r.innerHTML=window.ryh13Others.map((x,i)=>`<option value="${i}">${escapeHtml(ryh13Name(x))}</option>`).join('');
+}
+function ryh13Trade(){
+ const d=ryh13Data(),a=d.own[+(document.getElementById('ryh13Give').value||0)],b=(window.ryh13Others||[])[+(document.getElementById('ryh13Get').value||0)],box=document.getElementById('ryh13TradeResult');
+ if(!a||!b){box.textContent='Non ci sono abbastanza giocatori.';return}
+ const diff=(+b.price||0)-(+a.price||0);
+ box.className='ryh13-alert '+(diff>5?'green':diff<-5?'red':'gold');
+ box.innerHTML=`<b>${diff>5?'🟢 SCAMBIO INTERESSANTE':diff<-5?'🔴 NON CONVIENE':'🟡 SCAMBIO EQUILIBRATO'}</b><br><small>${escapeHtml(ryh13Name(a))} → ${escapeHtml(ryh13Name(b))}</small>`;
+}
+function ryh13ShareText(){
+ const d=ryh13Data();
+ return `⚒️ RAISE YOUR HAMMER\n🏆 Rosa: ${d.score.toFixed(1)}/10\n🔥 ATT ${d.s.A.toFixed(1)} · 🎯 CC ${d.s.C.toFixed(1)} · 🛡️ DIF ${d.s.D.toFixed(1)} · 🧤 POR ${d.s.P.toFixed(1)}\n👥 Giocatori: ${d.own.length}`;
+}
+function ryh13Share(){const t=ryh13ShareText();if(navigator.share)navigator.share({title:'Raise Your Hammer',text:t}).catch(()=>{});else ryh13Copy()}
+function ryh13Copy(){navigator.clipboard?.writeText(ryh13ShareText());ryh13Toast('Riepilogo copiato!')}
+function ryh13Toast(t){const x=document.getElementById('ryh13Toast');x.textContent=t;x.classList.add('show');setTimeout(()=>x.classList.remove('show'),1800)}
+function ryh13Refresh(){try{ryh13RefreshHome();ryh13Analysis();ryh13DS();ryh13TradeSetup();const s=document.getElementById('ryh13ShareText');if(s)s.textContent=ryh13ShareText()}catch(e){}}
+document.addEventListener('DOMContentLoaded',()=>setTimeout(ryh13Refresh,900));
+setInterval(ryh13Refresh,3500);
+</script>
+</body>
 </html>
 <script>
 function renderLineup(){renderUltimateAll()}
