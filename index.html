@@ -294,7 +294,17 @@ button:active{transform:scale(.97)}
 @media(max-width:700px){.ryh13-hero,.ryh13-two{grid-template-columns:1fr}.ryh13-nav{grid-template-columns:repeat(3,1fr)}.ryh13-nav button:nth-child(4),.ryh13-nav button:nth-child(5){grid-column:span 1}.ryh13-title{font-size:21px}.ryh13-score{font-size:42px}}
 @media(max-width:420px){.ryh13-nav{grid-template-columns:repeat(2,1fr)}.ryh13-statgrid{grid-template-columns:repeat(2,1fr)}.ryh13-pitch{min-height:440px}.ryh13-player{min-width:58px}}
 </style>
-</head>
+<style id="ryhMatchdayCSS">
+.ryh-md{margin:12px auto;padding:14px;border-radius:24px;background:linear-gradient(145deg,#101a27,#080d14);border:1px solid #405168;box-shadow:0 22px 70px #0008}
+.ryh-md-head{display:flex;justify-content:space-between;gap:10px;align-items:center}.ryh-md-title{font-size:10px;letter-spacing:.16em;color:#d6ad55;font-weight:1000}
+.ryh-md-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:9px}.ryh-md-card{padding:12px;border-radius:17px;background:#0c141f;border:1px solid #29384a}
+.ryh-md-player{display:grid;grid-template-columns:34px 1fr auto;gap:8px;align-items:center;padding:10px 7px;border-bottom:1px solid #202d3c}
+.ryh-md-rank{width:30px;height:30px;display:grid;place-items:center;border-radius:50%;background:#182536;font-weight:1000;color:#f1d68a}
+.ryh-md-name{font-size:11px;font-weight:900}.ryh-md-meta{font-size:9px;color:#8493a7;margin-top:2px}.ryh-md-score{font-size:17px;font-weight:1000;color:#f1d68a;text-align:right}
+.ryh-md-badge{display:inline-block;padding:4px 7px;border-radius:999px;font-size:8px;font-weight:1000;margin-top:4px}.ryh-md-green{background:#123222;color:#6ee7a0}.ryh-md-yellow{background:#30270f;color:#f1d68a}.ryh-md-red{background:#35151b;color:#ff8992}
+.ryh-md-alert{padding:10px;border-radius:12px;background:#101a27;border:1px solid #2c3b4e;font-size:10px;margin-top:6px}.ryh-md-line{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}.ryh-md-chip{padding:7px 8px;border-radius:11px;background:#132031;border:1px solid #32445b;font-size:9px}
+@media(max-width:650px){.ryh-md-grid{grid-template-columns:1fr}.ryh-md-head{align-items:flex-start}.ryh-md-head button{font-size:9px!important;padding:8px!important}}
+</style></head>
 <body>
 <div class="app">
   <div class="hero">
@@ -1424,6 +1434,13 @@ document.addEventListener('DOMContentLoaded',()=>setTimeout(ryhRenderFigurines,3
 </div>
 <div id="ryh13Toast" class="ryh13-toast"></div>
 
+<div class="ryh-md" id="ryhMatchday">
+<div class="ryh-md-head"><div><div class="ryh-md-title">🧠 MATCHDAY ASSISTANT</div><h3 style="margin:4px 0">Chi schiero oggi?</h3><div id="ryhMdRound" style="font-size:9px;color:#8493a7">Analisi della giornata</div></div><button onclick="ryhMdRefresh()">⚡ AGGIORNA ANALISI</button></div>
+<div class="ryh-md-grid"><div class="ryh-md-card"><div class="ryh-md-title">🏆 TOP DELLA GIORNATA</div><div id="ryhMdTop">Analizzo i tuoi giocatori...</div></div><div class="ryh-md-card"><div class="ryh-md-title">🚨 ATTENZIONI</div><div id="ryhMdWarnings">—</div></div></div>
+<div class="ryh-md-card" style="margin-top:8px"><div class="ryh-md-title">⚡ FORMAZIONE CONSIGLIATA</div><div id="ryhMdFormation" style="margin-top:8px">—</div></div>
+<div class="ryh-md-grid"><div class="ryh-md-card"><div class="ryh-md-title">📋 SCHIERA</div><div id="ryhMdStart">—</div></div><div class="ryh-md-card"><div class="ryh-md-title">🪑 PANCHINA</div><div id="ryhMdBench">—</div></div></div>
+<div class="ryh-md-alert">ℹ️ L'indice è un supporto decisionale: probabili formazioni, ballottaggi e indisponibilità possono cambiare fino all'ufficialità.</div>
+</div>
 <div id="ryhLiveOverlay" onclick="if(event.target.id==='ryhLiveOverlay')ryhCloseLiveCard()">
   <div class="ryh-live-card">
     <div class="ryh-live-hammer">⚒️</div>
@@ -1772,7 +1789,21 @@ function ryh13Refresh(){try{ryh13RefreshHome();ryh13Analysis();ryh13DS();ryh13Tr
 document.addEventListener('DOMContentLoaded',()=>setTimeout(ryh13Refresh,900));
 setInterval(ryh13Refresh,3500);
 </script>
-</body>
+<script id="ryhMatchdayLogic">
+const RYH_MD_FIXTURES={"Inter":"Monza","Monza":"Inter","Udinese":"Como","Como":"Udinese","Parma":"Cagliari","Cagliari":"Parma","Genoa":"Napoli","Napoli":"Genoa","Venezia":"Lecce","Lecce":"Venezia","Frosinone":"Juventus","Juventus":"Frosinone","Atalanta":"Sassuolo","Sassuolo":"Atalanta","Torino":"Milan","Milan":"Torino","Bologna":"Lazio","Lazio":"Bologna","Roma":"Fiorentina","Fiorentina":"Roma"};
+function ryhMdTeam(x){return x.team||x.squad||x.club||x.teamName||x.squadra||''}
+function ryhMdRole(x){return x.role||x.position||x.ruolo||'A'}
+function ryhMdScore(x){const t=ryhMdTeam(x),o=RYH_MD_FIXTURES[t]||'',r=ryhMdRole(x);let s=6.4;if(o)s+=(7-(o==='Inter'?7.8:o==='Juventus'?7.5:o==='Napoli'?7.4:o==='Milan'?7.3:6.3))*.23;if(r==='A')s+=.25;if(r==='C')s+=.15;if(r==='D')s+=.05;if(x.starter===false||x.bench===true)s-=1.4;if(x.injured===true)s-=2.5;if(x.rigorista===true||x.penalty===true)s+=.3;return{score:Math.max(1,Math.min(10,s)),team:t,opp:o,role:r}}
+function ryhMdAction(s){return s>=8.3?['green','SCHIERA']:s>=7?['green','CONSIGLIATO']:s>=6.2?['yellow','BALLOTTAGGIO']:['red','PANCHINA']}
+function ryhMdRefresh(){const own=(state.purchases||[]).filter(x=>x.buyer===state.myTeam),rows=own.map(x=>({x,...ryhMdScore(x)})).sort((a,b)=>b.score-a.score);document.getElementById('ryhMdRound').textContent='Giornata corrente · '+new Date().toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
+document.getElementById('ryhMdTop').innerHTML=rows.slice(0,6).map((r,i)=>{const[a,c]=ryhMdAction(r.score);return '<div class="ryh-md-player"><span class="ryh-md-rank">'+(i+1)+'</span><div><div class="ryh-md-name">'+escapeHtml(ryhMdName(r.x))+'</div><div class="ryh-md-meta">'+escapeHtml(r.team||'Squadra non indicata')+' · vs '+escapeHtml(r.opp||'da verificare')+'</div><span class="ryh-md-badge ryh-md-'+a+'">'+c+'</span></div><div class="ryh-md-score">'+r.score.toFixed(1)+'</div></div>'}).join('')||'<div class="ryh-md-alert">Inserisci i giocatori della tua rosa.</div>';
+const w=rows.filter(r=>r.score<6.2).slice(0,4);document.getElementById('ryhMdWarnings').innerHTML=w.map(r=>'<div class="ryh-md-alert ryh-md-red">⚠️ '+escapeHtml(ryhMdName(r.x))+' · '+r.score.toFixed(1)+'</div>').join('')||'<div class="ryh-md-alert ryh-md-green">✅ Nessuna criticità evidente.</div>';
+const by={P:[],D:[],C:[],A:[]};rows.forEach(r=>(by[r.role]||by.A).push(r));const pick=(k,n)=>by[k].slice(0,n);
+document.getElementById('ryhMdFormation').innerHTML=['A','C','D','P'].map(k=>'<div class="ryh-md-line">'+pick(k,k==='D'?4:k==='P'?1:3).map(r=>'<span class="ryh-md-chip">'+(k==='A'?'🔥':k==='C'?'🎯':k==='D'?'🛡️':'🧤')+' '+escapeHtml(ryhMdName(r.x))+' · '+r.score.toFixed(1)+'</span>').join('')+'</div>').join('');
+document.getElementById('ryhMdStart').innerHTML=rows.slice(0,11).map((r,i)=>'<div class="ryh-md-alert ryh-md-green">'+(i+1)+'. <b>'+escapeHtml(ryhMdName(r.x))+'</b> · '+r.score.toFixed(1)+'</div>').join('')||'—';
+document.getElementById('ryhMdBench').innerHTML=rows.slice(11).map((r,i)=>'<div class="ryh-md-alert ryh-md-yellow">'+(i+1)+'. '+escapeHtml(ryhMdName(r.x))+' · '+r.score.toFixed(1)+'</div>').join('')||'<div class="ryh-md-alert">Nessuna riserva.</div>'}
+document.addEventListener('DOMContentLoaded',()=>setTimeout(ryhMdRefresh,1100));
+</script></body>
 </html>
 <script>
 function renderLineup(){renderUltimateAll()}
