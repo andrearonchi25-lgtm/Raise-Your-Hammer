@@ -304,7 +304,75 @@ button:active{transform:scale(.97)}
 .ryh-md-badge{display:inline-block;padding:4px 7px;border-radius:999px;font-size:8px;font-weight:1000;margin-top:4px}.ryh-md-green{background:#123222;color:#6ee7a0}.ryh-md-yellow{background:#30270f;color:#f1d68a}.ryh-md-red{background:#35151b;color:#ff8992}
 .ryh-md-alert{padding:10px;border-radius:12px;background:#101a27;border:1px solid #2c3b4e;font-size:10px;margin-top:6px}.ryh-md-line{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}.ryh-md-chip{padding:7px 8px;border-radius:11px;background:#132031;border:1px solid #32445b;font-size:9px}
 @media(max-width:650px){.ryh-md-grid{grid-template-columns:1fr}.ryh-md-head{align-items:flex-start}.ryh-md-head button{font-size:9px!important;padding:8px!important}}
-</style></head>
+</style>
+<style id="ryhV15UI">
+/* V15 — mobile-first compact interface */
+:root{--ryh-gold:#d6ad55;--ryh-bg:#070c12;--ryh-panel:#0d151f}
+body{background:
+radial-gradient(circle at 20% -10%,rgba(214,173,85,.09),transparent 28%),
+radial-gradient(circle at 100% 15%,rgba(38,112,178,.08),transparent 30%),
+#070c12}
+.app{max-width:1180px;padding:14px 14px 86px}
+.hero{position:sticky;top:0;z-index:25;margin:0 -14px 14px;padding:10px 14px;background:rgba(7,12,18,.88);border-bottom:1px solid #243142;backdrop-filter:blur(18px);box-shadow:0 8px 30px #0007;flex-wrap:wrap}
+.hero>div:not(#proControls){order:1}
+.hero>button{order:2;margin-left:auto}
+#proControls{order:3;flex-basis:100%;margin:2px 0 0!important;padding:10px 12px!important;border-radius:16px!important}
+#proControls h2{font-size:11px;letter-spacing:.12em;margin:0 0 7px;display:flex;align-items:center;gap:7px}
+#proControls .row{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+#proControls .field{min-width:0}
+#proControls label{font-size:8px;margin-bottom:3px}
+#proControls input,#proControls select{height:38px;padding:7px 9px;font-size:12px}
+#proControls .suggest{display:flex;gap:7px;overflow-x:auto;padding:7px 0 1px;scrollbar-width:none}
+#proControls .suggest::-webkit-scrollbar{display:none}
+#proControls .pill{min-width:112px;padding:8px 9px;border-radius:12px}
+#proControls .pill small{font-size:8px}
+#proControls .pill b{font-size:14px}
+#proControls .notice{display:none}
+#proControls>div:last-child{display:none!important}
+#proControls.ryh-expanded .notice{display:block}
+#proControls.ryh-expanded>div:last-child{display:flex!important}
+#ryhProToggle{position:absolute;right:10px;top:8px;height:30px!important;min-height:30px!important;padding:4px 9px!important;font-size:10px!important;border-radius:10px!important}
+.brand{font-size:21px;line-height:1.05}.sub{font-size:10px}.hero>.secondary{font-size:9px!important;min-height:36px!important;padding:7px 10px!important}
+#ryhHeroV4{display:none!important}
+#main>.stats{gap:8px;margin-top:0!important}
+.stat{padding:11px 9px;border-radius:15px!important}
+.stat small{font-size:8px}.stat strong{font-size:19px}
+#main .card{padding:14px;border-radius:17px}
+#main .card h2{font-size:14px;margin-bottom:10px}
+#fastConsole,#v3Dashboard,#v3Field,#v3Opponents{scroll-margin-top:86px}
+.ryh13-hero{margin-top:8px!important}
+#ryhQuickNav{width:calc(100% - 20px);max-width:620px;justify-content:space-around}
+#ryhQuickNav button{flex:1;min-height:42px!important;padding:6px 4px!important;font-size:10px!important;border-radius:12px!important}
+.ryh15-navlabel{display:block;font-size:8px;color:#9aa8ba;margin-top:2px}
+@media(max-width:650px){
+ .app{padding-left:9px;padding-right:9px;padding-bottom:82px}
+ .hero{margin-left:-9px;margin-right:-9px;padding-left:10px;padding-right:10px}
+ .brand{font-size:18px}.sub{font-size:9px}
+ #proControls{padding:9px!important}
+ #proControls .row{grid-template-columns:1fr 1fr}
+ #proControls .pill{min-width:105px}
+ #main>.stats{grid-template-columns:repeat(2,1fr)!important}
+ #main .grid{gap:9px}
+ #main .card{padding:12px}
+ .ryh13-title{font-size:20px!important}
+ .ryh13-hero{padding:14px!important}
+}
+@media(min-width:651px){
+ #proControls .row{grid-template-columns:220px 220px}
+}
+</style>
+
+<style id="ryhV15Polish">
+.ryh13-hero,.ryh12-dashboard,.ryh-post,.ryh-md{box-shadow:0 12px 35px #0006!important}
+.ryh13-nav button{min-height:42px!important}
+.ryh13-statgrid{gap:7px!important}
+@media(max-width:650px){
+  .ryh13-two,.ryh-post-grid,.ryh-md-grid{gap:8px!important}
+  .ryh-md{padding:11px!important;border-radius:18px!important}
+  .ryh-md-head h3{font-size:16px!important}
+}
+</style>
+</head>
 <body>
 <div class="app">
   <div class="hero">
@@ -1803,7 +1871,28 @@ document.getElementById('ryhMdFormation').innerHTML=['A','C','D','P'].map(k=>'<d
 document.getElementById('ryhMdStart').innerHTML=rows.slice(0,11).map((r,i)=>'<div class="ryh-md-alert ryh-md-green">'+(i+1)+'. <b>'+escapeHtml(ryhMdName(r.x))+'</b> · '+r.score.toFixed(1)+'</div>').join('')||'—';
 document.getElementById('ryhMdBench').innerHTML=rows.slice(11).map((r,i)=>'<div class="ryh-md-alert ryh-md-yellow">'+(i+1)+'. '+escapeHtml(ryhMdName(r.x))+' · '+r.score.toFixed(1)+'</div>').join('')||'<div class="ryh-md-alert">Nessuna riserva.</div>'}
 document.addEventListener('DOMContentLoaded',()=>setTimeout(ryhMdRefresh,1100));
-</script></body>
+</script>
+<script id="ryhV15UIJS">
+document.addEventListener('DOMContentLoaded',()=>{
+  const pro=document.getElementById('proControls');
+  if(pro && !document.getElementById('ryhProToggle')){
+    const b=document.createElement('button');
+    b.id='ryhProToggle'; b.className='secondary';
+    b.textContent='⚙️ DETTAGLI';
+    b.onclick=()=>{
+      pro.classList.toggle('ryh-expanded');
+      b.textContent=pro.classList.contains('ryh-expanded')?'⌃ CHIUDI':'⚙️ DETTAGLI';
+    };
+    pro.appendChild(b);
+  }
+  const nav=document.getElementById('ryhQuickNav');
+  if(nav){
+    const items=[['v3Dashboard','🧠','Dashboard'],['fastConsole','⚡','Asta'],['v3Field','🏟️','Campo'],['v3Opponents','👥','Rivali']];
+    nav.innerHTML=items.map(([id,ico,label])=>`<button class="secondary" onclick="ryhJump('${id}')">${ico}<span class="ryh15-navlabel">${label}</span></button>`).join('');
+  }
+});
+</script>
+</body>
 </html>
 <script>
 function renderLineup(){renderUltimateAll()}
