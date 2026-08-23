@@ -209,6 +209,30 @@ label{color:#aeb9c9!important}
 .ryh-final-stat{padding:9px;border-radius:12px;background:#111925;border:1px solid #2d394a;text-align:center}
 .ryh-final-stat small{display:block;color:#77869a;font-size:9px}.ryh-final-stat b{font-size:17px}
 @media(max-width:600px){.ryh-smart-grid,.ryh-final-grid{grid-template-columns:1fr}}
+</style><style id="ryhV9Duel">
+.ryh-duel-panel{margin-top:12px;padding:14px;border-radius:20px;background:linear-gradient(145deg,#17111a,#0a0d13);border:1px solid #613c55;box-shadow:0 18px 45px #0007}
+.ryh-duel-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ryh-duel-team{padding:11px;border:1px solid #303b4d;background:#101722;border-radius:15px;text-align:center}
+.ryh-duel-team.me{border-color:#d6ad55}.ryh-duel-team.enemy{border-color:#8f5678}
+.ryh-duel-name{font-weight:1000;font-size:15px}.ryh-duel-credits{font-size:24px;font-weight:1000;color:#f1d68a;margin-top:4px}
+.ryh-duel-result{margin-top:9px;padding:13px;border-radius:15px;background:#090e15;border:1px solid #303b4d}
+.ryh-duel-result.good{border-color:#45d48366}.ryh-duel-result.warn{border-color:#d6ad5566}.ryh-duel-result.bad{border-color:#ff626c66}
+.ryh-enemy-pill{display:inline-block;margin:3px;padding:6px 8px;border-radius:999px;background:#171f2b;border:1px solid #3a4659;font-size:10px}
+@media(max-width:600px){.ryh-duel-grid{grid-template-columns:1fr}}
+</style><style id="ryhV10Coach">
+.ryh-coach{margin-top:12px;padding:15px;border-radius:22px;background:linear-gradient(145deg,#111a27,#080d14);border:1px solid #46556a;box-shadow:0 18px 48px #0007}
+.ryh-coach-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.ryh-choice{padding:11px;border-radius:15px;border:1px solid #2e3b4d;background:#0d141e;cursor:pointer}
+.ryh-choice.active{border-color:#d6ad55;box-shadow:0 0 0 1px #d6ad5525;background:#17150f}
+.ryh-choice-title{font-weight:1000}.ryh-choice-sub{font-size:10px;color:#8795a7;margin-top:3px}
+.ryh-targets{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+.ryh-target{padding:7px 9px;border-radius:999px;border:1px solid #334154;background:#121b27;font-size:10px}
+.ryh-target.selected{border-color:#d6ad55;background:#1d180d;color:#f1d68a}
+.ryh-coach-result{margin-top:10px;padding:13px;border-radius:16px;background:#080d14;border:1px solid #334154}
+.ryh-coach-result.good{border-color:#45d48366}.ryh-coach-result.warn{border-color:#d6ad5566}.ryh-coach-result.bad{border-color:#ff626c66}
+.ryh-progress{height:9px;border-radius:99px;background:#070b10;overflow:hidden;margin-top:8px}
+.ryh-progress i{display:block;height:100%;background:linear-gradient(90deg,#d6ad55,#f3db94);width:0}
+@media(max-width:600px){.ryh-coach-grid{grid-template-columns:1fr}}
 </style></head>
 <body>
 <div class="app">
@@ -1207,6 +1231,31 @@ document.addEventListener('DOMContentLoaded',()=>setTimeout(ryhRenderFigurines,3
 <div id="ryhSmartResult" class="ryh-smart-result">Seleziona un giocatore per ricevere il consiglio.</div>
 <div class="ryh-objectives" id="ryhObjectives"></div>
 </div>
+<div class="ryh-duel-panel" id="ryhDuelPanel">
+<div style="font-size:11px;letter-spacing:.16em;color:#d88bb8;font-weight:1000">⚔️ DUELLO ASTA</div>
+<h3 style="margin:5px 0">Chi ti sta sfidando?</h3>
+<div id="ryhDuelTeams" class="ryh-duel-grid"></div>
+<div id="ryhDuelResult" class="ryh-duel-result">Seleziona un giocatore per analizzare i possibili avversari.</div>
+<div id="ryhEnemyList" style="margin-top:7px"></div>
+</div>
+<div class="ryh-coach" id="ryhCoachPanel">
+<div style="font-size:11px;letter-spacing:.16em;color:#d6ad55;font-weight:1000">🧠 COACH MODE</div>
+<h3 style="margin:5px 0">Imposta la tua strategia</h3>
+<div class="ryh-coach-grid">
+ <div class="ryh-choice active" data-strategy="balanced" onclick="ryhSetStrategy('balanced')"><div class="ryh-choice-title">⚖️ EQUILIBRATA</div><div class="ryh-choice-sub">Distribuisce bene il budget</div></div>
+ <div class="ryh-choice" data-strategy="stars" onclick="ryhSetStrategy('stars')"><div class="ryh-choice-title">⭐ TOP PLAYER</div><div class="ryh-choice-sub">Punta forte sui big</div></div>
+ <div class="ryh-choice" data-strategy="depth" onclick="ryhSetStrategy('depth')"><div class="ryh-choice-title">🧱 ROSA PROFONDA</div><div class="ryh-choice-sub">Più giocatori, meno follie</div></div>
+ <div class="ryh-choice" data-strategy="value" onclick="ryhSetStrategy('value')"><div class="ryh-choice-title">💎 VALUE</div><div class="ryh-choice-sub">Cerca occasioni e bonus</div></div>
+</div>
+<div style="margin-top:12px;font-size:11px;color:#9aa8ba">🎯 Reparti prioritari</div>
+<div class="ryh-targets" id="ryhRoleTargets">
+ <span class="ryh-target selected" data-role="P" onclick="ryhToggleRole('P')">🧤 PORTA</span>
+ <span class="ryh-target" data-role="D" onclick="ryhToggleRole('D')">🛡️ DIFESA</span>
+ <span class="ryh-target selected" data-role="C" onclick="ryhToggleRole('C')">🎯 CENTROCAMPO</span>
+ <span class="ryh-target selected" data-role="A" onclick="ryhToggleRole('A')">🔥 ATTACCO</span>
+</div>
+<div class="ryh-coach-result" id="ryhCoachResult">Imposta la strategia e scegli i ruoli su cui vuoi puntare.</div>
+</div>
 <div id="ryhLiveOverlay" onclick="if(event.target.id==='ryhLiveOverlay')ryhCloseLiveCard()">
   <div class="ryh-live-card">
     <div class="ryh-live-hammer">⚒️</div>
@@ -1331,6 +1380,97 @@ function ryhSimulateFinal(){
  <p style="text-align:center;margin:10px 0 0">Copertura rosa: <b>${completeness}%</b></p>`;
 }
 document.addEventListener('DOMContentLoaded',ryhRenderObjectives);
+</script><script id="ryhV9DuelLogic">
+function ryhParticipants(){
+ return (state.participants||state.teams||state.players||[]).map(x=>typeof x==='string'?{name:x,credits:state.budget||500}:x);
+}
+function ryhTeamName(x){return x.name||x.teamName||x.owner||x.manager||'Avversario'}
+function ryhTeamCredits(x){return +(x.credits??x.budget??x.remaining??x.crediti??0)}
+function ryhOpponentStats(player){
+ const parts=ryhParticipants();
+ const me=state.myTeam||state.team||'La mia squadra';
+ const others=parts.filter(x=>ryhTeamName(x)!==me);
+ const purchases=state.purchases||[];
+ const currentPrice=+(document.getElementById('fastPrice')?.value||0);
+ const d=ryhCurrent();
+ const rows=others.map(o=>{
+   const spent=purchases.filter(p=>p.buyer===ryhTeamName(o)).reduce((s,p)=>s+(+p.price||0),0);
+   const credits=Math.max(0,ryhTeamCredits(o)-spent);
+   const threat=Math.min(100,Math.round((credits/(state.budget||500))*100));
+   return {o,credits,spent,threat};
+ }).sort((a,b)=>b.credits-a.credits);
+ return {rows,currentPrice,d};
+}
+function ryhRenderDuel(){
+ const box=document.getElementById('ryhDuelTeams'),res=document.getElementById('ryhDuelResult'),list=document.getElementById('ryhEnemyList');
+ if(!box||!state.started)return;
+ const {rows,currentPrice,d}=ryhOpponentStats();
+ const meCredits=typeof v3BudgetInfo==='function'?v3BudgetInfo().spendable:0;
+ box.innerHTML=`<div class="ryh-duel-team me"><div class="ryh-duel-name">⚒️ ${escapeHtml(state.myTeam||'TU')}</div><div class="ryh-duel-credits">${Math.round(meCredits)}</div><small>spendibili</small></div>
+ <div class="ryh-duel-team enemy"><div class="ryh-duel-name">⚔️ AVVERSARI</div><div class="ryh-duel-credits">${rows.length}</div><small>partecipanti</small></div>`;
+ list.innerHTML=rows.map(r=>`<span class="ryh-enemy-pill">${escapeHtml(ryhTeamName(r.o))} · 💰${Math.round(r.credits)}</span>`).join('');
+ if(!d){res.textContent='Seleziona un giocatore.';return}
+ const strongest=rows[0];
+ if(!strongest){res.textContent='Nessun avversario configurato.';return}
+ const pressure=d.price>=d.max?'🔴 NON INSEGUIRLO':strongest.credits>d.info.spendable*1.35?'🟡 LASCIA SPENDERE L’AVVERSARIO':'🟢 PUOI TENERE IL DUELLO';
+ const cls=pressure.startsWith('🔴')?'bad':pressure.startsWith('🟡')?'warn':'good';
+ res.className='ryh-duel-result '+cls;
+ res.innerHTML=`<b style="font-size:18px">${pressure}</b><br><small>Avversario più liquido: <b>${escapeHtml(ryhTeamName(strongest.o))}</b> · ${Math.round(strongest.credits)} crediti stimati.</small><br><small>La strategia consigliata è farlo spendere quando il suo budget è molto superiore al tuo.</small>`;
+}
+setInterval(()=>{try{ryhRenderDuel()}catch(e){}},1600);
+document.addEventListener('DOMContentLoaded',()=>setTimeout(ryhRenderDuel,400));
+</script><script id="ryhV10CoachLogic">
+let ryhStrategy=localStorage.getItem('ryhStrategy')||'balanced';
+let ryhRoles=JSON.parse(localStorage.getItem('ryhRoles')||'["P","C","A"]');
+function ryhSetStrategy(s){
+ ryhStrategy=s;localStorage.setItem('ryhStrategy',s);
+ document.querySelectorAll('.ryh-choice').forEach(x=>x.classList.toggle('active',x.dataset.strategy===s));
+ ryhCoachUpdate();
+}
+function ryhToggleRole(r){
+ ryhRoles=ryhRoles.includes(r)?ryhRoles.filter(x=>x!==r):[...ryhRoles,r];
+ if(!ryhRoles.length)ryhRoles=['A'];
+ localStorage.setItem('ryhRoles',JSON.stringify(ryhRoles));
+ document.querySelectorAll('.ryh-target').forEach(x=>x.classList.toggle('selected',ryhRoles.includes(x.dataset.role)));
+ ryhCoachUpdate();
+}
+function ryhCoachUpdate(){
+ const box=document.getElementById('ryhCoachResult');if(!box||!state.started)return;
+ const own=state.purchases.filter(x=>x.buyer===state.myTeam);
+ const counts={P:0,D:0,C:0,A:0};own.forEach(x=>counts[x.role]=(counts[x.role]||0)+1);
+ const slots={P:3,D:8,C:8,A:6};
+ const missing=Object.keys(slots).map(r=>({r,n:Math.max(0,slots[r]-counts[r])})).filter(x=>x.n>0).sort((a,b)=>b.n-a.n);
+ const first=missing.find(x=>ryhRoles.includes(x.r))||missing[0];
+ const budget=typeof v3BudgetInfo==='function'?v3BudgetInfo().spendable:0;
+ let reserve=Math.round(budget*.18), aggression=1;
+ if(ryhStrategy==='stars'){reserve=Math.round(budget*.12);aggression=1.25}
+ if(ryhStrategy==='depth'){reserve=Math.round(budget*.25);aggression=.8}
+ if(ryhStrategy==='value'){reserve=Math.round(budget*.22);aggression=.9}
+ const spendable=Math.max(0,budget-reserve);
+ const roleName={P:'PORTA',D:'DIFESA',C:'CENTROCAMPO',A:'ATTACCO'}[first?.r]||'—';
+ const cap=Math.round(Math.max(1,spendable*.32*aggression));
+ box.innerHTML=`<b style="font-size:18px">🎯 PROSSIMO OBIETTIVO: ${roleName}</b><br>
+ <span>Ti mancano circa <b>${first?.n||0}</b> slot · Budget spendibile: <b>${Math.round(spendable)}</b></span>
+ <div class="ryh-progress"><i style="width:${Math.min(100,own.length/25*100)}%"></i></div>
+ <small>🔒 Riserva consigliata: ${reserve} · 🛑 Tetto indicativo per il prossimo colpo: <b>${cap}</b></small>`;
+}
+function ryhApplyCoachPlayer(playerName){
+ const box=document.getElementById('ryhCoachResult');
+ const d=ryhCurrent();if(!d)return;
+ const role=d.x[0]||'';
+ const target=+(d.x[4]||d.x[3]||20);
+ const budget=typeof v3BudgetInfo==='function'?v3BudgetInfo().spendable:0;
+ const priority=ryhRoles.includes(role);
+ let verdict=priority?'🔥 È NEL TUO PIANO':'🟡 FUORI DAI PRIORITARI';
+ if(target>budget*.45)verdict='🔴 TROPPO COSTOSO PER LA STRATEGIA';
+ box.innerHTML=`<b style="font-size:18px">${verdict}</b><br><small>${escapeHtml(playerName)} · ${role} · stima ${target} · budget ${Math.round(budget)}</small>`;
+}
+setInterval(()=>{try{ryhCoachUpdate()}catch(e){}},1700);
+document.addEventListener('DOMContentLoaded',()=>{
+ document.querySelectorAll('.ryh-choice').forEach(x=>x.classList.toggle('active',x.dataset.strategy===ryhStrategy));
+ document.querySelectorAll('.ryh-target').forEach(x=>x.classList.toggle('selected',ryhRoles.includes(x.dataset.role)));
+ setTimeout(ryhCoachUpdate,450);
+});
 </script></body>
 </html>
 <script>
