@@ -76,6 +76,28 @@ html,body{overscroll-behavior:none;-webkit-tap-highlight-color:transparent}
 body{padding-bottom:env(safe-area-inset-bottom)}
 button,input,select{font-size:16px}
 </style>
+
+<style id="ryhV2Styles">
+.fast-console-v2{position:sticky;top:8px;z-index:20;border:1px solid #3b4352;box-shadow:0 18px 45px #0008}
+.fast-v2-grid{display:grid;grid-template-columns:1fr 150px;gap:10px}
+.fast-v2-actions{display:grid;grid-template-columns:1fr 1fr 1fr 1.4fr;gap:8px;margin-top:10px}
+.fast-v2-actions button{min-height:48px}
+.fast-buyer{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
+.fast-buyer select{min-height:46px}
+.fast-money{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.fast-money button{padding:8px 12px}
+.fast-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.fast-meta .pill{padding:9px}
+.fast-meta b{font-size:17px}
+.resume-banner{margin:0 0 14px;padding:12px 14px;border:1px solid #3b4352;border-radius:14px;background:#111722;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.purchase-row-actions button{padding:7px 9px;font-size:12px}
+@media(max-width:600px){
+ .fast-v2-grid{grid-template-columns:1fr}
+ .fast-v2-actions{grid-template-columns:1fr 1fr}
+ .fast-meta{grid-template-columns:1fr 1fr 1fr}
+ .fast-console-v2{top:0}
+}
+</style>
 </head>
 <body>
 <div class="app">
@@ -126,6 +148,8 @@ button,input,select{font-size:16px}
     </div>
     <button onclick="startAuction()" style="margin-top:12px">🚀 AVVIA ASTA</button>
   </div>
+
+  <div id="resumeBanner" class="resume-banner hidden"><span>💾 <b>Asta salvata automaticamente</b><br><small>Puoi riprendere da dove eri rimasto.</small></span><span><button onclick="resumeAuction()">Riprendi</button> <button class="secondary" onclick="discardSavedAuction()">Nuova asta</button></span></div>
 
   <div id="main" class="hidden">
     <div class="stats">
@@ -309,25 +333,45 @@ button,input,select{font-size:16px}
         <div class="pitch-wrap"><div class="pitch" id="ultimatePitch"><div class="pitch-line center"></div><div class="pitch-circle"></div><div class="box top"></div><div class="box bottom"></div><div class="goal top-goal"></div><div class="goal bottom-goal"></div><div id="ultimatePlayersOnPitch"></div></div></div>
         <div class="lineup-note" id="ultimateLineupNote"></div><div class="bench-title">🪑 PANCHINA</div><div id="ultimateBench" class="bench"></div>
       </div>
-<div class="card full" id="fastConsole">
-        <h2>⚡ MODALITÀ ASTA RAPIDA</h2>
-        <div class="row">
-          <div class="field" style="flex:2"><label>Giocatore chiamato</label>
-            <input id="fastPlayer" autocomplete="off" placeholder="Scrivi il nome..." oninput="fastSuggest()">
+<div class="card full fast-console-v2" id="fastConsole">
+        <h2>⚡ ASTA RAPIDA — 2 SECONDI</h2>
+        <div class="fast-v2-grid">
+          <div class="field"><label>Giocatore chiamato</label>
+            <input id="fastPlayer" autocomplete="off" placeholder="Es. Lautaro, Paz, Dimarco..." oninput="fastSuggest()">
           </div>
-          <div class="field" style="max-width:150px"><label>Prezzo attuale</label>
+          <div class="field"><label>Prezzo attuale</label>
             <input id="fastPrice" type="number" min="0" inputmode="numeric" placeholder="0" oninput="fastSuggest()">
           </div>
         </div>
-        <div id="fastResult" class="fast-result">
-          <b>SCRIVI IL GIOCATORE</b>
+        <div class="fast-buyer">
+          <div class="field"><label>Chi lo ha acquistato?</label>
+            <select id="fastBuyer"></select>
+          </div>
+          <div class="field"><label>Ruolo rilevato</label>
+            <select id="fastRole" disabled><option>—</option></select>
+          </div>
         </div>
+        <div class="fast-money">
+          <button class="secondary" onclick="fastAdjust(-2)">−2</button>
+          <button class="secondary" onclick="fastAdjust(-1)">−1</button>
+          <button class="secondary" onclick="fastAdjust(1)">+1</button>
+          <button class="secondary" onclick="fastAdjust(2)">+2</button>
+          <button class="secondary" onclick="fastSetMax()">MAX</button>
+        </div>
+        <div id="fastResult" class="fast-result"><b>SCRIVI IL GIOCATORE</b></div>
         <div id="fastMatches" class="fast-matches"></div>
-        <div class="fast-actions">
-          <button onclick="fastRegister()">⚒️ REGISTRA ACQUISTO</button>
-          <button class="secondary" onclick="clearFast()">Pulisci</button>
+        <div class="fast-meta">
+          <div class="pill"><small>🎯 Target</small><b id="fastTarget">—</b></div>
+          <div class="pill"><small>🛑 Massimo</small><b id="fastMax">—</b></div>
+          <div class="pill"><small>💰 Budget tuo</small><b id="fastMyBudget">—</b></div>
         </div>
-        <div class="fast-hint">Bastano poche lettere: l'app completa il nome e ti dà subito una sola indicazione.</div>
+        <div class="fast-v2-actions">
+          <button class="secondary" onclick="fastClearPrice()">Azzera prezzo</button>
+          <button class="secondary" onclick="undoPurchase()">↩️ Annulla</button>
+          <button class="secondary" onclick="clearFast()">Pulisci</button>
+          <button onclick="fastRegister()">⚒️ CONFERMA ACQUISTO</button>
+        </div>
+        <div class="fast-hint">Scrivi poche lettere: l'app completa il giocatore, calcola target/massimo e aggiorna subito budget, rosa e formazione.</div>
       </div>
 
       <div class="card full" id="playerDatabase">
@@ -352,6 +396,32 @@ button,input,select{font-size:16px}
 
 <script>
 let state={started:false,n:10,credits:500,myTeam:"Raise Your Hammer",teams:[],purchases:[]};
+const RYH_STATE_KEY='ryh_auction_state_v2';
+function saveState(){try{localStorage.setItem(RYH_STATE_KEY,JSON.stringify(state))}catch(e){}}
+function hasSavedAuction(){try{const x=JSON.parse(localStorage.getItem(RYH_STATE_KEY)||'null');return !!(x&&x.started&&Array.isArray(x.teams))}catch(e){return false}}
+function showResumeBanner(){const b=document.getElementById('resumeBanner');if(b)b.classList.toggle('hidden',!hasSavedAuction()||state.started)}
+function resumeAuction(){
+  try{
+    const x=JSON.parse(localStorage.getItem(RYH_STATE_KEY)||'null');
+    if(!x||!x.teams) return;
+    state=x; state.started=true;
+    document.getElementById('setupCard').classList.add('hidden');
+    document.getElementById('main').classList.remove('hidden');
+    const sn=document.getElementById('squadNameEdit'); if(sn) sn.value=state.myTeam;
+    render();suggest();renderIdealRoster();renderStrategy();renderAllPro();renderPlayerDB();renderLineup();
+    showResumeBanner();
+  }catch(e){alert('Salvataggio non valido.')}
+}
+function discardSavedAuction(){localStorage.removeItem(RYH_STATE_KEY);showResumeBanner()}
+function removePurchase(index){
+  if(index<0||index>=state.purchases.length)return;
+  const p=state.purchases[index];
+  if(confirm(`Eliminare ${p.player} — ${p.price} crediti?`)){
+    state.purchases.splice(index,1);
+    render();suggest();renderIdealRoster();renderStrategy();renderAllPro();renderPlayerDB();renderLineup();renderUltimateAll();saveState();
+  }
+}
+
 
 function buildParticipantInputs(){
   const n=Math.max(2,Math.min(20,+document.getElementById('nPlayers').value||10));
@@ -375,6 +445,7 @@ function startAuction(){
   state.myTeam=state.teams[0];
   state.purchases=[];
   state.started=true;
+  saveState();
   document.getElementById('setupCard').classList.add('hidden');
   document.getElementById('main').classList.remove('hidden');
   const sn=document.getElementById('squadNameEdit'); if(sn) sn.value=state.myTeam;
@@ -391,9 +462,10 @@ function addPurchase(){
   if(!player||!buyer||price<0||price>budget(buyer)){alert("Controlla giocatore, prezzo e budget disponibile.");return}
   state.purchases.unshift({player,buyer,role,price});
   document.getElementById('player').value=""; document.getElementById('price').value="";
-  render(); suggest(); renderIdealRoster(); renderStrategy(); renderAllPro(); renderPlayerDB(); renderLineup();
+  render(); suggest(); renderIdealRoster(); renderStrategy(); renderAllPro(); renderPlayerDB(); renderLineup(); saveState();
 }
 function render(){
+  fastBuyerInit();
   const buyer=document.getElementById('buyer'); buyer.innerHTML=state.teams.map(t=>`<option>${t}</option>`).join("");
   document.getElementById('myBudget').textContent=budget(state.myTeam);
   document.getElementById('mySpent').textContent=spent(state.myTeam);
@@ -403,7 +475,7 @@ function render(){
   document.getElementById('participants').innerHTML=state.teams.map(t=>`<div class="person"><span><b>${escapeHtml(t)}</b><br><small>${count(t)} acquisti</small></span><b>${budget(t)} cr</b></div>`).join("");
   const wrap=document.getElementById('tableWrap');
   if(!state.purchases.length){wrap.innerHTML='<div class="empty">Nessun acquisto registrato.</div>';return}
-  wrap.innerHTML=`<table><thead><tr><th>Giocatore</th><th>Ruolo</th><th>Squadra</th><th>Prezzo</th></tr></thead><tbody>${state.purchases.map(x=>`<tr><td><b>${escapeHtml(x.player)}</b></td><td>${x.role}</td><td>${escapeHtml(x.buyer)}</td><td><b>${x.price}</b></td></tr>`).join("")}</tbody></table>`;
+  wrap.innerHTML=`<table><thead><tr><th>Giocatore</th><th>Ruolo</th><th>Squadra</th><th>Prezzo</th><th></th></tr></thead><tbody>${state.purchases.map((x,i)=>`<tr><td><b>${escapeHtml(x.player)}</b></td><td>${x.role}</td><td>${escapeHtml(x.buyer)}</td><td><b>${x.price}</b></td><td class="purchase-row-actions"><button class="secondary" onclick="removePurchase(${i})">✕</button></td></tr>`).join("")}</tbody></table>`;
 }
 function suggest(){
   if(!state.started)return;
@@ -432,7 +504,7 @@ function suggest(){
 document.getElementById('price').addEventListener('input',suggest);
 document.getElementById('role').addEventListener('change',suggest);
 document.getElementById('player').addEventListener('input',suggest);
-function resetAll(){if(confirm("Azzerare tutta l'asta?")){state={started:false,n:10,credits:500,myTeam:"Raise Your Hammer",teams:[],purchases:[]};document.getElementById('main').classList.add('hidden');document.getElementById('setupCard').classList.remove('hidden')}}
+function resetAll(){if(confirm("Azzerare tutta l'asta?")){state={started:false,n:10,credits:500,myTeam:"Raise Your Hammer",teams:[],purchases:[]};localStorage.removeItem(RYH_STATE_KEY);document.getElementById('main').classList.add('hidden');document.getElementById('setupCard').classList.remove('hidden');showResumeBanner()}}
 function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
 
 const idealRoster = [
@@ -617,7 +689,7 @@ function renderAllPro(){
 function undoPurchase(){
   if(!state.purchases.length){alert('Non ci sono acquisti da annullare.');return}
   state.purchases.shift();
-  render(); suggest(); renderIdealRoster(); renderAllPro();
+  render(); suggest(); renderIdealRoster(); renderAllPro(); saveState(); renderUltimateAll();
 }
 function exportAuction(){
   const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});
@@ -722,45 +794,62 @@ function playerIntel(name){
 
 
 function fastDB(){ return typeof getDB==='function' ? getDB() : playerDB; }
+function fastBuyerInit(){
+  const s=document.getElementById('fastBuyer'); if(!s||!state.started)return;
+  const old=s.value||state.myTeam;
+  s.innerHTML=state.teams.map(t=>`<option value="${escapeHtml(t)}">${escapeHtml(t)}</option>`).join('');
+  s.value=state.teams.includes(old)?old:state.myTeam;
+}
 function fastSuggest(){
   const name=(document.getElementById('fastPlayer')?.value||'').trim();
   const price=+(document.getElementById('fastPrice')?.value||0);
   const result=document.getElementById('fastResult'), matches=document.getElementById('fastMatches');
-  if(!name){result.innerHTML='<b>SCRIVI IL GIOCATORE</b>'; matches.innerHTML=''; return;}
+  const targetBox=document.getElementById('fastTarget'), maxBox=document.getElementById('fastMax'), myBox=document.getElementById('fastMyBudget'), roleBox=document.getElementById('fastRole');
+  if(myBox)myBox.textContent=state.started?budget(state.myTeam)+' cr':'—';
+  if(!name){result.innerHTML='<b>SCRIVI IL GIOCATORE</b>';matches.innerHTML='';if(targetBox)targetBox.textContent='—';if(maxBox)maxBox.textContent='—';if(roleBox)roleBox.innerHTML='<option>—</option>';return;}
   const q=normName(name);
   const rows=fastDB().filter(x=>normName(x[1]).includes(q)).slice(0,5);
-  matches.innerHTML=rows.map(x=>`<span class="fast-match" onclick="chooseFast('${x[1].replace(/'/g,"\\'")}')">${x[1]} · ${x[0]}</span>`).join('');
+  matches.innerHTML=rows.map(x=>`<span class="fast-match" onclick="chooseFast('${x[1].replace(/'/g,"\'")}')">${x[1]} · ${x[0]}</span>`).join('');
   if(!rows.length){result.innerHTML='<b>GIOCATORE NON TROVATO</b><small>Prova con meno lettere</small>';return;}
-  const x=rows[0];
-  const expected=x[4]||x[3];
-  const max=typeof playerMax==='function'?playerMax(expected,x[3]):Math.round(expected*1.05);
-  let action='ATTENDI';
-  if(price){ action=price<=expected?'🔥 RILANCIA':price<=max?'🟢 PUOI RILANCIARE':'🛑 LASCIA'; }
-  result.innerHTML=`<b>${action}</b><small>${x[1]} · Target ${expected} · Massimo ${max}${price?' · Attuale '+price:''}</small>`;
+  const x=rows[0], expected=x[4]||x[3], max=typeof playerMax==='function'?playerMax(expected,x[3]):Math.round(expected*1.05);
+  if(roleBox)roleBox.innerHTML=`<option>${x[0]}</option>`;
+  if(targetBox)targetBox.textContent=expected;
+  if(maxBox)maxBox.textContent=max;
+  let action='ATTENDI', cls='';
+  if(price){action=price<=expected?'🔥 RILANCIA':price<=max?'🟢 PUOI RILANCIARE':'🛑 LASCIA';cls=price<=expected?'good':price<=max?'warn':'bad';}
+  const buyer=document.getElementById('fastBuyer')?.value||state.myTeam;
+  const after=state.started?budget(buyer)-price:null;
+  result.innerHTML=`<b class="${cls}">${action}</b><small>${x[1]} · ${x[0]} · Target ${expected} · Massimo ${max}${price?' · Attuale '+price:''}${after!==null?' · Dopo acquisto '+after+' cr':''}</small>`;
 }
 function chooseFast(name){
-  document.getElementById('fastPlayer').value=name;
-  fastSuggest();
-  document.getElementById('fastPrice')?.focus();
+  document.getElementById('fastPlayer').value=name;fastSuggest();document.getElementById('fastPrice')?.focus();
 }
+function fastAdjust(delta){
+  const el=document.getElementById('fastPrice');if(!el)return;
+  el.value=Math.max(0,(+el.value||0)+delta);fastSuggest();
+}
+function fastSetMax(){
+  const m=+(document.getElementById('fastMax')?.textContent||0);
+  if(m){document.getElementById('fastPrice').value=m;fastSuggest();}
+}
+function fastClearPrice(){document.getElementById('fastPrice').value='';fastSuggest();}
 function clearFast(){
-  document.getElementById('fastPlayer').value='';
-  document.getElementById('fastPrice').value='';
-  fastSuggest();
+  document.getElementById('fastPlayer').value='';document.getElementById('fastPrice').value='';fastSuggest();
 }
 function fastRegister(){
   const player=(document.getElementById('fastPlayer')?.value||'').trim();
   const price=+(document.getElementById('fastPrice')?.value||0);
+  const buyer=document.getElementById('fastBuyer')?.value||state.myTeam;
   if(!player||!price){alert('Inserisci giocatore e prezzo.');return;}
-  const buyer=window._quickBuyer || prompt('Chi lo ha acquistato?', state.myTeam);
-  if(!buyer)return;
+  if(!state.started){alert('Avvia prima l’asta.');return;}
+  if(price>budget(buyer)){alert(`Budget insufficiente per ${buyer}: ${budget(buyer)} crediti.`);return;}
   const x=fastDB().find(p=>normName(p[1])===normName(player));
   const role=x?x[0]:'A';
-  state.purchases.unshift({buyer,player,price,role});
-  render(); suggest(); renderIdealRoster(); renderStrategy(); renderAllPro(); renderPlayerDB(); renderLineup();
+  state.purchases.unshift({buyer,player:x?x[1]:player,price,role});
+  render();suggest();renderIdealRoster();renderStrategy();renderAllPro();renderPlayerDB();renderLineup();renderUltimateAll();saveState();
   clearFast();
 }
-
+function renderFastBuyer(){fastBuyerInit();fastSuggest();}
 
 const FORMATIONS = {
   "433": ["P","D","D","D","D","C","C","C","A","A","A"],
@@ -867,4 +956,16 @@ function renderUltimateAll(){renderUltimateSummary();renderUltimateLineup()}
 </script>
 <script>if("serviceWorker" in navigator){navigator.serviceWorker.register("./sw.js").catch(()=>{});}</script></body>
 </html>
-<script>function renderLineup(){renderUltimateAll()}document.addEventListener('DOMContentLoaded',()=>{try{renderUltimateAll()}catch(e){}})</script>
+<script>
+function renderLineup(){renderUltimateAll()}
+document.addEventListener('DOMContentLoaded',()=>{
+  try{
+    renderUltimateAll();
+    showResumeBanner();
+    if(hasSavedAuction()){
+      // Do not automatically replace the setup screen: offer Resume.
+    }
+    setTimeout(()=>{if(state.started){fastBuyerInit();fastSuggest();}},50);
+  }catch(e){}
+});
+</script>
