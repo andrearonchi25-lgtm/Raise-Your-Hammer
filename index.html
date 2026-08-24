@@ -3741,7 +3741,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')ryh20Toggle(false)})
       </div>
     </div>
 
-    <button class="ryh26-start" type="button" onclick="ryh33Open()" data-ryh33-bypass="1">🚀 Avvia Asta Rapida</button>
+    <button id="ryh33RapidStart" class="ryh26-start" type="button" onclick="ryh33Open(); return false;" data-ryh33-bypass="1" data-ryh26-bypass="1">🚀 Avvia Asta Rapida</button>
     <div class="ryh26-note">La modalità rapida sostituisce le tre modalità precedenti.</div>
   </div>
 </div>
@@ -4090,6 +4090,23 @@ document.addEventListener('DOMContentLoaded',()=>{
 });
 </script>
 
+
+<script id="ryhV34RapidButtonFix">
+(function(){
+  function bind(){
+    const b=document.getElementById('ryh33RapidStart');
+    if(!b) return;
+    b.setAttribute('data-ryh33-bypass','1');
+    b.setAttribute('data-ryh26-bypass','1');
+    b.addEventListener('click',function(e){
+      e.preventDefault();
+      e.stopPropagation();
+      if(typeof window.ryh33Open==='function') window.ryh33Open();
+    },true);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',bind); else bind();
+})();
+</script>
 </body>
 </html>
 <script>
