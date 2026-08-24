@@ -1708,11 +1708,19 @@ body>.app{position:absolute!important;left:-100000px!important;top:0!important;w
 #ryhResetAsta #ultimateCockpit{border:1px solid #3d4d5e!important;border-radius:17px!important;background:linear-gradient(145deg,#111d29,#0a121b)!important;padding:12px!important}#ryhResetAsta #ultimateCockpit .ultimate-head{display:flex;justify-content:space-between;gap:8px}#ryhResetAsta #ultimateCockpit .overall{color:var(--r-gold)}
 .rbrainSearch{display:grid;grid-template-columns:1fr auto;gap:6px}.rbrainSearch input,.rbrainSearch select,.rbrainSearch button{min-height:42px;border:1px solid var(--r-line);border-radius:11px;background:#0a131c;color:#fff;padding:8px}.rbrainSearch button{background:#1a2634;font-weight:900}.brainResult{margin-top:8px}.brainCard{padding:10px;border:1px solid #30465b;border-radius:13px;background:#0b151f;margin-top:6px}.brainTop{display:flex;justify-content:space-between;gap:8px}.brainTop b{font-size:10px}.brainScore{font-size:19px;color:var(--r-gold);font-weight:1000}.brainMeta{font-size:7px;color:var(--r-muted);margin-top:2px}.brainGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:7px}.brainGrid div{padding:6px;background:#08111a;border-radius:8px;text-align:center}.brainGrid small{display:block;color:var(--r-muted);font-size:5px}.brainGrid b{font-size:9px}.brainActions{display:flex;gap:5px;margin-top:7px}.brainActions button{flex:1;border:1px solid var(--r-line);background:#142131;color:#fff;border-radius:9px;padding:8px;font-size:7px;font-weight:1000}.brainActions .hot{background:linear-gradient(135deg,#e5c56f,#b48b35);color:#10151b}
 .rtargets{display:grid;gap:5px}.rtarget{display:flex;justify-content:space-between;align-items:center;padding:8px 9px;border:1px solid var(--r-line);background:#0b151f;border-radius:10px}.rtarget b{font-size:8px}.rtarget small{display:block;color:var(--r-muted);font-size:6px;margin-top:2px}.rtarget span{font-size:9px;color:var(--r-gold);font-weight:1000}
-#ryhResetFormazione #ryhMatchday{display:block!important;margin:0!important;background:transparent!important;padding:0!important}#ryhResetFormazione .ryh-md{font-size:inherit}
+#ryhResetFormationHost #ryhMatchday{display:block!important;margin:0!important;background:transparent!important;padding:0!important}#ryhResetFormationHost .ryh-md{font-size:inherit}
 .rparticipants{display:grid;gap:5px}.rperson{display:flex;justify-content:space-between;padding:9px 10px;border:1px solid var(--r-line);background:#0b151f;border-radius:10px}.rperson b{font-size:8px}.rperson small{display:block;color:var(--r-muted);font-size:6px;margin-top:2px}.rperson .cash{font-size:9px;color:var(--r-gold);font-weight:1000}
 .rmenu{position:fixed;inset:0;background:rgba(0,0,0,.68);backdrop-filter:blur(7px);z-index:100000;display:none}.rmenu.on{display:block}.rdrawer{position:absolute;right:0;top:0;height:100%;width:min(88%,360px);background:#0b141e;border-left:1px solid #33475b;padding:16px}.rdrawer button{width:100%;padding:11px;margin-bottom:6px;border-radius:11px;border:1px solid var(--r-line);background:#111d29;color:#fff;text-align:left;font-weight:900}.rclose{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}.rclose b{font-size:14px}.rclose button{width:auto;margin:0;padding:7px 10px}
 @media(max-width:430px){#ryhResetApp{padding-left:8px;padding-right:8px}.rhero h1{font-size:20px}}
-</style></head>
+</style><style id="ryhV50Isolation">
+/* V50 RESET: only the new four-section shell is visible. */
+body > *:not(#ryhResetApp):not(#ryhResetMenu), body > .app { display:none !important; }
+#ryhResetApp { display:block !important; position:relative !important; visibility:visible !important; opacity:1 !important; }
+#ryhResetMenu { z-index:1000000 !important; }
+#ryhResetFormationHost #ryhMatchday { display:block !important; visibility:visible !important; opacity:1 !important; position:relative !important; }
+#ryhResetFormationHost .ryh-md { display:block !important; }
+</style>
+</head>
 <body>
 <div class="app">
   <div class="hero">
@@ -5409,8 +5417,13 @@ document.addEventListener('DOMContentLoaded',()=>setTimeout(mount,500));
 <div id="ryhResetMenu" class="rmenu" onclick="if(event.target.id==='ryhResetMenu')ryhResetMenu(false)"><div class="rdrawer"><div class="rclose"><b>MENU</b><button onclick="ryhResetMenu(false)">✕</button></div><button onclick="ryhResetGo('asta');ryhResetMenu(false)">🔨 Asta</button><button onclick="ryhResetGo('brain');ryhResetMenu(false)">🧠 Hammer Brain</button><button onclick="ryhResetGo('campo');ryhResetMenu(false)">🏟️ Formazione consigliata</button><button onclick="ryhResetGo('rosa');ryhResetMenu(false)">👥 Partecipanti</button><button onclick="ryhResetHardReset()">♻️ Azzera dati asta</button></div></div>
 <script id="ryhRESETJS">
 (function(){
-const RESET_KEY='ryh_reset_v50_done';
-function hardClean(){if(localStorage.getItem(RESET_KEY)!=='1'){['ryh_auction_state_v2','ryhObjectives','ryhIdealRoster','ryh_custom_ideal_roster','ryhObjectivesV2','ryh_hammer_brain_v46','ryh_hammer_intelligence_v41'].forEach(k=>localStorage.removeItem(k));localStorage.setItem(RESET_KEY,'1');}}
+const RESET_KEY='ryh_reset_v50_r2_done';
+function hardClean(){
+  if(localStorage.getItem(RESET_KEY)==='1') return;
+  ['ryh_auction_state_v2','ryhObjectives','ryhIdealRoster','ryh_custom_ideal_roster','ryhObjectivesV2','ryh_hammer_brain_v46','ryh_hammer_intelligence_v41','ryh_hammer_director_v37','ryh_personal_roster_v35','fantacalcio_state','ryh_budget','ryh_auction_mode','ryh_auction_strategy','ryhStrategy','ryhRoles'].forEach(k=>localStorage.removeItem(k));
+  localStorage.setItem('ryh_auction_mode','classic');
+  localStorage.setItem(RESET_KEY,'1');
+}
 hardClean();
 window.ryhResetGo=function(page){document.querySelectorAll('.rpanel').forEach(x=>x.classList.remove('on'));document.querySelector('#ryhReset'+({asta:'Asta',brain:'Brain',campo:'Campo',rosa:'Rosa'}[page]||'Asta')).classList.add('on');document.querySelectorAll('.rnav button').forEach(x=>x.classList.remove('on'));document.getElementById('rnav'+({asta:'Asta',brain:'Brain',campo:'Campo',rosa:'Rosa'}[page]||'Asta')).classList.add('on');if(page==='campo'&&typeof ryhMdRefresh==='function')ryhMdRefresh();if(page==='brain')ryhResetBrainRender();if(page==='rosa')ryhResetParticipants();window.scrollTo({top:0,behavior:'smooth'});};
 window.ryhResetMenu=function(on){document.getElementById('ryhResetMenu').classList.toggle('on',!!on)};
@@ -5426,18 +5439,11 @@ window.ryhResetParticipants=syncVisible;
 document.addEventListener('DOMContentLoaded',()=>{moveCore();setTimeout(()=>{try{buildParticipantInputs();render();renderIdealRoster();renderStrategy();renderAllPro();renderPlayerDB();renderLineup();}catch(e){};syncVisible();ryhResetBrainRender();ryhResetTargets();},700);});
 setInterval(()=>{try{syncVisible();if(document.getElementById('ryhResetCampo').classList.contains('on')&&typeof ryhMdRefresh==='function')ryhMdRefresh();}catch(e){}},2500);
 })();
-</script></body>
-</html>
-<script>
-function renderLineup(){renderUltimateAll()}
+</script><script id="ryhV50SafeRender">
+function renderLineup(){ if(typeof renderUltimateAll==='function') renderUltimateAll(); }
 document.addEventListener('DOMContentLoaded',()=>{
-  try{
-    renderUltimateAll();
-    showResumeBanner();
-    if(hasSavedAuction()){
-      // Do not automatically replace the setup screen: offer Resume.
-    }
-    setTimeout(()=>{if(state.started){fastBuyerInit();fastSuggest();}},50);
-  }catch(e){}
+  try{ if(typeof renderUltimateAll==='function') renderUltimateAll(); }catch(e){}
 });
 </script>
+</body>
+</html>
