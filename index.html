@@ -28,6 +28,21 @@
 .ryh54-fields{display:grid;gap:7px;margin-top:10px}.ryh54-field{padding:9px;border:1px solid #263b4e;border-radius:10px;background:#0b1620}.ryh54-field label{display:block;font-size:6px;color:#8291a2;margin-bottom:4px}.ryh54-field input,.ryh54-field select{width:100%;padding:8px;border-radius:8px;border:1px solid #31475b;background:#08111a;color:#edf2f7;font-size:9px;outline:none}
 .ryh54-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}.ryh54-btn{width:100%;padding:10px;border-radius:10px;border:1px solid #31475b;background:#0c1722;color:#edf2f7;font-size:7px;font-weight:1000}.ryh54-btn.gold{border-color:#80642e;background:#241f14;color:#e2c168}.ryh54-list{display:grid;gap:5px;margin-top:8px}.ryh54-row{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px;border:1px solid #263a4d;background:#0b1620;border-radius:10px}.ryh54-row b{font-size:8px}.ryh54-row small{display:block;font-size:6px;color:#8190a2;margin-top:2px}.ryh54-tag{font-size:6px;color:#e0bd64;font-weight:1000}
 </style>
+
+<style id="ryh55-formation-css">
+.ryh55-box{margin-top:9px;padding:10px;border:1px solid #293e52;border-radius:13px;background:#0b1620}
+.ryh55-box h3{margin:0 0 5px;font-size:9px}.ryh55-box small{font-size:6px;color:#8190a2}
+.ryh55-mods{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:7px}
+.ryh55-mod{border:1px solid #293e52;background:#0c1721;color:#8291a2;border-radius:8px;padding:7px 2px;font-size:6px;font-weight:1000}
+.ryh55-mod.on{border-color:#80642f;background:#241f14;color:#e2c169}
+.ryh55-score{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-top:8px;padding:8px;border-radius:10px;background:#101d29}
+.ryh55-score strong{font-size:18px;color:#e2c169}.ryh55-score span{font-size:6px;color:#8a98a8}
+.ryh55-xi{display:grid;gap:5px;margin-top:7px}.ryh55-line{display:flex;gap:5px;flex-wrap:wrap}
+.ryh55-player{flex:1;min-width:75px;padding:7px;border:1px solid #2a3e51;border-radius:9px;background:#0c1721;text-align:center}
+.ryh55-player b{display:block;font-size:7px}.ryh55-player small{font-size:5px}
+.ryh55-reasons{margin-top:7px;font-size:6px;line-height:1.45;color:#b6c1cb}
+.ryh55-toggle{display:flex;align-items:center;justify-content:space-between;padding:7px 0;font-size:7px;color:#b9c3cc}
+</style>
 </head><body><div class="app"><header class="top"><div class="brand"><div class="mark">🔨</div><div><b>RAISE YOUR HAMMER</b><small>FANTACALCIO COMMAND CENTER</small></div></div><button class="menu" onclick="openMenu()">☰</button></header><main id="home" class="view active"></main><main id="auction" class="view"></main><main id="brain" class="view"></main><main id="formation" class="view"></main></div><nav class="bottom"><button id="navHome" class="active" onclick="show('home')"><b>⌂</b>HOME</button><button id="navAuction" onclick="show('auction')"><b>🔨</b>ASTA</button><button id="navBrain" onclick="show('brain')"><b>🧠</b>BRAIN</button><button id="navFormation" onclick="show('formation')"><b>🏟</b>CAMPO</button></nav><div id="drawer" class="drawer" onclick="if(event.target===this)closeMenu()"><div class="drawerPanel"><div class="row"><b>MENU</b><button class="btn" onclick="closeMenu()">✕</button></div><button class="drawerItem" onclick="closeMenu();show('home')">⌂ Home</button><button class="drawerItem" onclick="closeMenu();show('auction')">🔨 Asta e partecipanti</button><button class="drawerItem" onclick="closeMenu();show('brain')">🧠 Hammer Brain</button><button class="drawerItem" onclick="closeMenu();show('formation')">🏟 Formazione consigliata</button></div></div><script>const DB=[["A", "Martinez L.", "Inter", 35, 68], ["A", "Malen", "Roma", 34, 66], ["D", "Dimarco", "Inter", 32, 62], ["C", "Paz N.", "Como", 30, 58], ["A", "Thuram", "Inter", 29, 56], ["A", "Hojlund", "Napoli", 28, 54], ["C", "McTominay", "Napoli", 28, 54], ["C", "Calhanoglu", "Inter", 27, 52], ["A", "Ramos G.", "Milan", 27, 52], ["A", "Kolo Muani", "Juventus", 26, 50], ["C", "Orsolini", "Bologna", 26, 50], ["A", "Kean", "Fiorentina", 25, 48], ["C", "Pulisic", "Milan", 25, 48], ["A", "Yildiz", "Juventus", 23, 44], ["C", "Rabiot", "Milan", 22, 42], ["A", "Douvikas", "Como", 20, 38], ["C", "Baturina", "Como", 19, 37], ["A", "Davis K.", "Udinese", 19, 37], ["C", "Mora", "Roma", 19, 37], ["A", "Scamacca", "Atalanta", 19, 37], ["A", "Berardi", "Sassuolo", 18, 35], ["C", "Da Cunha", "Como", 18, 35], ["A", "Krstovic", "Atalanta", 18, 35], ["A", "Leao", "Milan", 18, 35], ["D", "Molina N.", "Roma", 18, 35], ["P", "Svilar", "Roma", 18, 35], ["C", "Zaniolo", "Udinese", 18, 35], ["C", "Atta", "Fiorentina", 17, 33], ["C", "Barella", "Inter", 17, 33], ["A", "De Ketelaere", "Atalanta", 17, 33], ["P", "Martinez Jo.", "Inter", 17, 33], ["C", "McKennie", "Juventus", 17, 33], ["D", "Wesley", "Roma", 17, 33], ["D", "Akanji", "Inter", 16, 31], ["P", "Butez", "Como", 16, 31], ["P", "Carnesecchi", "Atalanta", 16, 31], ["A", "Dovbyk", "Bologna", 16, 31], ["A", "Esposito F.P.", "Inter", 16, 31], ["P", "Vicario", "Juventus", 16, 31], ["C", "Zaccagni", "Lazio", 16, 31], ["D", "Bremer", "Juventus", 15, 29], ["C", "De Bruyne", "Napoli", 15, 29], ["A", "Laurientè", "Sassuolo", 15, 29], ["P", "Maignan", "Milan", 15, 29], ["D", "Mancini", "Roma", 15, 29], ["A", "Pellegrino M.", "Fiorentina", 15, 29], ["A", "Simeone", "Torino", 15, 29], ["D", "Bastoni", "Inter", 14, 27], ["A", "Castro S.", "Roma", 14, 27], ["A", "Dybala", "Roma", 14, 27], ["D", "Pavlovic", "Milan", 14, 27], ["D", "Rrahmani", "Napoli", 14, 27], ["A", "Santos A.", "Napoli", 14, 27], ["C", "Vlasic", "Torino", 14, 27], ["P", "De Gea", "Fiorentina", 13, 25], ["A", "Esposito Se.", "Cagliari", 13, 25], ["C", "Gudmundsson A.", "Fiorentina", 13, 25], ["D", "Kalulu", "Juventus", 13, 25], ["A", "Kevin Carlos", "Cagliari", 13, 25], ["D", "N'Dicka", "Roma", 13, 25], ["A", "Nkunku", "Milan", 13, 25], ["A", "Pinamonti", "Sassuolo", 13, 25], ["A", "Raspadori", "Atalanta", 13, 25], ["D", "Solet", "Udinese", 13, 25], ["C", "Taylor K.", "Lazio", 13, 25], ["A", "Adams A.", "Venezia", 12, 23], ["C", "Alajbegovic", "Juventus", 12, 23], ["C", "Conceicao", "Juventus", 12, 23], ["D", "Di Lorenzo", "Napoli", 12, 23], ["C", "Ederson D.S.", "Atalanta", 12, 23], ["D", "Gila", "Milan", 12, 23], ["C", "Mastantuono", "Fiorentina", 12, 23], ["C", "Modric", "Milan", 12, 23], ["C", "Moreira", "Milan", 12, 23], ["C", "Rodriguez Je.", "Como", 12, 23], ["C", "Samardzic", "Atalanta", 12, 23], ["A", "Soulè", "Roma", 12, 23], ["D", "Spence", "Inter", 12, 23], ["D", "Stones", "Inter", 12, 23], ["C", "Baldanzi", "Genoa", 11, 21], ["D", "Bisseck", "Inter", 11, 21], ["A", "Colombo", "Genoa", 11, 21], ["A", "Diao", "Como", 11, 21], ["P", "Meret", "Napoli", 11, 21], ["D", "Ostigard", "Genoa", 11, 21], ["C", "Rowe", "Bologna", 11, 21], ["A", "Tourè E.", "Parma", 11, 21], ["C", "Zambo Anguissa", "Napoli", 11, 21], ["A", "Bowie", "Sassuolo", 10, 19], ["C", "Casadei", "Torino", 10, 19], ["A", "Dia", "Lazio", 10, 19], ["D", "Dodò", "Fiorentina", 10, 19], ["C", "Ekkelenkamp", "Udinese", 10, 19], ["D", "Hermoso", "Roma", 10, 19], ["C", "Konè M.", "Roma", 10, 19], ["C", "Pellegrini Lo.", "Roma", 10, 19], ["C", "Perrone", "Como", 10, 19], ["C", "Politano", "Napoli", 10, 19], ["D", "Ramon", "Como", 10, 19], ["A", "Ratkov", "Lazio", 10, 19], ["A", "Romero D.", "Parma", 10, 19], ["C", "Saelemaekers", "Milan", 10, 19], ["D", "Scalvini", "Atalanta", 10, 19], ["P", "Skorupski", "Bologna", 10, 19], ["C", "Thorstvedt", "Sassuolo", 10, 19], ["C", "Thuram K.", "Juventus", 10, 19], ["C", "Zielinski", "Inter", 10, 19]];
 let S=JSON.parse(localStorage.getItem('RYH51')||'null')||{credits:500,participants:[],myTeam:[],auctionLog:[],targets:[]};function save(){localStorage.setItem('RYH51',JSON.stringify(S))}function esc(x){return String(x??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}function show(id){document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.bottom button').forEach(x=>x.classList.remove('active'));document.getElementById('nav'+id[0].toUpperCase()+id.slice(1)).classList.add('active');render(id)}function openMenu(){document.getElementById('drawer').classList.add('open')}function closeMenu(){document.getElementById('drawer').classList.remove('open')}
 function roleName(r){return r==='P'?'Portiere':r==='D'?'Difensore':r==='C'?'Centrocampista':'Attaccante'}function score(p){return p[4]}function price(p){return p[3]}function find(q){q=q.toLowerCase().trim();return DB.filter(p=>(p[1]+' '+p[2]).toLowerCase().includes(q)).sort((a,b)=>score(b)-score(a)).slice(0,20)}
@@ -214,9 +229,113 @@ function brain(h){
 }
 function formation(h){
  const ps=getPlayers().slice().sort((a,b)=>(Number(b.score)||0)-(Number(a.score)||0));
- h.innerHTML=`<div class="ryh54-panel"><h2>🏟️ Formazione consigliata</h2><small>Il Brain ordina i giocatori per rendimento e costruisce la base della formazione.</small>
- <div class="ryh54-grid"><div class="ryh54-row"><div><b>Modulo</b><small>3-4-3</small></div></div><div class="ryh54-row"><div><b>Giocatori</b><small>${ps.length}</small></div></div></div>
- <div class="ryh54-list">${ps.slice(0,11).map((p,i)=>`<div class="ryh54-row"><div><b>${i+1}. ${esc(p.name||'Giocatore')}</b><small>${esc(p.team||'')} · ${esc(p.role||'')}</small></div><span class="ryh54-tag">${Number(p.score)||70}</span></div>`).join('')||'<div class="ryh54-row"><small>Inserisci/aggiorna i giocatori per generare la formazione.</small></div>'}</div></div>`;
+ let mod=localStorage.getItem('ryh55_module')||'3-4-3';
+ const mods=['3-4-3','3-5-2','4-3-3','4-4-2','4-5-1','5-3-2','5-4-1'];
+ const num={ '3-4-3':[3,4,3], '3-5-2':[3,5,2], '4-3-3':[4,3,3], '4-4-2':[4,4,2], '4-5-1':[4,5,1], '5-3-2':[5,3,2], '5-4-1':[5,4,1] };
+
+ const role=x=>String(x.role||'').toUpperCase();
+ const bucket=r=>ps.filter(p=>role(p)===r);
+ const defenders=ps.filter(p=>['D','DC','DEF','B'].includes(role(p)));
+ const mids=ps.filter(p=>['C','M','CC','TRQ'].includes(role(p)));
+ const attackers=ps.filter(p=>['A','ATT','PC','W'].includes(role(p)));
+ const keepers=ps.filter(p=>['P','POR','GK'].includes(role(p)));
+ const fallback=(arr,n)=>arr.slice(0,n);
+
+ function build(){
+   const [nd,nm,na]=num[mod];
+   const gk=fallback(keepers,1);
+   const ds=fallback(defenders,nd);
+   const ms=fallback(mids,nm);
+   const as=fallback(attackers,na);
+   // If the imported database uses unknown role labels, fill remaining slots
+   // by score while keeping the selected module as the primary constraint.
+   let used=new Set([...gk,...ds,...ms,...as]);
+   const chosen=[...gk,...ds,...ms,...as];
+   const need=11-chosen.length;
+   if(need>0) chosen.push(...ps.filter(p=>!used.has(p)).slice(0,need));
+   return {gk,ds,ms,as,chosen:chosen.slice(0,11)};
+ }
+
+ function modifier(xi){
+   const d=xi.ds;
+   if(d.length<3 || !xi.gk.length) return {points:0,label:'Modificatore non attivo'};
+   const vals=[Number(xi.gk[0].score)||70,...d.map(p=>Number(p.score)||70)].sort((a,b)=>b-a);
+   const avg=vals.reduce((a,b)=>a+b,0)/vals.length;
+   // Generic Fantacalcio-style defense modifier: reward a stronger defensive unit.
+   // The thresholds are intentionally kept configurable in the UI.
+   let pts=0;
+   if(avg>=88) pts=4;
+   else if(avg>=84) pts=3;
+   else if(avg>=80) pts=2;
+   else if(avg>=76) pts=1;
+   return {points:pts,label:`+${pts} potenziale modificatore · media difesa ${avg.toFixed(1)}`};
+ }
+
+ function attackScore(xi){
+   const vals=xi.as.map(p=>Number(p.score)||70);
+   return vals.length ? vals.reduce((a,b)=>a+b,0)/vals.length : 0;
+ }
+
+ function total(xi){
+   const base=xi.chosen.reduce((a,p)=>a+(Number(p.score)||70),0);
+   const m=modifier(xi).points;
+   return base+m*8; // strategic weighting: a strong modifier matters, but does not dominate the XI
+ }
+
+ const xi=build();
+ const m=modifier(xi);
+ const base=xi.chosen.reduce((a,p)=>a+(Number(p.score)||70),0);
+ const totalScore=total(xi);
+ const attack=attackScore(xi);
+
+ const card=(p)=>`<div class="ryh55-player"><b>${esc(p.name||'Giocatore')}</b><small>${esc(p.team||'')} · ${Number(p.score)||70}</small></div>`;
+ const line=(arr)=>`<div class="ryh55-line">${arr.map(card).join('')||'<div class="ryh55-player"><small>Ruolo non disponibile</small></div>'}</div>`;
+
+ h.innerHTML=`<div class="ryh54-panel">
+   <h2>🏟️ Formazione consigliata</h2>
+   <small>Il Brain cerca il miglior XI disponibile, confronta i moduli e valorizza il modificatore.</small>
+
+   <div class="ryh55-box">
+     <h3>MODULO</h3>
+     <small>Scegli il modulo: il Brain ricalcola immediatamente l'XI.</small>
+     <div class="ryh55-mods">${mods.map(x=>`<button class="ryh55-mod ${x===mod?'on':''}" data-mod="${x}">${x}</button>`).join('')}</div>
+   </div>
+
+   <div class="ryh55-score">
+     <div><span>PUNTEGGIO STRATEGICO</span><strong>${totalScore.toFixed(0)}</strong></div>
+     <div><span>ATTACCO</span><b>${attack.toFixed(1)}</b></div>
+   </div>
+
+   <div class="ryh55-box">
+     <h3>🛡️ MODIFICATORE DIFESA</h3>
+     <small>${m.label}. Il sistema premia una difesa forte senza sacrificare automaticamente l'attacco.</small>
+   </div>
+
+   <div class="ryh55-box">
+     <h3>XI CONSIGLIATO · ${mod}</h3>
+     <div class="ryh55-xi">
+       ${line(xi.gk)}
+       ${line(xi.ds)}
+       ${line(xi.ms)}
+       ${line(xi.as)}
+     </div>
+   </div>
+
+   <div class="ryh55-box">
+     <h3>🧠 PERCHÉ QUESTA FORMAZIONE</h3>
+     <div class="ryh55-reasons">
+       • massimizza gli score disponibili per ruolo<br>
+       • considera il potenziale del modificatore difensivo<br>
+       • confronta il modulo scelto con la composizione reale della rosa<br>
+       • puoi cambiare modulo in qualsiasi momento e vedere subito il nuovo XI
+     </div>
+   </div>
+ </div>`;
+
+ h.querySelectorAll('[data-mod]').forEach(btn=>btn.onclick=()=>{
+   localStorage.setItem('ryh55_module',btn.dataset.mod);
+   formation(h);
+ });
 }
 function boot(){
  if(!document.body)return;
