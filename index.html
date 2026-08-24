@@ -777,6 +777,37 @@ body{background:
 /* Clean up the old configuration area so the top dock remains the focus */
 #setupCard{margin-top:8px!important}
 </style>
+
+<style id="ryhV24SmoothCSS">
+/* V24 — fluid interaction layer */
+:root{--ease: cubic-bezier(.22,.8,.24,1);--ease-soft:cubic-bezier(.2,.7,.2,1)}
+html{scroll-behavior:smooth}
+body{overscroll-behavior-y:none}
+*{-webkit-tap-highlight-color:transparent}
+button,.ryh22-card,.ryh19-card,.ryh19-module,.ryh22-chip,.ryh22-bench .mini{transition:transform .18s var(--ease),opacity .18s var(--ease),border-color .18s ease,background .18s ease,box-shadow .18s ease}
+button:active{transform:scale(.97)}
+.ryh22-card:active,.ryh19-card:active,.ryh19-module:active{transform:scale(.985)}
+#ryhV16Nav{transition:transform .28s var(--ease),opacity .22s ease,box-shadow .22s ease!important;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+#ryhV16Nav button{position:relative;overflow:hidden}
+#ryhV16Nav button:after{content:"";position:absolute;left:50%;bottom:3px;width:0;height:2px;border-radius:2px;background:#e4bd4e;transform:translateX(-50%);transition:width .2s var(--ease)}
+#ryhV16Nav button.active:after,#ryhV16Nav button[aria-current="page"]:after{width:18px}
+.ryh19-main,.ryh19-grid,.ryh19-card,.ryh22-player-section{animation:ryhFadeUp .42s var(--ease) both}
+@keyframes ryhFadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.ryh22-card:nth-child(1){animation-delay:.03s}.ryh22-card:nth-child(2){animation-delay:.06s}.ryh22-card:nth-child(3){animation-delay:.09s}.ryh22-card:nth-child(4){animation-delay:.12s}
+.ryh22-card .photo{transition:transform .3s var(--ease),filter .3s ease}
+.ryh22-card:hover .photo{transform:scale(1.035)}
+.ryh19-header{transition:box-shadow .25s ease,background .25s ease!important}
+.ryh19-header.scrolled{box-shadow:0 8px 24px #0008!important}
+input,select,textarea{transition:border-color .18s ease,box-shadow .18s ease,background .18s ease}
+input:focus,select:focus,textarea:focus{outline:none;border-color:#8c7330!important;box-shadow:0 0 0 3px #b8922a22!important}
+.ryh22-chip{scroll-snap-align:start}
+.ryh22-chipbar{scroll-snap-type:x proximity;scrollbar-width:none}.ryh22-chipbar::-webkit-scrollbar{display:none}
+.ryh22-player-grid{contain:layout paint}
+.ryh22-card{will-change:transform}
+@media(prefers-reduced-motion:reduce){
+ *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.001ms!important}
+}
+</style>
 </head>
 <body>
 <div class="app">
@@ -2779,6 +2810,45 @@ function ryh20Go(name){
  document.querySelectorAll('.ryh20-menu-item[data-v20]').forEach(b=>b.classList.toggle('active',b.dataset.v20===name));
 }
 document.addEventListener('keydown',e=>{if(e.key==='Escape')ryh20Toggle(false)});
+</script>
+
+<script id="ryhV24SmoothJS">
+(function(){
+  const nav=document.getElementById('ryhV16Nav');
+  let lastY=window.scrollY, ticking=false;
+  function onScroll(){
+    const y=window.scrollY;
+    const header=document.querySelector('.ryh19-header');
+    if(header) header.classList.toggle('scrolled',y>12);
+    /* hide the dock while aggressively scrolling down; reveal immediately when scrolling up */
+    if(nav && Math.abs(y-lastY)>2){
+      if(y>lastY && y>110) nav.style.transform='translate(-50%,-8px)';
+      else nav.style.transform='translate(-50%,0)';
+      nav.style.opacity=(y>lastY && y>110)?'.86':'1';
+    }
+    lastY=y;ticking=false;
+  }
+  window.addEventListener('scroll',()=>{if(!ticking){requestAnimationFrame(onScroll);ticking=true}}, {passive:true});
+
+  /* Smoothly focus the first field when opening a configuration panel. */
+  document.addEventListener('click',e=>{
+    const b=e.target.closest('button');
+    if(!b)return;
+    const label=(b.innerText||'').toLowerCase();
+    if(label.includes('configurazione')||label.includes('imposta')){
+      setTimeout(()=>document.querySelector('#setupCard input,#setupCard select')?.focus({preventScroll:true}),180);
+    }
+  });
+
+  /* Add a lightweight transition between visible app sections. */
+  window.ryh24Switch=(fn)=>{
+    const main=document.querySelector('main,.ryh19-main');
+    if(!main){fn?.();return}
+    main.animate([{opacity:.72,transform:'translateY(4px)'},{opacity:1,transform:'translateY(0)'}],
+      {duration:220,easing:'cubic-bezier(.22,.8,.24,1)'});
+    fn?.();
+  };
+})();
 </script>
 </body>
 </html>
