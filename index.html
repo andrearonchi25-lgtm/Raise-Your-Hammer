@@ -1461,6 +1461,43 @@ body{
 }
 </style>
 
+
+<style id="ryhV33RapidSetupCSS">
+.ryh33-overlay{position:fixed;inset:0;z-index:1000;background:rgba(2,6,10,.82);backdrop-filter:blur(12px);display:none;align-items:flex-end;justify-content:center}
+.ryh33-overlay.open{display:flex}
+.ryh33-sheet{width:min(760px,100%);max-height:92vh;overflow:auto;background:linear-gradient(160deg,#111a27,#080d14);border:1px solid #3b4c61;border-radius:24px 24px 0 0;box-shadow:0 -20px 70px #000b;padding:16px}
+.ryh33-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.ryh33-title{font-size:21px;font-weight:1000}.ryh33-sub{font-size:11px;color:#8d9aab;margin-top:3px}
+.ryh33-close{width:36px;height:36px;border-radius:12px;border:1px solid #3a4a5e;background:#131d29;color:#fff;font-size:22px}
+.ryh33-stepbar{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:12px 0}
+.ryh33-step{padding:9px 6px;text-align:center;border:1px solid #27384b;border-radius:12px;color:#718094;font-size:10px;font-weight:900}
+.ryh33-step.active{background:#d8ae4e;color:#10151b;border-color:#f0cf76}
+.ryh33-panel{padding:12px;border-radius:17px;background:#0b131e;border:1px solid #243447;margin-bottom:10px}
+.ryh33-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ryh33-field label{display:block;font-size:10px;color:#8c99aa;margin-bottom:5px;font-weight:800}
+.ryh33-field input,.ryh33-team input{width:100%;box-sizing:border-box;padding:11px 12px;border-radius:12px;border:1px solid #314258;background:#080e15;color:#fff;font-size:14px}
+.ryh33-team-list{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}
+.ryh33-team{display:grid;grid-template-columns:28px 1fr;gap:6px;align-items:center}
+.ryh33-team b{font-size:10px;color:#8c99aa;text-align:center}
+.ryh33-primary{width:100%;padding:13px;border-radius:14px;border:1px solid #f0cf76;background:linear-gradient(180deg,#edc967,#bd8e2f);color:#10151b;font-size:15px;font-weight:1000}
+.ryh33-secondary{width:100%;padding:11px;border-radius:13px;border:1px solid #405268;background:#152130;color:#e9eef5;font-weight:900}
+.ryh33-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.ryh33-hero{padding:12px;border-radius:16px;background:linear-gradient(135deg,#161f2c,#0b121b);border:1px solid #34465c}
+.ryh33-hero b{font-size:16px}.ryh33-hero p{font-size:11px;color:#9aa8b8;line-height:1.45;margin:5px 0 0}
+.ryh33-target{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:9px 0}
+.ryh33-kpi{padding:8px;border-radius:11px;background:#111b28;border:1px solid #26384b;text-align:center}
+.ryh33-kpi small{display:block;color:#8492a3;font-size:8px}.ryh33-kpi b{font-size:13px}
+.ryh33-roster{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}
+.ryh33-player{display:grid;grid-template-columns:24px 1fr auto;gap:6px;align-items:center;padding:7px 8px;border-radius:10px;background:#111b28;border:1px solid #26384b;font-size:10px}
+.ryh33-player .role{font-weight:1000;color:#e5bd60}.ryh33-player small{display:block;color:#718094;font-size:8px}.ryh33-player strong{font-size:10px}
+.ryh33-note{font-size:9px;color:#738093;line-height:1.4;margin-top:8px}
+@media(max-width:520px){
+ .ryh33-grid,.ryh33-team-list,.ryh33-roster{grid-template-columns:1fr}
+ .ryh33-target{grid-template-columns:repeat(2,1fr)}
+ .ryh33-sheet{padding:13px}
+}
+</style>
+
 </head>
 <body>
 <div class="app">
@@ -3704,10 +3741,151 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')ryh20Toggle(false)})
       </div>
     </div>
 
-    <button class="ryh26-start" type="button" onclick="ryh26Start()">🚀 Avvia Asta Rapida</button>
+    <button class="ryh26-start" type="button" onclick="ryh33Open()" data-ryh33-bypass="1">🚀 Avvia Asta Rapida</button>
     <div class="ryh26-note">La modalità rapida sostituisce le tre modalità precedenti.</div>
   </div>
 </div>
+
+
+<script id="ryhV33RapidSetupJS">
+(function(){
+  const $=id=>document.getElementById(id);
+  let rosterCache=[];
+
+  function open(){const o=$('ryhV33RapidSetup');if(!o)return;o.classList.add('open');o.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';buildTeams();}
+  function close(){const o=$('ryhV33RapidSetup');if(!o)return;o.classList.remove('open');o.setAttribute('aria-hidden','true');document.body.style.overflow='';}
+  window.ryh33Open=open; window.ryh33Close=close;
+
+  function buildTeams(){
+    const n=Math.max(2,Math.min(20,+$('ryh33N').value||10));
+    const box=$('ryh33Teams'); if(!box)return;
+    const old=[...box.querySelectorAll('input')].map(x=>x.value);
+    box.innerHTML='';
+    for(let i=0;i<n;i++){
+      const v=i===0?($('ryh33MyTeam').value.trim()||'Raise Your Hammer'):(old[i]||`Squadra ${i+1}`);
+      box.insertAdjacentHTML('beforeend',`<div class="ryh33-team"><b>${i+1}</b><input class="${i===0?'ryh33-team-input':''}" data-team-index="${i}" value="${escapeHtml(v)}"></div>`);
+    }
+  }
+  window.ryh33BuildTeams=buildTeams;
+
+  function setStep(n){
+    [1,2,3].forEach(i=>{
+      $('ryh33Step'+i).style.display=i===n?'block':'none';
+      $('ryh33S'+i).classList.toggle('active',i===n);
+    });
+  }
+
+  window.ryh33GoStep2=function(){
+    buildTeams();
+    const inputs=[...document.querySelectorAll('#ryh33Teams input')];
+    if(!inputs.length)return;
+    if(!$('ryh33MyTeam').value.trim())$('ryh33MyTeam').value=inputs[0].value||'Raise Your Hammer';
+    rosterCache=buildSmartRoster(+$('ryh33Credits').value||500);
+    renderRoster(rosterCache);
+    setStep(2);
+  };
+
+  window.ryh33GoStep3=function(){
+    if(!rosterCache.length) rosterCache=buildSmartRoster(+$('ryh33Credits').value||500);
+    const names=[...document.querySelectorAll('#ryh33Teams input')].map(x=>x.value.trim()).filter(Boolean);
+    $('ryh33FinalSummary').innerHTML=`<div class="ryh33-target">
+      <div class="ryh33-kpi"><small>PARTECIPANTI</small><b>${names.length}</b></div>
+      <div class="ryh33-kpi"><small>CREDITI</small><b>${+$('ryh33Credits').value||500}</b></div>
+      <div class="ryh33-kpi"><small>ROSA</small><b>${rosterCache.length}/25</b></div>
+      <div class="ryh33-kpi"><small>PIANO</small><b>${rosterCache.reduce((a,x)=>a+x[3],0)} cr</b></div>
+    </div>
+    <div class="ryh33-note">La prima squadra è la tua. I nomi inseriti qui vengono trasferiti direttamente nella configurazione dell'asta.</div>`;
+    setStep(3);
+  };
+
+  function buildSmartRoster(credits){
+    const db=typeof getDB==='function'?getDB():window.playerDB;
+    if(!Array.isArray(db))return [];
+    const quotas={P:3,D:8,C:8,A:6};
+    let picks=[];
+    for(const [role,n] of Object.entries(quotas)){
+      const arr=db.filter(x=>x[0]===role).slice().sort((a,b)=>{
+        const va=(+a[4]||0)/Math.max(1,+a[3]||1);
+        const vb=(+b[4]||0)/Math.max(1,+b[3]||1);
+        return (vb*0.7+b[4]*0.3)-(va*0.7+a[4]*0.3);
+      });
+      picks.push(...arr.slice(0,n));
+    }
+    // If the default 500-credit plan is too expensive, downgrade expensive slots
+    // while preserving the 3/8/8/6 structure.
+    const minCredits=Math.max(1,Math.round(credits));
+    const roleLists={};
+    for(const r of Object.keys(quotas))roleLists[r]=db.filter(x=>x[0]===r).slice().sort((a,b)=>(+b[4]/Math.max(1,+b[3]))-(+a[4]/Math.max(1,+a[3])));
+    const indices={P:0,D:0,C:0,A:0};
+    const current={P:[],D:[],C:[],A:[]};
+    Object.entries(quotas).forEach(([r,n])=>current[r]=roleLists[r].slice(0,n));
+    let total=Object.values(current).flat().reduce((a,x)=>a+(+x[3]||0),0);
+    if(total>minCredits){
+      // Replace the weakest value-per-credit player with a cheaper alternative.
+      for(let guard=0;guard<100 && total>minCredits;guard++){
+        let best=null;
+        for(const r of Object.keys(quotas)){
+          for(let i=0;i<current[r].length;i++){
+            const cur=current[r][i];
+            const used=new Set(current[r].map(x=>x[1]));
+            const alt=roleLists[r].find(x=>!used.has(x[1]) && (+x[3]||0)<(+cur[3]||0));
+            if(alt){
+              const saving=(+cur[3]||0)-(+alt[3]||0);
+              const loss=((+cur[4]||0)/Math.max(1,+cur[3]||1))-((+alt[4]||0)/Math.max(1,+alt[3]||1));
+              const score=saving/(1+Math.max(0,loss));
+              if(!best||score>best.score)best={r,i,alt,saving,score};
+            }
+          }
+        }
+        if(!best)break;
+        total-=best.saving;current[best.r][best.i]=best.alt;
+      }
+    }
+    picks=Object.values(current).flat();
+    return picks;
+  }
+
+  function renderRoster(roster){
+    const box=$('ryh33Roster'); if(!box)return;
+    const total=roster.reduce((a,x)=>a+(+x[3]||0),0);
+    const expected=roster.reduce((a,x)=>a+(+x[4]||0),0);
+    $('ryh33RosterSummary').innerHTML=`<b>🎯 Piano ${total} cr</b> · Valore atteso ${expected} · ${Math.max(0,(+$('ryh33Credits').value||500)-total)} cr di margine. <br>Segui i target, non inseguire il prezzo.`;
+    box.innerHTML=roster.map(x=>`<div class="ryh33-player"><span class="role">${x[0]}</span><div><b>${escapeHtml(x[1])}</b><small>${escapeHtml(x[2])}</small></div><strong>${x[3]} cr</strong></div>`).join('');
+  }
+  window.ryh33BuildRoster=function(){rosterCache=buildSmartRoster(+$('ryh33Credits').value||500);renderRoster(rosterCache)};
+
+  window.ryh33Start=function(){
+    const inputs=[...document.querySelectorAll('#ryh33Teams input')];
+    const names=inputs.map(x=>x.value.trim()).filter(Boolean);
+    const n=Math.max(2,Math.min(20,+$('ryh33N').value||10));
+    const credits=Math.max(1,+$('ryh33Credits').value||500);
+    if(names.length!==n){alert('Inserisci tutti i partecipanti prima di avviare.');setStep(1);return;}
+    // Transfer rapid setup to the real auction engine.
+    const nEl=document.getElementById('nPlayers'), cEl=document.getElementById('credits');
+    if(nEl)nEl.value=n;if(cEl)cEl.value=credits;
+    if(typeof buildParticipantInputs==='function')buildParticipantInputs();
+    [...document.querySelectorAll('#participantInputs .teamName')].forEach((el,i)=>el.value=names[i]||`Squadra ${i+1}`);
+    const mode=document.getElementById('auctionMode');if(mode)mode.value='classic';
+    localStorage.setItem('ryh_auction_mode','rapida');
+    localStorage.setItem('ryh_auction_strategy','equilibrata');
+    if(typeof startAuction==='function')startAuction();
+    close();
+    setTimeout(()=>{try{if(typeof ryhV16Go==='function')ryhV16Go('asta')}catch(e){}},120);
+  };
+
+  // Replace the broken/legacy rapid-start flow: clicking "Avvia Asta Rapida"
+  // always opens the working participant setup.
+  document.addEventListener('click',e=>{
+    const b=e.target.closest('button');
+    if(!b)return;
+    const text=(b.innerText||'').replace(/\s+/g,' ').trim().toLowerCase();
+    if(text.includes('avvia asta rapida') && !b.dataset.ryh33Bypass){
+      e.preventDefault();e.stopImmediatePropagation();open();
+    }
+  },true);
+  $('ryhV33RapidSetup')?.addEventListener('click',e=>{if(e.target.id==='ryhV33RapidSetup')close()});
+})();
+</script>
 
 <script id="ryhV26QuickAuctionJS">
 (function(){
@@ -3752,6 +3930,60 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')ryh20Toggle(false)})
   overlay()?.addEventListener('click',e=>{if(e.target===overlay())ryh26Close()});
 })();
 </script>
+
+
+<div id="ryhV33RapidSetup" class="ryh33-overlay" aria-hidden="true">
+  <div class="ryh33-sheet" role="dialog" aria-modal="true">
+    <div class="ryh33-head">
+      <div><div class="ryh33-title">⚒️ Asta Rapida Smart</div><div class="ryh33-sub">Una sola modalità: imposti la lega e Hammer costruisce la strategia.</div></div>
+      <button class="ryh33-close" onclick="ryh33Close()">×</button>
+    </div>
+    <div class="ryh33-stepbar">
+      <div id="ryh33S1" class="ryh33-step active">1 · LEGA</div>
+      <div id="ryh33S2" class="ryh33-step">2 · ROSA</div>
+      <div id="ryh33S3" class="ryh33-step">3 · AVVIA</div>
+    </div>
+
+    <section id="ryh33Step1" class="ryh33-panel">
+      <div class="ryh33-grid">
+        <div class="ryh33-field"><label>PARTECIPANTI</label><input id="ryh33N" type="number" min="2" max="20" value="10"></div>
+        <div class="ryh33-field"><label>CREDITI A SQUADRA</label><input id="ryh33Credits" type="number" min="1" value="500"></div>
+      </div>
+      <div class="ryh33-field" style="margin-top:9px"><label>NOME DELLA TUA SQUADRA</label><input id="ryh33MyTeam" value="Raise Your Hammer"></div>
+      <div style="margin-top:11px;font-size:12px;font-weight:900">👥 Partecipanti</div>
+      <div id="ryh33Teams" class="ryh33-team-list"></div>
+      <div class="ryh33-actions"><button class="ryh33-secondary" onclick="ryh33BuildTeams()">↻ Aggiorna nomi</button><button class="ryh33-primary" onclick="ryh33GoStep2()">Continua →</button></div>
+    </section>
+
+    <section id="ryh33Step2" class="ryh33-panel" style="display:none">
+      <div class="ryh33-hero">
+        <b>🏆 Hammer Blueprint</b>
+        <p>Genera una rosa-obiettivo costruita sui ruoli 3P · 8D · 8C · 6A, privilegiando valore, titolarità e rapporto qualità/prezzo. Non è una garanzia di vittoria: è il piano di spesa da seguire durante l'asta.</p>
+      </div>
+      <div class="ryh33-target">
+        <div class="ryh33-kpi"><small>PORTIERI</small><b>3</b></div>
+        <div class="ryh33-kpi"><small>DIFENSORI</small><b>8</b></div>
+        <div class="ryh33-kpi"><small>CENTROCAMPISTI</small><b>8</b></div>
+        <div class="ryh33-kpi"><small>ATTACCANTI</small><b>6</b></div>
+      </div>
+      <div id="ryh33RosterSummary" class="ryh33-note">Premi genera per creare il tuo piano.</div>
+      <div id="ryh33Roster" class="ryh33-roster"></div>
+      <div class="ryh33-actions">
+        <button class="ryh33-secondary" onclick="ryh33BuildRoster()">🎯 Genera rosa perfetta</button>
+        <button class="ryh33-primary" data-ryh33-bypass="1" onclick="ryh33GoStep3()">Continua → Asta</button>
+      </div>
+    </section>
+
+    <section id="ryh33Step3" class="ryh33-panel" style="display:none">
+      <div class="ryh33-hero">
+        <b>🚀 Tutto pronto</b>
+        <p>Partecipanti configurati. La rosa-obiettivo è pronta. Durante l'asta Hammer userà budget, ruoli mancanti e prezzi registrati per consigliarti <b>COMPRA / SEGUILO / LASCIA</b>.</p>
+      </div>
+      <div id="ryh33FinalSummary" style="margin-top:10px"></div>
+      <button class="ryh33-primary" data-ryh33-bypass="1" onclick="ryh33Start()">🔨 AVVIA ASTA RAPIDA</button>
+    </section>
+  </div>
+</div>
 
 <script id="ryhV27JS">
 (function(){
