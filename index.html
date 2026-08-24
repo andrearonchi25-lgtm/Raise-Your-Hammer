@@ -1484,6 +1484,34 @@ body.ryh33-modal-open .ryh20-menu{display:none!important}
 @media(max-width:520px){.ryh33-grid{grid-template-columns:1fr 1fr!important}.ryh33-team-list{grid-template-columns:1fr!important}.ryh33-panel{margin:0 7px 8px!important}.ryh33-actions{grid-template-columns:1fr 1fr!important}.ryh33-hero p{font-size:10px!important}}
 </style>
 
+<style id="ryhV49RapidHardFixCSS">
+/* V49 — hard fix: Rapid Auction owns the whole viewport and disables every app nav */
+html.ryh49-rapid-open, body.ryh49-rapid-open{overflow:hidden!important;height:100%!important}
+#ryhV33RapidSetup{position:fixed!important;inset:0!important;z-index:2147483000!important;display:none!important;align-items:stretch!important;justify-content:stretch!important;padding:0!important;margin:0!important;background:rgba(2,6,10,.92)!important;overscroll-behavior:none!important}
+#ryhV33RapidSetup.open{display:flex!important}
+#ryhV33RapidSetup .ryh33-sheet{position:relative!important;width:100%!important;height:100dvh!important;max-height:none!important;min-height:0!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;overflow:hidden!important;display:flex!important;flex-direction:column!important;background:linear-gradient(160deg,#111a27 0%,#080d14 100%)!important}
+#ryhV33RapidSetup .ryh33-head{flex:0 0 auto!important;padding:calc(12px + env(safe-area-inset-top)) 14px 8px!important;min-height:62px!important}
+#ryhV33RapidSetup .ryh33-stepbar{flex:0 0 auto!important}
+#ryhV33RapidSetup .ryh33-panel{flex:1 1 0!important;min-height:0!important;height:auto!important;overflow-y:auto!important;overflow-x:hidden!important;margin:0 8px!important;padding:12px!important;padding-bottom:92px!important;-webkit-overflow-scrolling:touch!important;overscroll-behavior:contain!important}
+#ryhV33RapidSetup .ryh33-actions{position:sticky!important;bottom:0!important;z-index:50!important;margin:12px -12px -12px!important;padding:10px 12px calc(10px + env(safe-area-inset-bottom))!important;background:linear-gradient(180deg,rgba(8,14,21,.2),rgba(8,14,21,.98) 32%)!important;backdrop-filter:blur(14px)!important}
+#ryhV33RapidSetup .ryh33-actions button{min-height:48px!important;touch-action:manipulation!important}
+/* Kill all competing bottom/top navigation while rapid mode is open. */
+body.ryh49-rapid-open .ryh47nav,
+body.ryh49-rapid-open #ryhQuickNav,
+body.ryh49-rapid-open .ryh29-nav,
+body.ryh49-rapid-open .ryh19-bottom,
+body.ryh49-rapid-open .ryh17-bottom,
+body.ryh49-rapid-open .ryh20-menu,
+body.ryh49-rapid-open .ryh20-overlay{display:none!important;visibility:hidden!important;pointer-events:none!important}
+@media(max-width:520px){
+ #ryhV33RapidSetup .ryh33-panel{margin:0 6px!important;padding:10px!important;padding-bottom:96px!important}
+ #ryhV33RapidSetup .ryh33-grid{grid-template-columns:1fr 1fr!important}
+ #ryhV33RapidSetup .ryh33-team-list{grid-template-columns:1fr!important}
+ #ryhV33RapidSetup .ryh33-actions{grid-template-columns:1fr 1fr!important}
+ #ryhV33RapidSetup .ryh33-title{font-size:18px!important}
+}
+</style>
+
 <style id="ryhV33RapidSetupCSS">
 .ryh33-overlay{position:fixed;inset:0;z-index:1000;background:rgba(2,6,10,.82);backdrop-filter:blur(12px);display:none;align-items:flex-end;justify-content:center}
 .ryh33-overlay.open{display:flex}
@@ -3986,8 +4014,38 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')ryh20Toggle(false)})
   const $=id=>document.getElementById(id);
   let rosterCache=[];
 
-  function open(){const o=$('ryhV33RapidSetup');if(!o)return;o.classList.add('open');o.setAttribute('aria-hidden','false');document.body.classList.add('ryh33-modal-open');document.body.style.overflow='hidden';buildTeams();}
-  function close(){const o=$('ryhV33RapidSetup');if(!o)return;o.classList.remove('open');o.setAttribute('aria-hidden','true');document.body.classList.remove('ryh33-modal-open');document.body.style.overflow='';}
+  function setRapidNavHidden(hidden){
+    const sels=['.ryh47nav','#ryhQuickNav','.ryh29-nav','.ryh19-bottom','.ryh17-bottom','.ryh20-menu','.ryh20-overlay'];
+    sels.forEach(sel=>document.querySelectorAll(sel).forEach(el=>{
+      if(hidden){
+        if(!el.dataset.ryh49PrevDisplay) el.dataset.ryh49PrevDisplay=el.style.display||'__computed__';
+        el.style.setProperty('display','none','important');
+        el.setAttribute('aria-hidden','true');
+      }else{
+        if(el.dataset.ryh49PrevDisplay && el.dataset.ryh49PrevDisplay!=='__computed__') el.style.display=el.dataset.ryh49PrevDisplay;
+        else el.style.removeProperty('display');
+        delete el.dataset.ryh49PrevDisplay;
+        el.removeAttribute('aria-hidden');
+      }
+    }));
+  }
+  function open(){
+    const o=$('ryhV33RapidSetup');if(!o)return;
+    o.classList.add('open');o.setAttribute('aria-hidden','false');
+    document.documentElement.classList.add('ryh49-rapid-open');
+    document.body.classList.add('ryh33-modal-open','ryh49-rapid-open');
+    setRapidNavHidden(true);
+    buildTeams();
+    setStep(1);
+    requestAnimationFrame(()=>{const p=$('ryh33Step1');if(p)p.scrollTop=0;});
+  }
+  function close(){
+    const o=$('ryhV33RapidSetup');if(!o)return;
+    o.classList.remove('open');o.setAttribute('aria-hidden','true');
+    document.documentElement.classList.remove('ryh49-rapid-open');
+    document.body.classList.remove('ryh33-modal-open','ryh49-rapid-open');
+    setRapidNavHidden(false);
+  }
   window.ryh33Open=open; window.ryh33Close=close;
 
   function buildTeams(){
@@ -4093,7 +4151,13 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')ryh20Toggle(false)})
     const names=inputs.map(x=>x.value.trim()).filter(Boolean);
     const n=Math.max(2,Math.min(20,+$('ryh33N').value||10));
     const credits=Math.max(1,+$('ryh33Credits').value||500);
-    if(names.length!==n){alert('Inserisci tutti i partecipanti prima di avviare.');setStep(1);return;}
+    if(names.length!==n){
+      const p=$('ryh33Step1');
+      let msg=$('ryh33Validation');
+      if(!msg){msg=document.createElement('div');msg.id='ryh33Validation';msg.style='margin:8px 0;padding:9px 10px;border:1px solid #8b3f39;border-radius:10px;background:#2a1514;color:#ffb0a8;font-size:11px;font-weight:800';p?.insertBefore(msg,p.querySelector('.ryh33-actions'));}
+      msg.textContent=`⚠️ Inserisci tutti i ${n} partecipanti prima di avviare.`;
+      setStep(1);p?.scrollTo({top:p.scrollHeight,behavior:'smooth'});return;
+    }
     // Transfer rapid setup to the real auction engine.
     const nEl=document.getElementById('nPlayers'), cEl=document.getElementById('credits');
     if(nEl)nEl.value=n;if(cEl)cEl.value=credits;
@@ -5279,6 +5343,33 @@ window.ryh47ScrollText=function(txt){const els=[...document.querySelectorAll('bo
 window.ryh47Brain=function(){const e=document.querySelector('#ryh46');if(e)e.scrollIntoView({behavior:'smooth',block:'start'});else document.getElementById('ryh47')?.scrollIntoView({behavior:'smooth'})};
 window.ryh47Home=function(){document.getElementById('ryh47')?.scrollIntoView({behavior:'smooth'})};
 document.addEventListener('DOMContentLoaded',()=>setTimeout(mount,500));
+})();
+</script>
+
+<script id="ryhV49RapidHardeningJS">
+(function(){
+  function markRapidButtons(){
+    document.querySelectorAll('button,a').forEach(b=>{
+      const t=(b.innerText||b.textContent||'').replace(/\s+/g,' ').trim().toLowerCase();
+      if(t.includes('avvia asta rapida')){
+        b.dataset.ryh33Bypass='1';
+        b.dataset.ryh26Bypass='1';
+      }
+    });
+  }
+  function hideNav(){
+    if(!document.body.classList.contains('ryh49-rapid-open'))return;
+    ['.ryh47nav','#ryhQuickNav','.ryh29-nav','.ryh19-bottom','.ryh17-bottom','.ryh20-menu','.ryh20-overlay'].forEach(sel=>document.querySelectorAll(sel).forEach(el=>{
+      el.style.setProperty('display','none','important');
+      el.style.setProperty('visibility','hidden','important');
+      el.style.setProperty('pointer-events','none','important');
+    }));
+  }
+  markRapidButtons();
+  document.addEventListener('DOMContentLoaded',markRapidButtons);
+  const mo=new MutationObserver(()=>{markRapidButtons();hideNav()});
+  mo.observe(document.documentElement,{childList:true,subtree:true});
+  window.addEventListener('resize',hideNav);
 })();
 </script>
 </body>
