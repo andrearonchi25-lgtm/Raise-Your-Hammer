@@ -5262,6 +5262,20 @@ window.ryh47Home=function(){document.getElementById('ryh47')?.scrollIntoView({be
 document.addEventListener('DOMContentLoaded',()=>setTimeout(mount,500));
 })();
 </script>
+<script id="ryhFinalMenuGuard">
+(function(){
+  // V47 FINAL: remove the browser-alert menu implementation and force the native drawer.
+  window.ryh47Menu=function(){var d=document.getElementById('ryh47drawer');if(d){d.classList.add('open');d.style.display='block';}};
+  window.ryh47CloseMenu=function(){var d=document.getElementById('ryh47drawer');if(d){d.classList.remove('open');d.style.display='none';}};
+  document.addEventListener('click',function(e){
+    var b=e.target.closest && e.target.closest('.ryh47menu');
+    if(b){e.preventDefault();e.stopImmediatePropagation();window.ryh47Menu();return false;}
+  },true);
+  if('serviceWorker' in navigator){
+    navigator.serviceWorker.getRegistrations().then(function(rs){return Promise.all(rs.map(function(r){return r.unregister();}));}).catch(function(){});
+  }
+})();
+</script>
 </body>
 </html>
 <script>
