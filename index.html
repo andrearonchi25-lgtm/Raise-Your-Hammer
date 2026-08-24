@@ -18,7 +18,7 @@ table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;p
 .participants{display:grid;gap:8px}.person{display:flex;justify-content:space-between;align-items:center;background:var(--card2);padding:11px 12px;border-radius:12px}.person small{color:var(--muted)}.empty{color:var(--muted);padding:16px;text-align:center}
 .full{grid-column:1/-1}.setup{display:flex;gap:10px;align-items:end}.setup>*{flex:1}.hidden{display:none!important}
 @media(max-width:800px){.grid{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}.purchase{grid-template-columns:1fr 1fr}.full{grid-column:auto}.hero{align-items:flex-start}.suggest{grid-template-columns:1fr}}
-</style>
+\n.ryh47drawer{position:fixed;inset:0;z-index:10050;display:none;background:rgba(0,0,0,.62);backdrop-filter:blur(7px)}.ryh47drawer.open{display:block}.ryh47sheet{position:absolute;right:10px;top:64px;width:min(330px,calc(100% - 20px));padding:12px;border:1px solid #43566b;border-radius:18px;background:#0b141e;box-shadow:0 18px 50px rgba(0,0,0,.55)}.ryh47sheethead{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}.ryh47sheethead b{font-size:10px}.ryh47close{border:1px solid #33475b;background:#101d2a;color:#fff;border-radius:9px;width:30px;height:30px}.ryh47menugrid{display:grid;gap:5px}.ryh47menuitem{display:flex;align-items:center;gap:9px;width:100%;padding:10px;border:1px solid #263a4e;border-radius:11px;background:#0f1b28;color:#edf2f7;text-align:left;font-size:8px;font-weight:1000}.ryh47menuitem span{font-size:14px;width:20px;text-align:center}.ryh47menuitem small{display:block;color:#718094;font-size:6px;margin-top:2px;font-weight:600}.ryh47menuitem.gold{border-color:#715c2e;background:linear-gradient(145deg,#211c12,#0f1a24)}\n</style>
 
 <style>
 .pro-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
@@ -5228,6 +5228,18 @@ function mount(){
  <section class="ryh47section"><div class="ryh47sectionhead"><b>🃏 PLAYER CARDS</b><span>TOP TARGET</span></div><div class="ryh47cards">${ps.map(p=>card(p)).join('')||'<div class="ryh47box">Nessun giocatore disponibile.</div>'}</div></section>
  <section class="ryh47section"><div class="ryh47sectionhead"><b>⚡ AZIONI RAPIDE</b><span>ONE TAP</span></div><div class="ryh47actions"><button class="ryh47action primary" onclick="ryh47Start()"><b>🔨 Avvia asta</b><small>Guidata da Hammer Brain</small></button><button class="ryh47action" onclick="ryh47Players()"><b>🃏 Giocatori</b><small>Score e valori</small></button><button class="ryh47action" onclick="ryh47Opponents()"><b>👥 Avversari</b><small>Profili e minacce</small></button><button class="ryh47action" onclick="ryh47Team()"><b>🏆 La mia rosa</b><small>Valore e formazione</small></button></div></section>
  <div class="ryh47nav"><button class="on" onclick="ryh47Home()"><b>⌂</b>HOME</button><button onclick="ryh47Start()"><b>🔨</b>ASTA</button><button onclick="ryh47Players()"><b>🃏</b>PLAYERS</button><button onclick="ryh47Menu()"><b>☰</b>MENU</button></div>
+ <div class="ryh47drawer" id="ryh47drawer" onclick="if(event.target===this)ryh47CloseMenu()"><div class="ryh47sheet"><div class="ryh47sheethead"><b>☰ MENU RAISE YOUR HAMMER</b><button class="ryh47close" onclick="ryh47CloseMenu()">✕</button></div><div class="ryh47menugrid">
+ <button class="ryh47menuitem" onclick="ryh47Home();ryh47CloseMenu()"><span>⌂</span><div>Home<small>Panoramica asta</small></div></button>
+ <button class="ryh47menuitem gold" onclick="ryh47Start();ryh47CloseMenu()"><span>🔨</span><div>Avvia asta<small>Asta rapida + strategia Hammer</small></div></button>
+ <button class="ryh47menuitem" onclick="ryh47Players();ryh47CloseMenu()"><span>🃏</span><div>Giocatori<small>Score, target e prezzi massimi</small></div></button>
+ <button class="ryh47menuitem" onclick="ryh47Opponents();ryh47CloseMenu()"><span>👥</span><div>Avversari<small>Profili, budget e minacce</small></div></button>
+ <button class="ryh47menuitem" onclick="ryh47Team();ryh47CloseMenu()"><span>🏆</span><div>La mia rosa<small>Rosa ideale e obiettivi</small></div></button>
+ <button class="ryh47menuitem" onclick="ryh47Brain();ryh47CloseMenu()"><span>🧠</span><div>Hammer Brain<small>Win Probability e decisioni live</small></div></button>
+ <button class="ryh47menuitem" onclick="ryh47ScrollId('ryh45');ryh47CloseMenu()"><span>📊</span><div>Analisi<small>Statistiche e simulazioni</small></div></button>
+ <button class="ryh47menuitem" onclick="ryh47ScrollId('ryh46');ryh47CloseMenu()"><span>📚</span><div>Storico aste<small>Memoria e aste precedenti</small></div></button>
+ <button class="ryh47menuitem" onclick="ryh47ScrollText('Configurazione asta');ryh47CloseMenu()"><span>⚙️</span><div>Configurazione asta<small>Partecipanti, crediti e modalità</small></div></button>
+ <button class="ryh47menuitem" onclick="ryh47ScrollText('PRO UPGRADE');ryh47CloseMenu()"><span>⭐</span><div>Pro Upgrade<small>Funzioni avanzate</small></div></button>
+ </div></div></div>
  </div>`;
  const target=document.querySelector('#ryh46,#ryh45,#ryh44,#ryh43,#ryh42,#ryh41,#ryh40Auto,#ryh39Master,#ryh38,#ryh37Director,.ryh37-director');
  if(target)target.parentNode.insertBefore(root,target);else document.body.appendChild(root);
@@ -5241,7 +5253,11 @@ window.ryh47Start=function(){const x=document.querySelector('[onclick*="Asta"],[
 window.ryh47Players=function(){const e=document.querySelector('#ryh42,#ryh41,#ryh40Auto');if(e)e.scrollIntoView({behavior:'smooth'});};
 window.ryh47Opponents=function(){const e=document.querySelector('#ryh45');if(e)e.scrollIntoView({behavior:'smooth'});};
 window.ryh47Team=function(){const e=document.querySelector('#myTeam,#teamSection,[id*="rosa"],[id*="team"]');if(e)e.scrollIntoView({behavior:'smooth'});};
-window.ryh47Menu=function(){alert('Menu: Home · Avvia asta · Giocatori · Avversari · Hammer Brain · La mia rosa · Analisi · Storico · Configurazione · Pro Upgrade');};
+window.ryh47Menu=function(){document.getElementById('ryh47drawer')?.classList.add('open')};
+window.ryh47CloseMenu=function(){document.getElementById('ryh47drawer')?.classList.remove('open')};
+window.ryh47ScrollId=function(id){const e=document.getElementById(id);if(e)e.scrollIntoView({behavior:'smooth',block:'start'});else document.getElementById('ryh47')?.scrollIntoView({behavior:'smooth'})};
+window.ryh47ScrollText=function(txt){const els=[...document.querySelectorAll('body *')].filter(e=>e.children.length===0 && (e.textContent||'').trim().toLowerCase().includes(txt.toLowerCase()));if(els[0])els[0].scrollIntoView({behavior:'smooth',block:'center'});else document.getElementById('ryh47')?.scrollIntoView({behavior:'smooth'})};
+window.ryh47Brain=function(){const e=document.querySelector('#ryh46');if(e)e.scrollIntoView({behavior:'smooth',block:'start'});else document.getElementById('ryh47')?.scrollIntoView({behavior:'smooth'})};
 window.ryh47Home=function(){document.getElementById('ryh47')?.scrollIntoView({behavior:'smooth'})};
 document.addEventListener('DOMContentLoaded',()=>setTimeout(mount,500));
 })();
