@@ -972,6 +972,49 @@ body{background:
   .ryh22-card{min-height:150px!important}
 }
 </style>
+
+<style id="ryhV26QuickAuctionCSS">
+/* V26 — One auction mode: RAPIDA */
+.ryh26-overlay{
+ position:fixed;inset:0;z-index:120;
+ display:none;align-items:flex-end;justify-content:center;
+ background:rgba(2,5,8,.72);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)
+}
+.ryh26-overlay.open{display:flex}
+.ryh26-sheet{
+ width:min(760px,100%);max-height:92vh;overflow:auto;
+ background:linear-gradient(180deg,#101923,#080e15);
+ border:1px solid #2a3948;border-bottom:0;border-radius:24px 24px 0 0;
+ padding:16px 14px 22px;box-shadow:0 -20px 60px #000b;
+ animation:ryh26In .25s cubic-bezier(.22,.8,.24,1)
+}
+@keyframes ryh26In{from{transform:translateY(30px);opacity:0}to{transform:none;opacity:1}}
+.ryh26-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.ryh26-title{font-size:21px;font-weight:900}
+.ryh26-sub{color:#8492a1;font-size:10px;margin-top:3px}
+.ryh26-close{width:36px;height:36px;border-radius:11px;border:1px solid #2c3b4b;background:#0b131c;color:#fff;font-size:18px}
+.ryh26-hero{
+ margin-top:12px;padding:14px;border-radius:17px;
+ border:1px solid #4d4021;background:linear-gradient(135deg,#1b1810,#101821)
+}
+.ryh26-badge{display:inline-block;padding:5px 8px;border-radius:8px;background:#2a2415;color:#f0cf6c;font-size:8px;font-weight:900}
+.ryh26-hero h3{margin:8px 0 4px;font-size:17px}
+.ryh26-hero p{margin:0;color:#8d9aa8;font-size:9px;line-height:1.45}
+.ryh26-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin-top:10px}
+.ryh26-opt{padding:11px;border-radius:13px;background:#0c141d;border:1px solid #223140}
+.ryh26-opt b{font-size:10px}.ryh26-opt span{display:block;color:#7f8d9c;font-size:8px;margin-top:4px;line-height:1.35}
+.ryh26-section{margin-top:12px;padding:12px;border-radius:16px;background:#0b131c;border:1px solid #1e2c39}
+.ryh26-section h4{margin:0 0 8px;font-size:11px}
+.ryh26-chips{display:flex;gap:6px;flex-wrap:wrap}
+.ryh26-chip{padding:7px 9px;border-radius:9px;border:1px solid #263645;background:#101a24;color:#9ba7b4;font-size:8px}
+.ryh26-chip.active{border-color:#806727;background:#221d10;color:#f0ce68}
+.ryh26-start{
+ width:100%;margin-top:12px;padding:14px;border:0;border-radius:14px;
+ background:linear-gradient(180deg,#f0cf6a,#c9992f);color:#111;font-weight:1000;font-size:13px
+}
+.ryh26-note{margin-top:8px;text-align:center;color:#697786;font-size:8px}
+@media(max-width:430px){.ryh26-grid{grid-template-columns:1fr}.ryh26-sheet{padding-bottom:16px}}
+</style>
 </head>
 <body>
 <div class="app">
@@ -3023,6 +3066,95 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')ryh20Toggle(false)})
       {duration:220,easing:'cubic-bezier(.22,.8,.24,1)'});
     fn?.();
   };
+})();
+</script>
+
+<div id="ryhV26QuickAuction" class="ryh26-overlay" aria-hidden="true">
+  <div class="ryh26-sheet" role="dialog" aria-modal="true" aria-labelledby="ryh26Title">
+    <div class="ryh26-head">
+      <div><div class="ryh26-title" id="ryh26Title">⚒️ Asta Rapida</div>
+      <div class="ryh26-sub">Una sola modalità, con strategia guidata dall'app.</div></div>
+      <button class="ryh26-close" type="button" onclick="ryh26Close()">×</button>
+    </div>
+
+    <div class="ryh26-hero">
+      <span class="ryh26-badge">CONSIGLIATA</span>
+      <h3>🎯 Strategia dinamica</h3>
+      <p>Raise Your Hammer segue budget, ruoli mancanti, andamento dei prezzi e acquisti già fatti per suggerirti quando spingere, quando fermarti e quanto conservare.</p>
+    </div>
+
+    <div class="ryh26-section">
+      <h4>Come vuoi giocare?</h4>
+      <div class="ryh26-chips" id="ryh26Style">
+        <button class="ryh26-chip active" data-value="equilibrata">⚖️ Equilibrata</button>
+        <button class="ryh26-chip" data-value="aggressiva">🔥 Aggressiva</button>
+        <button class="ryh26-chip" data-value="risparmio">🛡️ Risparmio</button>
+      </div>
+    </div>
+
+    <div class="ryh26-grid">
+      <div class="ryh26-opt"><b>💰 Budget intelligente</b><span>Calcola quanto puoi spendere senza compromettere il completamento della rosa.</span></div>
+      <div class="ryh26-opt"><b>📈 Prezzi in tempo reale</b><span>Registra gli acquisti e adatta i limiti ai prezzi effettivi della tua asta.</span></div>
+      <div class="ryh26-opt"><b>🎯 Target automatici</b><span>Priorità ai giocatori coerenti con la tua strategia e i ruoli ancora scoperti.</span></div>
+      <div class="ryh26-opt"><b>🛑 Stop consigliato</b><span>Ti avvisa quando il prezzo supera il valore massimo consigliato.</span></div>
+    </div>
+
+    <div class="ryh26-section">
+      <h4>Durante l'asta vedrai</h4>
+      <div class="ryh26-chips">
+        <span class="ryh26-chip active">⭐ Compra</span>
+        <span class="ryh26-chip">👀 Segui</span>
+        <span class="ryh26-chip">🛑 Lascia</span>
+        <span class="ryh26-chip">💶 Max consigliato</span>
+      </div>
+    </div>
+
+    <button class="ryh26-start" type="button" onclick="ryh26Start()">🚀 Avvia Asta Rapida</button>
+    <div class="ryh26-note">La modalità rapida sostituisce le tre modalità precedenti.</div>
+  </div>
+</div>
+
+<script id="ryhV26QuickAuctionJS">
+(function(){
+  const overlay=()=>document.getElementById('ryhV26QuickAuction');
+  window.ryh26Open=function(){
+    const o=overlay(); if(!o)return;
+    o.classList.add('open');o.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';
+  };
+  window.ryh26Close=function(){
+    const o=overlay(); if(!o)return;
+    o.classList.remove('open');o.setAttribute('aria-hidden','true');document.body.style.overflow='';
+  };
+  window.ryh26Start=function(){
+    const chosen=document.querySelector('#ryh26Style .active')?.dataset.value||'equilibrata';
+    localStorage.setItem('ryh_auction_mode','rapida');
+    localStorage.setItem('ryh_auction_strategy',chosen);
+    ryh26Close();
+    // Use existing auction entry points where available.
+    const candidates=[
+      '[onclick*="startAuction"]','[onclick*="avviaAsta"]','[onclick*="startAsta"]',
+      '#startAuction','.start-auction-btn'
+    ];
+    let btn=null;
+    for(const s of candidates){btn=document.querySelector(s);if(btn)break}
+    if(btn){btn.dataset.ryh26Bypass='1';btn.click();return}
+    // Fallback: switch to the existing Asta section.
+    if(typeof window.ryhV16Go==='function') window.ryhV16Go('asta');
+    else document.querySelector('[data-page="asta"]')?.click();
+  };
+  document.addEventListener('click',e=>{
+    const b=e.target.closest('button,a');
+    if(!b)return;
+    const t=(b.innerText||'').replace(/\s+/g,' ').trim().toLowerCase();
+    if(t.includes('avvia asta') && !b.dataset.ryh26Bypass){
+      e.preventDefault();e.stopImmediatePropagation();ryh26Open();
+    }
+    const chip=b.closest('#ryh26Style')?.querySelectorAll('.ryh26-chip');
+    if(chip && b.classList.contains('ryh26-chip')){
+      chip.forEach(x=>x.classList.remove('active'));b.classList.add('active');
+    }
+  },true);
+  overlay()?.addEventListener('click',e=>{if(e.target===overlay())ryh26Close()});
 })();
 </script>
 </body>
