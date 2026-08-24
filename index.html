@@ -372,6 +372,41 @@ radial-gradient(circle at 100% 15%,rgba(38,112,178,.08),transparent 30%),
   .ryh-md-head h3{font-size:16px!important}
 }
 </style>
+
+<style id="ryhV16SlideUI">
+/* V16 — slide navigation / no endless scrolling */
+.ryh16-nav{display:flex;gap:7px;position:sticky;top:70px;z-index:24;margin:0 0 10px;padding:7px;border:1px solid #273548;border-radius:16px;background:rgba(8,13,20,.92);backdrop-filter:blur(18px);box-shadow:0 10px 28px #0007}
+.ryh16-nav button{flex:1;min-height:42px;padding:6px 5px!important;font-size:10px!important;background:#101a27!important;color:#91a0b2!important;border:1px solid #26364a!important}
+.ryh16-nav button.active{background:linear-gradient(135deg,#d6ad55,#a8751f)!important;color:#111!important;border-color:#f1cc72!important}
+.ryh16-label{display:block;font-size:8px;margin-top:2px}
+.ryh16-page{animation:ryhSlideIn .24s ease both}
+@keyframes ryhSlideIn{from{opacity:0;transform:translateX(22px)}to{opacity:1;transform:translateX(0)}}
+.ryh16-swipe{touch-action:pan-y}
+.ryh16-desktop-note{display:none}
+.ryh16-stepper{display:flex;gap:6px;margin:0 0 12px}
+.ryh16-step{flex:1;padding:9px 5px;border-radius:12px;background:#101a27;border:1px solid #29384a;color:#8391a4;font-size:9px;text-align:center;font-weight:900}
+.ryh16-step.active{color:#111;background:#d6ad55;border-color:#e7c66f}
+.ryh16-setup-section{transition:.2s ease}
+.ryh16-setup-section.is-hidden{display:none!important}
+.ryh16-startbar{position:sticky;bottom:72px;z-index:23;margin:12px -2px 0;padding:8px;background:rgba(7,12,18,.9);backdrop-filter:blur(14px);border-radius:15px}
+@media(min-width:801px){
+ .ryh16-nav{position:sticky;top:10px;max-width:720px;margin:0 auto 14px}
+}
+@media(max-width:800px){
+ body{overflow-x:hidden}
+ .app{padding-bottom:92px}
+ #main>.stats{margin-bottom:10px!important}
+ #main>.grid{display:block!important}
+ #main>.grid>*{margin-bottom:10px}
+ .ryh16-desktop-note{display:block;text-align:center;font-size:9px;color:#64748b;margin:5px 0 10px}
+ #setupCard{padding:13px!important}
+ #setupCard .setup{grid-template-columns:1fr 1fr;gap:7px}
+ #setupCard .setup .field{margin:0}
+ #setupCard .setup input{height:40px}
+ #setupCard h2{font-size:15px}
+ .ryh16-startbar button{width:100%;font-size:12px}
+}
+</style>
 </head>
 <body>
 <div class="app">
@@ -406,6 +441,13 @@ radial-gradient(circle at 100% 15%,rgba(38,112,178,.08),transparent 30%),
 
   <div class="card" id="setupCard">
     <h2>⚙️ Configurazione asta</h2>
+    <div class="ryh16-stepper">
+      <div class="ryh16-step active" id="ryhStep1">1 · IMPOSTA</div>
+      <div class="ryh16-step" id="ryhStep2">2 · PARTECIPANTI</div>
+      <div class="ryh16-step" id="ryhStep3">3 · INIZIA</div>
+    </div>
+    <div class="ryh16-desktop-note">Scorri lateralmente tra le aree dell'app: niente più pagine infinite.</div>
+
     <div class="setup">
       <div class="field"><label>Numero partecipanti</label>
         <input id="nPlayers" type="number" min="2" max="20" value="10" oninput="buildParticipantInputs()">
@@ -414,13 +456,13 @@ radial-gradient(circle at 100% 15%,rgba(38,112,178,.08),transparent 30%),
         <input id="credits" type="number" min="1" value="500">
       </div>
     </div>
-    <h3 style="margin:16px 0 8px">👥 Nomi partecipanti</h3>
+    <div id="ryhSetupStep2" class="ryh16-setup-section is-hidden"><h3 style="margin:16px 0 8px">👥 Nomi partecipanti</h3>
     <div id="participantInputs" class="row"></div>
-    <div class="notice" style="margin-top:10px">
+    </div><div class="notice" style="margin-top:10px">
       <b>⚒️ Il primo nome è la tua squadra</b>
       <div style="color:var(--muted);margin-top:4px">Puoi cambiare tutti i nomi prima di iniziare l'asta.</div>
     </div>
-    <button onclick="startAuction()" style="margin-top:12px">🚀 AVVIA ASTA</button>
+    <div class="ryh16-startbar"><button onclick="startAuction()">🚀 AVVIA ASTA</button></div>
   </div>
 
   
@@ -432,7 +474,16 @@ radial-gradient(circle at 100% 15%,rgba(38,112,178,.08),transparent 30%),
 
 <div id="resumeBanner" class="resume-banner hidden"><span>💾 <b>Asta salvata automaticamente</b><br><small>Puoi riprendere da dove eri rimasto.</small></span><span><button onclick="resumeAuction()">Riprendi</button> <button class="secondary" onclick="discardSavedAuction()">Nuova asta</button></span></div>
 
-  <div id="main" class="hidden">
+  
+<div id="ryhV16Nav" class="ryh16-nav hidden">
+  <button data-page="asta" onclick="ryhV16Go('asta')">⚒️<span class="ryh16-label">ASTA</span></button>
+  <button data-page="rosa" onclick="ryhV16Go('rosa')">🏟️<span class="ryh16-label">ROSA</span></button>
+  <button data-page="analisi" onclick="ryhV16Go('analisi')">🧠<span class="ryh16-label">ANALISI</span></button>
+  <button data-page="mercato" onclick="ryhV16Go('mercato')">📊<span class="ryh16-label">MERCATO</span></button>
+  <button data-page="altro" onclick="ryhV16Go('altro')">☰<span class="ryh16-label">ALTRO</span></button>
+</div>
+
+<div id="main" class="hidden">
     <div class="stats">
       <div class="stat"><small>Budget residuo</small><strong id="myBudget">500</strong></div>
       <div class="stat"><small>Speso</small><strong id="mySpent">0</strong></div>
@@ -1891,6 +1942,99 @@ document.addEventListener('DOMContentLoaded',()=>{
     nav.innerHTML=items.map(([id,ico,label])=>`<button class="secondary" onclick="ryhJump('${id}')">${ico}<span class="ryh15-navlabel">${label}</span></button>`).join('');
   }
 });
+</script>
+
+<script id="ryhV16SlideJS">
+(function(){
+  const groups={
+    asta:['ultimateCockpit','fastConsole','decision','rivalBoard'],
+    rosa:['squadBuilder','ultimateSquad','roleNeeds','idealRoster'],
+    analisi:['ryhMatchday','ryhPostAsta','ryh13FinalShell','ryh12dash'],
+    mercato:['playerDatabase','fullListImport','ryh12trade','ryh13-market','ryh13DS'],
+    altro:['participants','tableWrap','liveBoard','ryhDuelPanel','ryhCoachPanel','ryhObjectives','rivalsPanel']
+  };
+  function idsInGroup(page){
+    const set=new Set(groups[page]||[]);
+    return set;
+  }
+  window.ryhV16Go=function(page,dir){
+    const nav=document.getElementById('ryhV16Nav'); if(!nav)return;
+    nav.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b.dataset.page===page));
+    const all=new Set(Object.values(groups).flat());
+    all.forEach(id=>{
+      const el=document.getElementById(id);
+      if(!el)return;
+      const parent=el.parentElement;
+      if(!parent)return;
+      if(el.id==='decision'||el.id==='rivalBoard') return;
+      const show=idsInGroup(page).has(id);
+      el.classList.toggle('hidden',!show);
+      if(show){
+        el.classList.remove('ryh16-page'); void el.offsetWidth; el.classList.add('ryh16-page');
+      }
+    });
+    // Special handling for legacy dashboard sections: show/hide by direct id.
+    ['ryh13FinalShell','ryh12dash'].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el) el.classList.toggle('hidden', !idsInGroup(page).has(id));
+    });
+    const main=document.getElementById('main');
+    if(main) main.dataset.page=page;
+    window.scrollTo({top:0,behavior:'smooth'});
+  };
+
+  function setupNav(){
+    const main=document.getElementById('main'), nav=document.getElementById('ryhV16Nav');
+    if(!main||!nav)return;
+    const visible=!main.classList.contains('hidden');
+    nav.classList.toggle('hidden',!visible);
+    if(visible && !main.dataset.page) ryhV16Go('asta');
+  }
+
+  // Make the configuration screen a 2-step wizard without changing the existing data model.
+  function setupWizard(){
+    const card=document.getElementById('setupCard'); if(!card)return;
+    const step2=document.getElementById('ryhSetupStep2');
+    const notice=card.querySelector('.notice[style*="margin-top:10px"]');
+    const next=document.createElement('button');
+    next.className='secondary';
+    next.textContent='👥 INSERISCI PARTECIPANTI →';
+    next.style.marginTop='10px';
+    next.onclick=()=>{
+      if(step2){step2.classList.remove('is-hidden');}
+      document.getElementById('ryhStep1')?.classList.remove('active');
+      document.getElementById('ryhStep2')?.classList.add('active');
+      next.remove();
+      const back=document.createElement('button');
+      back.className='secondary'; back.textContent='← Torna impostazioni'; back.style.marginTop='7px';
+      back.onclick=()=>{if(step2)step2.classList.add('is-hidden');document.getElementById('ryhStep2')?.classList.remove('active');document.getElementById('ryhStep1')?.classList.add('active');card.querySelector('.ryh16-startbar')?.remove();card.appendChild(next);back.remove();};
+      const bar=card.querySelector('.ryh16-startbar'); if(bar) bar.insertBefore(back,bar.firstChild);
+      document.getElementById('ryhStep3')?.classList.add('active');
+    };
+    const first=card.querySelector('.ryh16-stepper');
+    if(first && !card.querySelector('#ryhSetupNext')){next.id='ryhSetupNext';first.after(next);}
+  }
+
+  document.addEventListener('DOMContentLoaded',()=>{
+    setupWizard();
+    const main=document.getElementById('main');
+    const obs=new MutationObserver(setupNav);
+    if(main) obs.observe(main,{attributes:true,attributeFilter:['class']});
+    setupNav();
+
+    let sx=0;
+    document.addEventListener('touchstart',e=>{sx=e.changedTouches[0].screenX},{passive:true});
+    document.addEventListener('touchend',e=>{
+      if(!main||main.classList.contains('hidden'))return;
+      const dx=e.changedTouches[0].screenX-sx;
+      if(Math.abs(dx)<70)return;
+      const pages=['asta','rosa','analisi','mercato','altro'];
+      const cur=main.dataset.page||'asta', i=pages.indexOf(cur);
+      const ni=dx<0?Math.min(pages.length-1,i+1):Math.max(0,i-1);
+      if(ni!==i) ryhV16Go(pages[ni],dx<0?'left':'right');
+    },{passive:true});
+  });
+})();
 </script>
 </body>
 </html>
