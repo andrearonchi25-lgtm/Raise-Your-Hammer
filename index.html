@@ -407,6 +407,104 @@ radial-gradient(circle at 100% 15%,rgba(38,112,178,.08),transparent 30%),
  .ryh16-startbar button{width:100%;font-size:12px}
 }
 </style>
+
+<style id="ryhV17DashboardUI">
+:root{
+ --ryh-bg:#050a10;--ryh-card:#0b131d;--ryh-card2:#0e1824;--ryh-line:#243244;
+ --ryh-text:#f4f7fb;--ryh-muted:#91a0b2;--ryh-gold:#e5b93f;
+ --ryh-green:#24d86d;--ryh-red:#ff3d42;--ryh-blue:#28a7ff;--ryh-purple:#a76cff;
+ --ryh-cyan:#00d7e8;--ryh-orange:#ff7a21;
+}
+body{background:
+ radial-gradient(circle at 50% -20%,rgba(229,185,63,.08),transparent 34%),
+ radial-gradient(circle at 0 40%,rgba(40,167,255,.06),transparent 30%),var(--ryh-bg)!important;color:var(--ryh-text)}
+.app{max-width:1180px;padding:0 14px 96px}
+.hero{margin:0 -14px 12px!important;padding:12px 14px 10px!important;min-height:58px;
+ background:rgba(5,10,16,.94)!important;border-bottom:1px solid #1d2a39!important;
+ box-shadow:0 8px 30px #0009!important;backdrop-filter:blur(18px)}
+.brand{font-size:22px!important;font-weight:950;letter-spacing:-.03em}
+.brand::first-line{color:#fff}
+.sub{font-size:10px!important;color:#8d9bad!important}
+.hero .secondary{border-color:#364557!important;background:#0b121c!important}
+#proControls{margin-top:7px!important}
+#ryhV16Nav{display:none!important}
+
+/* top KPI strip */
+.ryh17-kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:#223043;border:1px solid #223043;border-radius:17px;overflow:hidden;margin:0 0 12px}
+.ryh17-kpi{background:linear-gradient(180deg,#0d1620,#09111a);padding:10px 7px;text-align:center}
+.ryh17-kpi small{display:block;font-size:8px;color:#b6c0cc;font-weight:800;text-transform:uppercase}
+.ryh17-kpi strong{display:block;font-size:18px;margin-top:3px}
+.ryh17-kpi.gold strong{color:var(--ryh-gold)}
+.ryh17-kpi.green strong{color:var(--ryh-green)}
+@media(max-width:650px){.ryh17-kpis{grid-template-columns:repeat(5,1fr)}.ryh17-kpi strong{font-size:15px}.ryh17-kpi small{font-size:6.5px}}
+
+/* featured auction */
+.ryh17-feature{border:1px solid #263648;border-radius:20px;overflow:hidden;background:
+ linear-gradient(105deg,#0a1119 0%,#0b151f 62%,#071019 100%);box-shadow:0 15px 40px #0008;margin-bottom:14px}
+.ryh17-feature-top{display:grid;grid-template-columns:1.3fr .7fr;min-height:205px}
+.ryh17-player{padding:16px 16px 12px;display:flex;align-items:center;gap:14px}
+.ryh17-avatar{width:120px;height:150px;border-radius:16px;background:linear-gradient(145deg,#162738,#081019);
+ display:flex;align-items:end;justify-content:center;overflow:hidden;border:1px solid #27384a;font-size:70px;flex:none}
+.ryh17-avatar span{filter:drop-shadow(0 8px 12px #000);transform:translateY(7px)}
+.ryh17-live{display:inline-block;background:#0aa84c;color:#fff;border-radius:6px;padding:5px 8px;font-size:9px;font-weight:950}
+.ryh17-name{font-size:22px;font-weight:950;margin:9px 0 3px}
+.ryh17-pos{color:#aeb9c7;font-size:11px}
+.ryh17-values{display:flex;gap:28px;margin:18px 0 9px}
+.ryh17-value small{display:block;color:#9ca9b8;font-size:9px}.ryh17-value b{font-size:25px}
+.ryh17-value b.gold{color:var(--ryh-gold)}
+.ryh17-tags{display:flex;gap:7px}.ryh17-tag{border:1px solid #20b95d;color:#35e778;border-radius:14px;padding:5px 8px;font-size:8px;font-weight:900}
+.ryh17-advice{border-left:1px solid #223143;padding:18px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ryh17-advice small{font-size:10px;color:#c7d0db}.ryh17-ring{width:110px;height:110px;border:7px solid var(--ryh-green);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:950;margin:8px 0}
+.ryh17-range{font-size:10px;color:#b5c0cd}.ryh17-range b{display:block;color:#fff;font-size:19px;margin-top:2px}
+.ryh17-bidbar{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;align-items:center;border-top:1px solid #263648;padding:10px 14px}
+.ryh17-last{font-size:9px;color:#9eabb9}.ryh17-last b{display:block;color:var(--ryh-gold);font-size:21px}
+.ryh17-bidbox{display:flex;align-items:center;justify-content:center;gap:10px;background:#081019;border:1px solid #263648;border-radius:14px;padding:8px}
+.ryh17-bidbox button{width:34px!important;min-height:34px!important;border-radius:50%!important;padding:0!important}
+.ryh17-bidbox b{font-size:22px}.ryh17-bidbox small{display:block;font-size:8px;color:#a4afbc;text-align:center}
+.ryh17-offer{background:linear-gradient(180deg,#f0c548,#d9a92e)!important;color:#111!important;border:0!important;font-size:13px!important;font-weight:950!important;min-height:48px!important}
+
+/* dashboard */
+.ryh17-title{display:flex;align-items:center;justify-content:space-between;margin:13px 2px 8px}
+.ryh17-title h2{font-size:18px;margin:0}.ryh17-title span{font-size:9px;color:#a7b2c0}
+.ryh17-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.ryh17-stat{background:linear-gradient(145deg,#0c151f,#09111a);border:1px solid #223244;border-radius:15px;padding:11px}
+.ryh17-stat small{display:block;font-size:8px;color:#bdc6d0}.ryh17-stat b{display:block;font-size:22px;margin-top:4px}
+.ryh17-stat.green b{color:var(--ryh-green)}.ryh17-stat.red b{color:var(--ryh-red)}.ryh17-stat.blue b{color:var(--ryh-blue)}.ryh17-stat.purple b{color:var(--ryh-purple)}
+.ryh17-tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:10px}
+.ryh17-tile{min-height:145px;border:1px solid #213144;border-radius:17px;padding:13px;background:linear-gradient(145deg,#0b1520,#071019);position:relative;overflow:hidden}
+.ryh17-tile h3{margin:0 0 8px;font-size:13px}.ryh17-tile p{margin:0;color:#a8b3c1;font-size:10px;line-height:1.45;max-width:82%}
+.ryh17-tile button{margin-top:12px;min-height:34px!important;font-size:9px!important;padding:6px 10px!important}
+.ryh17-tile.green{border-color:#145d39}.ryh17-tile.green h3{color:var(--ryh-green)}
+.ryh17-tile.blue{border-color:#164a71}.ryh17-tile.blue h3{color:var(--ryh-blue)}
+.ryh17-tile.orange{border-color:#68401d}.ryh17-tile.orange h3{color:var(--ryh-orange)}
+.ryh17-tile.purple{border-color:#4a2a76}.ryh17-tile.purple h3{color:var(--ryh-purple)}
+.ryh17-tile.cyan{border-color:#155c63}.ryh17-tile.cyan h3{color:var(--ryh-cyan)}
+.ryh17-tile.gold{border-color:#66501a}.ryh17-tile.gold h3{color:var(--ryh-gold)}
+.ryh17-icon{position:absolute;right:12px;bottom:12px;font-size:42px;opacity:.35}
+.ryh17-road{margin-top:12px;border:1px solid #765819;border-radius:18px;padding:14px;background:linear-gradient(100deg,#14120b,#0a1218)}
+.ryh17-road h3{margin:0;color:var(--ryh-gold);font-size:16px}.ryh17-roadrow{display:grid;grid-template-columns:150px 1fr;gap:16px;margin-top:9px;align-items:center}.ryh17-rating{font-size:38px;font-weight:950}.ryh17-rating small{font-size:12px}.ryh17-bars{display:grid;gap:6px}.ryh17-bar{display:grid;grid-template-columns:80px 1fr 32px;gap:8px;align-items:center;font-size:9px}.ryh17-bar i{height:7px;border-radius:8px;background:#173b25;overflow:hidden}.ryh17-bar i b{display:block;height:100%;background:#21c85e;border-radius:8px}
+.ryh17-bottom{position:fixed;left:50%;bottom:8px;transform:translateX(-50%);z-index:60;width:min(760px,calc(100% - 18px));display:grid;grid-template-columns:repeat(5,1fr);gap:2px;padding:7px;background:rgba(8,14,21,.95);border:1px solid #27384a;border-radius:18px;box-shadow:0 10px 35px #000b;backdrop-filter:blur(18px)}
+.ryh17-bottom button{background:transparent!important;border:0!important;min-height:42px!important;color:#8998aa!important;padding:4px!important;font-size:9px!important}
+.ryh17-bottom button.active{color:var(--ryh-gold)!important}
+.ryh17-bottom strong{display:block;font-size:18px;line-height:16px}.ryh17-bottom span{font-size:8px}
+@media(max-width:650px){
+ .app{padding-left:9px;padding-right:9px}
+ .hero{margin-left:-9px!important;margin-right:-9px!important}
+ .ryh17-feature-top{grid-template-columns:1fr;min-height:0}
+ .ryh17-player{min-height:190px;padding:13px}
+ .ryh17-avatar{width:92px;height:125px;font-size:55px}
+ .ryh17-name{font-size:18px}.ryh17-values{gap:15px;margin:12px 0 7px}.ryh17-value b{font-size:20px}
+ .ryh17-advice{border-left:0;border-top:1px solid #223143;min-height:150px;display:grid;grid-template-columns:1fr 1fr;gap:6px}
+ .ryh17-ring{width:90px;height:90px;margin:0 auto}
+ .ryh17-bidbar{grid-template-columns:1fr 1.2fr 1fr;gap:6px;padding:8px}
+ .ryh17-stats{grid-template-columns:repeat(2,1fr)}
+ .ryh17-tiles{grid-template-columns:repeat(2,1fr)}
+ .ryh17-tile{min-height:132px}
+ .ryh17-roadrow{grid-template-columns:110px 1fr}
+ .ryh17-rating{font-size:32px}
+ .ryh17-bar{grid-template-columns:55px 1fr 25px}
+}
+</style>
 </head>
 <body>
 <div class="app">
@@ -482,6 +580,82 @@ radial-gradient(circle at 100% 15%,rgba(38,112,178,.08),transparent 30%),
   <button data-page="mercato" onclick="ryhV16Go('mercato')">📊<span class="ryh16-label">MERCATO</span></button>
   <button data-page="altro" onclick="ryhV16Go('altro')">☰<span class="ryh16-label">ALTRO</span></button>
 </div>
+
+
+<section id="ryhV17Home">
+  <div class="ryh17-kpis">
+    <div class="ryh17-kpi"><small>Posti rosa</small><strong>25</strong></div>
+    <div class="ryh17-kpi"><small>Modalità asta</small><strong>Normale⌄</strong></div>
+    <div class="ryh17-kpi"><small>Inflazione asta</small><strong>0%</strong></div>
+    <div class="ryh17-kpi"><small>Budget da conservare</small><strong class="gold">50</strong></div>
+    <div class="ryh17-kpi"><small>Fase asta</small><strong class="gold">Inizio</strong></div>
+  </div>
+
+  <section class="ryh17-feature">
+    <div class="ryh17-feature-top">
+      <div class="ryh17-player">
+        <div class="ryh17-avatar"><span>⚽</span></div>
+        <div>
+          <span class="ryh17-live">LIVE</span>
+          <div class="ryh17-name">GIOCATORE IN ASTA</div>
+          <div class="ryh17-pos">INTER • ATTACCANTE</div>
+          <div class="ryh17-values">
+            <div class="ryh17-value"><small>Valore app</small><b class="gold">54</b></div>
+            <div class="ryh17-value"><small>Media</small><b>7,25</b></div>
+          </div>
+          <div class="ryh17-tags"><span class="ryh17-tag">TITOLARE</span><span class="ryh17-tag">RIGORISTA</span></div>
+        </div>
+      </div>
+      <div class="ryh17-advice">
+        <div><small>Consiglio</small><div class="ryh17-ring">ACQUISTA</div></div>
+        <div class="ryh17-range">Fascia prezzo<b>48 – 57</b></div>
+      </div>
+    </div>
+    <div class="ryh17-bidbar">
+      <div class="ryh17-last">Ultima offerta<b>46</b></div>
+      <div class="ryh17-bidbox"><button class="secondary">−</button><div><b>48</b><small>Crediti</small></div><button class="secondary">+</button></div>
+      <button class="ryh17-offer">🔨 OFFRI</button>
+    </div>
+  </section>
+
+  <div class="ryh17-title"><h2>Dashboard asta</h2><span>Vedi tutte le statistiche ›</span></div>
+  <div class="ryh17-stats">
+    <div class="ryh17-stat green"><small>Crediti disponibili</small><b>142</b><span>(28,4%)</span></div>
+    <div class="ryh17-stat red"><small>Crediti spesi</small><b>358</b><span>(71,6%)</span></div>
+    <div class="ryh17-stat blue"><small>Giocatori acquistati</small><b>16/25</b></div>
+    <div class="ryh17-stat purple"><small>Media rosa</small><b>6,68</b></div>
+  </div>
+
+  <div class="ryh17-tiles">
+    <div class="ryh17-tile green"><h3>CHI SCHIERO OGGI?</h3><p>Analisi partite e formazione consigliata.</p><button class="secondary" onclick="ryhJump('ryhMatchday')">Apri Matchday Assistant ›</button><div class="ryh17-icon">📋</div></div>
+    <div class="ryh17-tile blue"><h3>LA MIA ROSA</h3><p>Gestisci la tua rosa e i giocatori.</p><button class="secondary" onclick="ryhJump('squadBuilder')">Vai alla rosa ›</button><div class="ryh17-icon">👕</div></div>
+    <div class="ryh17-tile orange"><h3>CAMPO TATTICO</h3><p>Vedi la formazione ideale e cambia modulo.</p><button class="secondary" onclick="ryhJump('v3Field')">Apri campo ›</button><div class="ryh17-icon">🏟️</div></div>
+    <div class="ryh17-tile purple"><h3>ANALISI ROSA</h3><p>Voti, analisi acquisti e report dettagliati.</p><button class="secondary" onclick="ryhJump('ryh13FinalShell')">Apri analisi ›</button><div class="ryh17-icon">📈</div></div>
+    <div class="ryh17-tile cyan"><h3>DIRETTORE SPORTIVO</h3><p>Priorità mercato e consigli intelligenti.</p><button class="secondary" onclick="ryhJump('ryhDS')">Apri DS ›</button><div class="ryh17-icon">🎯</div></div>
+    <div class="ryh17-tile gold"><h3>SIMULA SCAMBIO</h3><p>Prova uno scambio e valuta la convenienza.</p><button class="secondary" onclick="ryhJump('ryh12trade')">Simula scambio ›</button><div class="ryh17-icon">↔️</div></div>
+  </div>
+
+  <section class="ryh17-road">
+    <h3>🏆 ROAD TO SCUDETTO</h3>
+    <div class="ryh17-roadrow">
+      <div><div class="ryh17-rating">8,8<small>/10</small></div><div>⭐️⭐️⭐️⭐️½</div></div>
+      <div class="ryh17-bars">
+        <div class="ryh17-bar"><span>Attacco</span><i><b style="width:92%"></b></i><strong>9,2</strong></div>
+        <div class="ryh17-bar"><span>Centrocampo</span><i><b style="width:87%"></b></i><strong>8,7</strong></div>
+        <div class="ryh17-bar"><span>Difesa</span><i><b style="width:81%"></b></i><strong>8,1</strong></div>
+        <div class="ryh17-bar"><span>Porta</span><i><b style="width:85%"></b></i><strong>8,5</strong></div>
+      </div>
+    </div>
+  </section>
+</section>
+
+<nav class="ryh17-bottom">
+  <button class="active" onclick="ryh17Home()"><strong>⌂</strong><span>HOME</span></button>
+  <button onclick="ryhJump('v3Field')"><strong>▥</strong><span>CAMPO</span></button>
+  <button onclick="ryhJump('ryhMatchday')"><strong>⌁</strong><span>ANALISI</span></button>
+  <button onclick="ryhJump('ryh12trade')"><strong>⇄</strong><span>MERCATO</span></button>
+  <button onclick="navigator.share ? navigator.share({title:'Raise Your Hammer',text:'La mia asta Fantacalcio'}) : null"><strong>↗</strong><span>CONDIVIDI</span></button>
+</nav>
 
 <div id="main" class="hidden">
     <div class="stats">
@@ -2035,6 +2209,20 @@ document.addEventListener('DOMContentLoaded',()=>{
     },{passive:true});
   });
 })();
+</script>
+
+<script id="ryhV17DashboardJS">
+function ryh17Home(){
+  const h=document.getElementById('ryhV17Home'); if(h){h.style.display='block';window.scrollTo({top:0,behavior:'smooth'});}
+  document.querySelectorAll('.ryh17-bottom button').forEach((b,i)=>b.classList.toggle('active',i===0));
+}
+document.addEventListener('DOMContentLoaded',()=>{
+  const main=document.getElementById('main'), home=document.getElementById('ryhV17Home');
+  const nav=document.querySelector('.ryh17-bottom');
+  // Home is the compact landing dashboard. Existing tools remain accessible.
+  if(home) home.style.display='block';
+  if(main) main.style.display='';
+});
 </script>
 </body>
 </html>
