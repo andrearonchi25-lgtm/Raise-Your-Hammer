@@ -1465,6 +1465,25 @@ body{
 </style>
 
 
+<style id="ryhV48RapidFixCSS">
+/* V48 — Rapid Auction is a real full-screen flow on mobile */
+.ryh33-overlay{align-items:stretch!important;justify-content:stretch!important;padding:0!important;background:rgba(2,6,10,.88)!important;z-index:20000!important}
+.ryh33-sheet{width:100%!important;height:100dvh!important;max-height:none!important;overflow:hidden!important;border-radius:0!important;border:0!important;padding:0!important;display:flex!important;flex-direction:column!important;background:linear-gradient(160deg,#111a27,#080d14)!important}
+.ryh33-head{flex:0 0 auto;padding:14px 14px 8px;border-bottom:1px solid #243447;background:rgba(8,14,21,.96);position:relative;z-index:2}
+.ryh33-title{font-size:19px!important}.ryh33-sub{font-size:10px!important;max-width:280px}
+.ryh33-close{flex:0 0 38px!important;width:38px!important;height:38px!important;background:linear-gradient(180deg,#edc967,#bd8e2f)!important;color:#10151b!important;border-color:#f0cf76!important}
+.ryh33-stepbar{flex:0 0 auto;margin:8px 12px!important}
+.ryh33-step{padding:8px 5px!important;font-size:9px!important}
+.ryh33-panel{flex:1 1 auto;overflow:auto;min-height:0;margin:0 10px 10px!important;padding:12px!important;-webkit-overflow-scrolling:touch}
+.ryh33-actions{position:sticky;bottom:0;z-index:3;margin:12px -12px -12px!important;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:linear-gradient(180deg,rgba(11,19,30,.72),#0b131e 28%);backdrop-filter:blur(10px)}
+.ryh33-primary,.ryh33-secondary{min-height:46px!important}
+.ryh33-team-list{padding-bottom:4px}
+body.ryh33-modal-open{overflow:hidden!important;position:fixed!important;width:100%!important}
+body.ryh33-modal-open .ryh47nav{display:none!important}
+body.ryh33-modal-open .ryh20-menu{display:none!important}
+@media(max-width:520px){.ryh33-grid{grid-template-columns:1fr 1fr!important}.ryh33-team-list{grid-template-columns:1fr!important}.ryh33-panel{margin:0 7px 8px!important}.ryh33-actions{grid-template-columns:1fr 1fr!important}.ryh33-hero p{font-size:10px!important}}
+</style>
+
 <style id="ryhV33RapidSetupCSS">
 .ryh33-overlay{position:fixed;inset:0;z-index:1000;background:rgba(2,6,10,.82);backdrop-filter:blur(12px);display:none;align-items:flex-end;justify-content:center}
 .ryh33-overlay.open{display:flex}
@@ -3967,8 +3986,8 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')ryh20Toggle(false)})
   const $=id=>document.getElementById(id);
   let rosterCache=[];
 
-  function open(){const o=$('ryhV33RapidSetup');if(!o)return;o.classList.add('open');o.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';buildTeams();}
-  function close(){const o=$('ryhV33RapidSetup');if(!o)return;o.classList.remove('open');o.setAttribute('aria-hidden','true');document.body.style.overflow='';}
+  function open(){const o=$('ryhV33RapidSetup');if(!o)return;o.classList.add('open');o.setAttribute('aria-hidden','false');document.body.classList.add('ryh33-modal-open');document.body.style.overflow='hidden';buildTeams();}
+  function close(){const o=$('ryhV33RapidSetup');if(!o)return;o.classList.remove('open');o.setAttribute('aria-hidden','true');document.body.classList.remove('ryh33-modal-open');document.body.style.overflow='';}
   window.ryh33Open=open; window.ryh33Close=close;
 
   function buildTeams(){
@@ -4195,7 +4214,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')ryh20Toggle(false)})
         <p>Partecipanti configurati. La rosa-obiettivo è pronta. Durante l'asta Hammer userà budget, ruoli mancanti e prezzi registrati per consigliarti <b>COMPRA / SEGUILO / LASCIA</b>.</p>
       </div>
       <div id="ryh33FinalSummary" style="margin-top:10px"></div>
-      <button class="ryh33-primary" data-ryh33-bypass="1" onclick="ryh33Start()">🔨 AVVIA ASTA RAPIDA</button>
+      <div class="ryh33-actions"><button class="ryh33-secondary" onclick="ryh33Close()">← Modifica</button><button class="ryh33-primary" data-ryh33-bypass="1" onclick="ryh33Start()">🔨 AVVIA ASTA RAPIDA</button></div>
     </section>
   </div>
 </div>
@@ -5260,20 +5279,6 @@ window.ryh47ScrollText=function(txt){const els=[...document.querySelectorAll('bo
 window.ryh47Brain=function(){const e=document.querySelector('#ryh46');if(e)e.scrollIntoView({behavior:'smooth',block:'start'});else document.getElementById('ryh47')?.scrollIntoView({behavior:'smooth'})};
 window.ryh47Home=function(){document.getElementById('ryh47')?.scrollIntoView({behavior:'smooth'})};
 document.addEventListener('DOMContentLoaded',()=>setTimeout(mount,500));
-})();
-</script>
-<script id="ryhFinalMenuGuard">
-(function(){
-  // V47 FINAL: remove the browser-alert menu implementation and force the native drawer.
-  window.ryh47Menu=function(){var d=document.getElementById('ryh47drawer');if(d){d.classList.add('open');d.style.display='block';}};
-  window.ryh47CloseMenu=function(){var d=document.getElementById('ryh47drawer');if(d){d.classList.remove('open');d.style.display='none';}};
-  document.addEventListener('click',function(e){
-    var b=e.target.closest && e.target.closest('.ryh47menu');
-    if(b){e.preventDefault();e.stopImmediatePropagation();window.ryh47Menu();return false;}
-  },true);
-  if('serviceWorker' in navigator){
-    navigator.serviceWorker.getRegistrations().then(function(rs){return Promise.all(rs.map(function(r){return r.unregister();}));}).catch(function(){});
-  }
 })();
 </script>
 </body>
