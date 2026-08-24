@@ -1614,6 +1614,16 @@ body{
 .ryh45btn{width:100%;margin-top:7px;padding:9px;border-radius:10px;border:1px solid #354a60;background:#142131;color:#eef3f8;font-size:8px;font-weight:1000}
 @media(max-width:430px){.ryh45tabs{grid-template-columns:repeat(2,1fr)}.ryh45grid{grid-template-columns:1fr 1fr}.ryh45k:last-child{grid-column:1/-1}}
 </style>
+
+<style id="ryhV46CSS">
+.ryh46{margin-top:10px;padding:12px;border:1px solid #465a70;border-radius:18px;background:linear-gradient(145deg,#111c29,#080f17)}
+.ryh46 h4{margin:0;font-size:14px}.ryh46sub{font-size:8px;color:#8291a4;margin-top:3px}
+.ryh46tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin:9px 0}.ryh46tab{padding:7px 3px;border:1px solid #293b4f;border-radius:9px;background:#0d1721;color:#8492a4;font-size:7px;font-weight:1000}.ryh46tab.on{background:#392d15;color:#e8c56a;border-color:#d4aa4e}
+.ryh46grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}.ryh46k{padding:8px 3px;text-align:center;background:#0d1721;border:1px solid #27394c;border-radius:10px}.ryh46k small{display:block;font-size:7px;color:#7d8b9c}.ryh46k b{font-size:12px}
+.ryh46box{margin-top:7px;padding:9px;border-radius:11px;background:#0c1620;border:1px solid #293c51;font-size:8px;line-height:1.45}.ryh46box b{color:#e6c267}
+.ryh46list{display:grid;gap:5px;margin-top:7px}.ryh46row{display:grid;grid-template-columns:1fr auto;gap:7px;align-items:center;padding:7px 8px;background:#0d1721;border:1px solid #24374b;border-radius:10px}.ryh46row b{font-size:9px}.ryh46row small{display:block;color:#728095;font-size:6px;margin-top:2px}.ryh46score{font-size:12px;font-weight:1000;color:#e3bd64;text-align:right}.ryh46tag{display:inline-block;padding:3px 5px;border-radius:6px;font-size:6px;font-weight:1000;background:#302a18;color:#e4ca78;margin-top:3px}.ryh46green{background:#163224;color:#79dfa0}.ryh46red{background:#3b201d;color:#ff9b91}.ryh46blue{background:#172a3c;color:#8fc8ff}
+.ryh46btn{width:100%;margin-top:7px;padding:9px;border-radius:10px;border:1px solid #354a60;background:#142131;color:#eef3f8;font-size:8px;font-weight:1000}
+</style>
 </head>
 <body>
 <div class="app">
@@ -5097,6 +5107,79 @@ window.ryh45Run=function(){simulate();render()};
 function mount(){if(document.getElementById('ryh45'))return;const a=document.querySelector('#ryh44,#ryh43,#ryh42,#ryh41,#ryh40Auto,#ryh39Master,#ryh38,#ryh37Director,.ryh37-director');if(!a)return;const e=document.createElement('div');e.id='ryh45';a.after(e);render()}
 document.addEventListener('DOMContentLoaded',()=>{setTimeout(mount,1200);setInterval(()=>{mount()},15000)});
 window.ryh45Mount=mount;
+})();
+</script>
+
+<script id="ryhV46JS">
+(function(){
+const KEY='ryh_hammer_brain_v46';
+let tab='live';
+const esc=x=>typeof escapeHtml==='function'?escapeHtml(String(x)):String(x).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const norm=x=>String(x||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();
+
+function load(){try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){return{}}}
+function save(x){localStorage.setItem(KEY,JSON.stringify(x))}
+function states(){
+ const a=[];
+ try{if(typeof state!=='undefined'&&state)a.push(state)}catch(e){}
+ ['fantacalcio_state','ryh_state','ryh_hammer_state','ryh_hammer_auto_v40','ryh_hammer_intelligence_v41','ryh_hammer_sim_v44','ryh_hammer_opponent_ai_v45'].forEach(k=>{
+  try{let x=JSON.parse(localStorage.getItem(k)||'null');if(x)a.push(x)}catch(e){}
+ });
+ return a;
+}
+function purchases(){
+ const a=[];states().forEach(x=>{(x.purchases||[]).forEach(p=>a.push(p));(x.history||[]).forEach(p=>a.push(p));});
+ return a;
+}
+function profiles(){
+ const names=[];
+ states().forEach(x=>(x.teams||[]).forEach(t=>names.push(typeof t==='string'?t:(t.name||t.team||t.squadra||''))));
+ return [...new Set(names.filter(Boolean))].map(name=>{
+  const ps=purchases().filter(p=>norm(p.buyer||p.team||p.squadra)===norm(name));
+  const vals=ps.map(p=>+(p.price??p.credits??p.costo??0)).filter(Boolean);
+  const avg=vals.length?vals.reduce((a,b)=>a+b,0)/vals.length:0;
+  return {name,count:ps.length,avg,aggression:Math.min(95,35+ps.length*7+(avg>35?20:0)),patience:Math.max(20,80-ps.length*6)};
+ });
+}
+function calc(){
+ const d=load(), ops=profiles(), p=purchases();
+ const pressure=ops.length?Math.round(ops.reduce((a,o)=>a+o.aggression,0)/ops.length):50;
+ const confidence=Math.min(94,45+Math.min(45,p.length*2));
+ const win=Math.max(18,Math.min(88,Math.round(72-pressure*.22+(confidence-50)*.22)));
+ d.live={win,pressure,confidence,updated:Date.now(),ops};save(d);return d.live;
+}
+function render(){
+ const host=document.getElementById('ryh46');if(!host)return;
+ const d=load(), l=d.live||calc(), ops=profiles();
+ host.innerHTML=`<div class="ryh46"><h4>🧠 Hammer Brain — LIVE</h4><div class="ryh46sub">Unifica Player Score, storico aste e comportamento degli avversari in una lettura strategica.</div>
+ <div class="ryh46tabs">${[['live','🏆 Win LIVE'],['move','🎯 Prossima mossa'],['whatif','🧪 E se...?'],['memory','🧠 Memoria']].map(x=>`<button class="ryh46tab ${tab===x[0]?'on':''}" onclick="ryh46Tab('${x[0]}')">${x[1]}</button>`).join('')}</div>
+ ${tab==='live'?live(l):tab==='move'?move(ops):tab==='whatif'?whatif():memory()}
+ </div>`;
+}
+function live(l){
+ return `<div class="ryh46grid"><div class="ryh46k"><small>WIN PROBABILITY</small><b>${l.win}%</b></div><div class="ryh46k"><small>PRESSIONE AVVERSARI</small><b>${l.pressure}/100</b></div><div class="ryh46k"><small>CONFIDENZA</small><b>${l.confidence}%</b></div></div>
+ <div class="ryh46box"><b>🏆 Lettura attuale:</b> ${l.win>=70?'Situazione favorevole: Hammer può aspettare e selezionare.' : l.win>=50?'Situazione equilibrata: proteggere il budget e colpire solo sui target.' : 'Mercato ostile: evitare guerre di rilanci e conservare liquidità.'}</div>
+ <button class="ryh46btn" onclick="ryh46Refresh()">🔄 Ricalcola LIVE</button>`;
+}
+function move(ops){
+ const o=ops.slice().sort((a,b)=>b.aggression-a.aggression)[0];
+ return `<div class="ryh46box"><b>🎯 Decisione consigliata</b><br>${o?`L'avversario più aggressivo è <b>${esc(o.name)}</b>. Prima di rilanciare, Hammer considera il suo budget e il suo bisogno di reparto.`:'Configura i partecipanti per attivare la previsione delle mosse.'}</div>
+ <div class="ryh46list"><div class="ryh46row"><div><b>🟢 Se il prezzo resta sotto Target</b><small>Acquista: value favorevole.</small></div><div class="ryh46score">BUY</div></div><div class="ryh46row"><div><b>🟡 Tra Target e Max</b><small>Valuta il bisogno della rosa e gli avversari.</small></div><div class="ryh46score">WATCH</div></div><div class="ryh46row"><div><b>🔴 Oltre Max</b><small>Lascia andare: il vantaggio statistico si riduce.</small></div><div class="ryh46score">PASS</div></div></div>`;
+}
+function whatif(){
+ return `<div class="ryh46box"><b>🧪 E se...?</b><br>Il Brain deve confrontare scenari prima di impegnare crediti: comprare, lasciare, oppure far salire il prezzo all'avversario. I risultati sono indicativi e dipendono dai dati disponibili.</div>
+ <div class="ryh46list"><div class="ryh46row"><div><b>🔥 Comprare il top</b><small>Massimo impatto immediato, budget residuo ridotto.</small></div><div class="ryh46score">HIGH</div></div><div class="ryh46row"><div><b>🧊 Lasciare il top</b><small>Conserva budget per più value player.</small></div><div class="ryh46score">VALUE</div></div><div class="ryh46row"><div><b>💣 Guerra di rilanci</b><small>Ha senso solo se il costo strategico per l'avversario è maggiore del nostro.</small></div><div class="ryh46score">RISK</div></div></div>`;
+}
+function memory(){
+ const p=purchases(), d=load();
+ return `<div class="ryh46grid"><div class="ryh46k"><small>EVENTI MEMORIZZATI</small><b>${p.length}</b></div><div class="ryh46k"><small>AVVERSARI</small><b>${profiles().length}</b></div><div class="ryh46k"><small>VERSIONE</small><b>46</b></div></div>
+ <div class="ryh46box"><b>🧠 Memoria:</b> Hammer conserva segnali derivati dagli eventi locali disponibili e li usa per melhorar as recomendações. Con pochi dati, la confidenza resta bassa.</div>`;
+}
+window.ryh46Tab=x=>{tab=x;render()};
+window.ryh46Refresh=()=>{calc();render()};
+function mount(){if(document.getElementById('ryh46'))return;const a=document.querySelector('#ryh45,#ryh44,#ryh43,#ryh42,#ryh41,#ryh40Auto,#ryh39Master,#ryh38,#ryh37Director,.ryh37-director');if(!a)return;const e=document.createElement('div');e.id='ryh46';a.after(e);render()}
+document.addEventListener('DOMContentLoaded',()=>{setTimeout(mount,1300);setInterval(()=>{mount()},15000)});
+window.ryh46Mount=mount;
 })();
 </script>
 </body>
