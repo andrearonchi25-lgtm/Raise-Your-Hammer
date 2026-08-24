@@ -604,6 +604,9 @@ body{background:
  .ryh19-quick{grid-template-columns:repeat(2,1fr)}.ryh19-modules{grid-template-columns:repeat(2,1fr)}
  .ryh19-road-content{grid-template-columns:100px 1fr}.ryh19-score{font-size:31px}
 }
+
+.ideal-picker{margin:12px 0 14px;padding:12px;border:1px solid #263447;border-radius:16px;background:linear-gradient(180deg,#111a25,#0b1119)}
+.ideal-picker-title{font-weight:900;margin-bottom:9px}.ideal-picker-controls{display:grid;grid-template-columns:1fr 105px;gap:7px}.ideal-picker-controls input,.ideal-picker-controls select{min-width:0}.ideal-picker-results{margin-top:8px;display:grid;gap:5px}.ideal-picker-row{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 9px;border:1px solid #253449;border-radius:11px;background:#0b131d}.ideal-picker-row span{min-width:0}.ideal-picker-row b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ideal-picker-row small{display:block;color:var(--muted);margin-top:2px}.ideal-picker-row button{padding:7px 9px;white-space:nowrap}.ideal-picker-empty{color:var(--muted);font-size:12px;padding:7px}.ideal-picker-note{font-size:11px;color:var(--muted);margin-top:8px}.ideal-price-input{width:58px;padding:5px 6px!important;text-align:center}.ideal-remove{margin-left:7px;border:0;background:transparent;color:#d86b6b;font-size:20px;vertical-align:middle;cursor:pointer}
 @media(max-width:430px){
  .ryh19-app{padding:0 8px 100px}.ryh19-player-wrap{grid-template-columns:92px 1fr;gap:10px}.ryh19-avatar{height:155px;font-size:65px}.ryh19-player-name{font-size:17px}.ryh19-metrics{grid-template-columns:repeat(2,1fr)}.ryh19-metric:last-child{display:none}
  .ryh19-actionbar{grid-template-columns:1fr 1.35fr 1fr}.ryh19-modules{grid-template-columns:1fr 1fr}.ryh19-module{min-height:118px}.ryh19-field{height:340px}.fp{width:57px;height:39px}.fp1,.fp6,.fp10{left:calc(50% - 28px)}
@@ -2015,6 +2018,15 @@ body{
           Budget di riferimento per una lega da 10. I prezzi sono obiettivi d'asta, non quotazioni ufficiali.
           La rosa privilegia bonus, titolarità e rapporto qualità/prezzo.
         </div>
+        <div class="ideal-picker">
+          <div class="ideal-picker-title">⭐ Personalizza la tua rosa ideale</div>
+          <div class="ideal-picker-controls">
+            <input id="idealSearch" placeholder="Cerca giocatore da aggiungere..." autocomplete="off" oninput="renderIdealPicker()">
+            <select id="idealRole" onchange="renderIdealPicker()"><option value="">Tutti</option><option value="P">POR</option><option value="D">DIF</option><option value="C">CEN</option><option value="A">ATT</option></select>
+          </div>
+          <div id="idealPickerResults" class="ideal-picker-results"><div class="ideal-picker-empty">🔎 Cerca un giocatore per aggiungerlo alla tua rosa ideale.</div></div>
+          <div class="ideal-picker-note">I giocatori che aggiungi diventano obiettivi prioritari durante l'asta. Puoi anche modificare target e massimo direttamente nelle card qui sotto.</div>
+        </div>
         <div id="idealRoster"></div>
         <div class="notice" id="liveBoard">
           <b>🧠 Assistente strategico live</b>
@@ -2314,7 +2326,7 @@ document.getElementById('player').addEventListener('input',suggest);
 function resetAll(){if(confirm("Azzerare tutta l'asta?")){state={started:false,n:10,credits:500,myTeam:"Raise Your Hammer",teams:[],purchases:[]};localStorage.removeItem(RYH_STATE_KEY);document.getElementById('main').classList.add('hidden');document.getElementById('setupCard').classList.remove('hidden');showResumeBanner()}}
 function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
 
-const idealRoster = [
+let idealRoster = [
  ["P","Svilar","Roma",24,30],["P","Carnesecchi","Atalanta",16,21],["P","Butez","Como",8,12],
  ["D","Dimarco","Inter",48,55],["D","Wesley","Roma",30,37],["D","Pavlovic","Milan",20,25],
  ["D","Cuenca","Como",7,11],["D","Kossounou","Atalanta",5,9],["D","Hien","Atalanta",5,8],["D","Djimsiti","Atalanta",2,5],
@@ -2324,6 +2336,63 @@ const idealRoster = [
  ["A","Hojlund","Napoli",42,50],["A","Ramos G.","Milan",37,45],["A","Kean","Fiorentina",28,35],["A","Douvikas","Como",13,18],["A","Scamacca","Atalanta",10,15]
 ];
 
+
+
+// Rosa ideale personalizzata: l'utente può aggiungere/rimuovere giocatori e modificare i target.
+(function loadCustomIdealRoster(){
+  try{
+    const saved=JSON.parse(localStorage.getItem('ryh_custom_ideal_roster')||'null');
+    if(Array.isArray(saved)) idealRoster=saved;
+  }catch(e){}
+})();
+function saveCustomIdealRoster(){
+  localStorage.setItem('ryh_custom_ideal_roster',JSON.stringify(idealRoster));
+}
+function addIdealPlayer(name, role, team, target, max){
+  const clean=String(name||'').trim();
+  if(!clean) return;
+  const existing=idealRoster.find(x=>normName(x[1])===normName(clean));
+  if(existing){ alert(clean+' è già nella rosa ideale.'); return; }
+  const r=['P','D','C','A'].includes(role)?role:'A';
+  const t=team||'';
+  const tg=Math.max(1,Number(target)||1);
+  const mx=Math.max(tg,Number(max)||tg);
+  idealRoster.push([r,clean,t, tg, mx]);
+  saveCustomIdealRoster();
+  const input=document.getElementById('idealSearch'); if(input) input.value='';
+  renderIdealRoster(); renderPlayerDB();
+}
+function addIdealFromDB(idx){
+  const rows=getDB().filter(x=>{
+    const q=normName(document.getElementById('idealSearch')?.value||'');
+    const role=document.getElementById('idealRole')?.value||'';
+    return (!q||normName(x[1]).includes(q)) && (!role||x[0]===role);
+  });
+  const x=rows[idx]; if(!x)return;
+  addIdealPlayer(x[1],x[0],x[2],x[4],Math.max(x[4],Math.round(x[4]*1.12)));
+}
+function removeIdealPlayer(name){
+  idealRoster=idealRoster.filter(x=>normName(x[1])!==normName(name));
+  saveCustomIdealRoster(); renderIdealRoster(); renderPlayerDB();
+}
+function updateIdealPrice(name,field,value){
+  const x=idealRoster.find(x=>normName(x[1])===normName(name)); if(!x)return;
+  const v=Math.max(1,Number(value)||1);
+  if(field==='target'){x[3]=v; if(x[4]<v)x[4]=v;}
+  else x[4]=Math.max(x[3],v);
+  saveCustomIdealRoster(); renderIdealRoster();
+}
+function renderIdealPicker(){
+  const box=document.getElementById('idealPickerResults'); if(!box)return;
+  const q=normName(document.getElementById('idealSearch')?.value||'');
+  const role=document.getElementById('idealRole')?.value||'';
+  if(!q){box.innerHTML='<div class="ideal-picker-empty">🔎 Cerca un giocatore per aggiungerlo alla tua rosa ideale.</div>';return;}
+  const rows=getDB().filter(x=>(!q||normName(x[1]).includes(q))&&(!role||x[0]===role)).slice(0,8);
+  box.innerHTML=rows.length?rows.map((x,i)=>{
+    const already=idealRoster.some(p=>normName(p[1])===normName(x[1]));
+    return `<div class="ideal-picker-row"><span><b>${escapeHtml(x[1])}</b><small>${x[0]} · ${escapeHtml(x[2])} · target ${x[4]}</small></span><button class="${already?'secondary':''}" ${already?'disabled':''} onclick="addIdealFromDB(${i})">${already?'✓ Inserito':'＋ Aggiungi'}</button></div>`;
+  }).join(''):'<div class="ideal-picker-empty">Nessun giocatore trovato.</div>';
+}
 
 function rosterSlots(){ return {P:3,D:8,C:8,A:6}; }
 function myRemaining(){
@@ -2423,7 +2492,7 @@ function renderIdealRoster(){
       const scarcity=Math.min(1.18,1+(avg<my?.08:0));
       const liveMax=Math.min(Math.max(1,Math.round(x[4]*scarcity)),Math.max(1,my-5));
       let status=bought?'❌ Preso':liveMax>=x[3]?'🟢 Obiettivo':'🟡 Attesa';
-      html+=`<tr><td><b>${x[1]}</b></td><td>${x[2]}</td><td class="good"><b>${x[3]}</b></td><td class="warn"><b>${liveMax}</b></td><td>${status}</td></tr>`;
+      html+=`<tr><td><b>${escapeHtml(x[1])}</b></td><td>${escapeHtml(x[2])}</td><td class="good"><input class="ideal-price-input" type="number" min="1" value="${x[3]}" onchange="updateIdealPrice('${x[1].replace(/'/g,"\\'")}','target',this.value)"></td><td class="warn"><input class="ideal-price-input" type="number" min="${x[3]}" value="${liveMax}" onchange="updateIdealPrice('${x[1].replace(/'/g,"\\'")}','max',this.value)"></td><td>${status}<button class="ideal-remove" onclick="removeIdealPlayer('${x[1].replace(/'/g,"\\'")}')">×</button></td></tr>`;
     });
     html+='</tbody></table>';
   }
