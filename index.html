@@ -685,6 +685,58 @@ body{background:
  .ryh19-quick .q b{font-size:13px!important}
 }
 </style>
+
+<style id="ryhV22CardsCSS">
+/* V22 — cleaner hierarchy, player cards restored */
+.ryh19-app{max-width:1080px!important;padding:0 12px 24px!important}
+.ryh19-header{height:58px!important}
+.ryh19-grid{grid-template-columns:1.7fr .7fr!important;gap:10px!important}
+.ryh19-card{box-shadow:0 10px 30px #0005!important}
+.ryh19-main{padding:12px!important}
+.ryh19-player-wrap{grid-template-columns:145px 1fr!important;align-items:stretch!important}
+.ryh19-avatar{height:160px!important;background:linear-gradient(145deg,#182736,#071019)!important}
+.ryh19-player-name{font-size:22px!important}
+.ryh19-team{font-size:9px!important}
+.ryh19-metrics{grid-template-columns:repeat(3,1fr)!important}
+.ryh19-quick{margin-top:9px!important}
+.ryh19-sect{margin-top:12px!important}
+.ryh19-modules{grid-template-columns:repeat(3,1fr)!important}
+.ryh19-module{min-height:82px!important}
+.ryh19-road{margin-top:9px!important;display:none!important}
+.ryh22-player-section{margin-top:13px}
+.ryh22-section-head{display:flex;justify-content:space-between;align-items:center;margin:0 2px 7px}
+.ryh22-section-head h2{font-size:16px;margin:0}.ryh22-section-head span{font-size:8px;color:#8392a2}
+.ryh22-player-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+.ryh22-card{position:relative;min-height:143px;border:1px solid #26384a;border-radius:16px;background:linear-gradient(145deg,#111d29,#09121a);padding:8px;overflow:hidden;cursor:pointer;transition:.18s}
+.ryh22-card:hover{transform:translateY(-2px);border-color:#8a6f28}
+.ryh22-card .photo{height:70px;border-radius:11px;background:linear-gradient(145deg,#263b50,#0b141e);display:grid;place-items:center;font-size:36px}
+.ryh22-card .role{position:absolute;top:13px;left:13px;background:#0a121b;border:1px solid #314357;border-radius:7px;padding:3px 5px;font-size:6px;color:#c3ccd5;font-weight:900}
+.ryh22-card .pos{position:absolute;right:13px;top:13px;font-size:7px;color:#55dc8b}
+.ryh22-card h3{font-size:10px;margin:7px 0 1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ryh22-card p{font-size:7px;color:#8796a6;margin:0}
+.ryh22-card .bottom{display:flex;justify-content:space-between;margin-top:7px;font-size:7px;color:#a9b5c1}.ryh22-card .bottom b{color:#e6bd45;font-size:9px}
+.ryh22-bench{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:7px}
+.ryh22-bench .mini{border:1px solid #203142;background:#0a131c;border-radius:11px;padding:7px;text-align:center}.mini b{display:block;font-size:8px}.mini span{display:block;color:#788898;font-size:6px;margin-top:3px}
+.ryh22-divider{height:1px;background:#1e2c39;margin:11px 0}
+.ryh22-chipbar{display:flex;gap:5px;overflow:auto;padding-bottom:2px}.ryh22-chip{flex:0 0 auto;padding:6px 9px;border:1px solid #26384a;background:#0a141e;border-radius:20px;color:#8e9baa;font-size:7px}.ryh22-chip.active{color:#f0d05b;border-color:#725c25;background:#17150c}
+.ryh22-menu-hint{font-size:7px;color:#68798a;margin-left:3px}
+@media(max-width:760px){
+ .ryh19-grid{grid-template-columns:1fr!important}
+ .ryh19-advice{display:none!important}
+ .ryh22-player-grid{grid-template-columns:repeat(3,1fr)}
+ .ryh22-card{min-height:137px}
+}
+@media(max-width:430px){
+ .ryh19-player-wrap{grid-template-columns:100px 1fr!important}
+ .ryh19-avatar{height:125px!important}
+ .ryh19-player-name{font-size:17px!important}
+ .ryh19-modules{grid-template-columns:repeat(2,1fr)!important}
+ .ryh22-player-grid{grid-template-columns:repeat(2,1fr);gap:6px}
+ .ryh22-card{min-height:145px}
+ .ryh22-bench{grid-template-columns:repeat(3,1fr)}
+ .ryh22-bench .mini:nth-child(n+4){display:none}
+}
+</style>
 </head>
 <body>
 <div class="app">
@@ -765,7 +817,7 @@ body{background:
 
 <div id="ryhV19App" class="ryh19-app">
 <header class="ryh19-header">
-  <div><div class="ryh19-logo">RAISE <span>YOUR HAMMER</span></div><div class="ryh19-sub">FANTACALCIO • LIVE ASSISTANT</div></div>
+  <div><div class="ryh19-logo">RAISE <span>YOUR HAMMER</span></div><div class="ryh19-sub">FANTACALCIO • IL TUO COCKPIT</div></div>
   <div class="ryh19-header-actions"><button class="ryh19-round" onclick="ryh19Go('home')">⌂</button><button class="ryh20-menu-btn" onclick="ryh20Toggle(true)" aria-label="Apri menu">☰</button></div>
 </header>
 
@@ -798,7 +850,26 @@ body{background:
   </div>
 
   <div class="ryh19-quick">
-    <div class="q"><small>CREDITI</small><b>142</b></div><div class="q"><small>SPESI</small><b>358</b></div><div class="q"><small>ROSA</small><b>16/25</b></div><div class="q"><small>MEDIA</small><b>6,68</b></div>
+    <div class="q"><small>CREDITI</small><b>142</b></div>
+
+<section class="ryh22-player-section">
+  <div class="ryh22-section-head"><h2>👕 I tuoi giocatori</h2><span>CARDS • ROSA</span></div>
+  <div class="ryh22-chipbar">
+    <span class="ryh22-chip active">TUTTI</span><span class="ryh22-chip">POR</span><span class="ryh22-chip">DIF</span><span class="ryh22-chip">CEN</span><span class="ryh22-chip">ATT</span>
+  </div>
+  <div class="ryh22-player-grid">
+    <article class="ryh22-card" onclick="ryh19Toast('Card giocatore aperta')"><div class="role">ATT</div><div class="pos">★ 8,4</div><div class="photo">⚽</div><h3>GIOCATORE 01</h3><p>INTER • TITOLARE</p><div class="bottom"><span>FM 7,8</span><b>54</b></div></article>
+    <article class="ryh22-card" onclick="ryh19Toast('Card giocatore aperta')"><div class="role">CEN</div><div class="pos">★ 7,9</div><div class="photo">⚽</div><h3>GIOCATORE 02</h3><p>MILAN • TITOLARE</p><div class="bottom"><span>FM 7,3</span><b>39</b></div></article>
+    <article class="ryh22-card" onclick="ryh19Toast('Card giocatore aperta')"><div class="role">DIF</div><div class="pos">★ 7,7</div><div class="photo">⚽</div><h3>GIOCATORE 03</h3><p>JUVENTUS • TITOLARE</p><div class="bottom"><span>FM 6,9</span><b>28</b></div></article>
+    <article class="ryh22-card" onclick="ryh19Toast('Card giocatore aperta')"><div class="role">POR</div><div class="pos">★ 7,5</div><div class="photo">🧤</div><h3>GIOCATORE 04</h3><p>ATALANTA • TITOLARE</p><div class="bottom"><span>FM 6,8</span><b>17</b></div></article>
+  </div>
+  <div class="ryh22-divider"></div>
+  <div class="ryh22-section-head"><h2>🪑 Panchina</h2><span>5 DISPONIBILI</span></div>
+  <div class="ryh22-bench">
+    <div class="mini"><b>G5</b><span>ATT • 12</span></div><div class="mini"><b>G6</b><span>CEN • 9</span></div><div class="mini"><b>G7</b><span>DIF • 8</span></div><div class="mini"><b>G8</b><span>DIF • 6</span></div><div class="mini"><b>G9</b><span>POR • 4</span></div>
+  </div>
+</section>
+<div class="q"><small>SPESI</small><b>358</b></div><div class="q"><small>ROSA</small><b>16/25</b></div><div class="q"><small>MEDIA</small><b>6,68</b></div>
   </div>
 
   <div class="ryh19-sect"><div class="ryh19-sect-head"><h2>Il tuo cockpit</h2><span>ACCESSO RAPIDO</span></div>
