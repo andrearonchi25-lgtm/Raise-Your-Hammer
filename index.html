@@ -1097,6 +1097,222 @@ body{background:var(--ryh-bg)!important}
 .ryh29-overlay{position:fixed;inset:0;background:#0008;z-index:90;display:none}.ryh29-overlay.open{display:block}
 @media(max-width:430px){.ryh29-stats{grid-template-columns:repeat(3,1fr)}.ryh29-stat{padding:8px}.ryh29-stat b{font-size:13px}.ryh29-brand-title{font-size:14px}.ryh29-quick{grid-template-columns:repeat(2,1fr)}}
 </style>
+
+<style id="ryhV30CompactPremium">
+/* V30 — Premium compact mobile UI */
+:root{
+  --v30-bg:#070b10;
+  --v30-panel:#0d141c;
+  --v30-panel2:#111a24;
+  --v30-line:#243342;
+  --v30-gold:#e3b84f;
+  --v30-text:#f4f7fa;
+  --v30-muted:#7f8d9b;
+  --v30-green:#55d996;
+}
+html{scroll-behavior:smooth}
+body{
+  background:
+    radial-gradient(circle at 50% -10%,rgba(227,184,79,.08),transparent 34%),
+    linear-gradient(180deg,#060a0f 0%,#091019 100%)!important;
+  min-height:100vh;
+}
+.app{display:none!important}
+
+/* Home shell */
+#ryhV29Home.ryh29-home{
+  display:block;
+  width:min(100%,760px);
+  max-width:760px;
+  margin:0 auto;
+  padding:10px 11px 22px;
+}
+.ryh29-top{
+  position:sticky;
+  top:0;
+  z-index:70;
+  margin:0 -11px 7px;
+  padding:8px 11px;
+  background:rgba(6,10,15,.92);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(36,51,66,.65);
+}
+.ryh29-brand img,.ryh29-brand-mark{
+  width:38px!important;height:38px!important;border-radius:11px!important;
+}
+.ryh29-brand{gap:8px}
+.ryh29-brand-title{font-size:15px;letter-spacing:-.35px}
+.ryh29-brand-sub{font-size:7px}
+.ryh29-menu{
+  width:38px!important;height:38px!important;border-radius:11px!important;
+  background:#101923!important;border:1px solid #304151!important;
+  box-shadow:0 5px 18px #0006;
+}
+
+/* Compact primary navigation at the top */
+.ryh29-nav{
+  position:sticky!important;
+  top:55px!important;
+  left:auto!important;right:auto!important;bottom:auto!important;
+  z-index:65;
+  width:100%;
+  display:grid!important;
+  grid-template-columns:repeat(5,1fr);
+  gap:4px;
+  padding:4px;
+  margin:0 0 8px;
+  border:1px solid #263746!important;
+  border-radius:14px!important;
+  background:rgba(10,16,23,.94)!important;
+  backdrop-filter:blur(14px);
+  box-shadow:0 8px 24px #0006;
+}
+.ryh29-nav button{
+  min-width:0;
+  padding:6px 2px!important;
+  border-radius:10px!important;
+  font-size:6.5px!important;
+  letter-spacing:.02em;
+}
+.ryh29-nav button span{font-size:13px!important;margin-bottom:1px!important}
+.ryh29-nav button.active{
+  background:linear-gradient(180deg,#2a2617,#17170f)!important;
+  color:var(--v30-gold)!important;
+  box-shadow:inset 0 0 0 1px rgba(227,184,79,.18);
+}
+
+/* KPI strip */
+.ryh29-stats{
+  grid-template-columns:repeat(3,1fr)!important;
+  gap:6px!important;
+  margin-bottom:8px!important;
+}
+.ryh29-stat{
+  min-height:55px;
+  padding:8px 9px!important;
+  border-radius:13px!important;
+  background:linear-gradient(145deg,#111923,#0b1219)!important;
+}
+.ryh29-stat small{font-size:6.5px!important;letter-spacing:.06em}
+.ryh29-stat b{font-size:14px!important}
+
+/* Main auction card */
+.ryh29-hero{
+  padding:11px!important;
+  margin-bottom:8px!important;
+  border-radius:16px!important;
+  border-color:#4a3b1f!important;
+  background:
+    radial-gradient(circle at 90% 0%,rgba(227,184,79,.10),transparent 32%),
+    linear-gradient(145deg,#17140d,#0c151e)!important;
+}
+.ryh29-hero-head{align-items:center!important}
+.ryh29-kicker{font-size:6.5px!important}
+.ryh29-hero h2{font-size:17px!important;margin:3px 0 2px!important}
+.ryh29-hero p{font-size:7.5px!important;max-width:330px}
+.ryh29-cta{
+  padding:9px 10px!important;
+  font-size:8px!important;
+  border-radius:10px!important;
+  box-shadow:0 6px 18px rgba(227,184,79,.16);
+}
+.ryh29-advice{
+  margin-top:8px!important;
+  padding:8px!important;
+  border-radius:11px!important;
+}
+.ryh29-advice strong{font-size:8px!important}
+.ryh29-advice span{font-size:7px!important;line-height:1.35!important}
+
+/* Player cards — compact 2-column grid so the cards are actually visible */
+.ryh29-section{
+  padding:10px!important;
+  margin-bottom:8px!important;
+  border-radius:16px!important;
+}
+.ryh29-section-head{margin-bottom:7px!important}
+.ryh29-section h3{font-size:11px!important}
+.ryh29-section-head button{font-size:7px!important}
+.ryh29-cards{
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:6px!important;
+  overflow:visible!important;
+}
+.ryh29-card{
+  min-width:0!important;
+  padding:7px!important;
+  border-radius:12px!important;
+  background:linear-gradient(160deg,#121d28,#0a1118)!important;
+  position:relative;
+  overflow:hidden;
+}
+.ryh29-card:after{
+  content:"";
+  position:absolute;
+  inset:auto -20px -25px auto;
+  width:65px;height:65px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(227,184,79,.12),transparent 68%);
+  pointer-events:none;
+}
+.ryh29-card .pic{
+  height:62px!important;
+  border-radius:9px!important;
+  font-size:22px!important;
+  background:
+    radial-gradient(circle at 50% 25%,rgba(227,184,79,.12),transparent 35%),
+    linear-gradient(145deg,#182432,#0d151d)!important;
+  border:1px solid #253746;
+}
+.ryh29-card b{font-size:8px!important;margin-top:5px!important}
+.ryh29-card small{font-size:6px!important}
+.ryh29-card .price{font-size:7px!important;margin-top:4px!important;color:#e3b84f}
+.ryh29-card .price:before{content:"€ ";opacity:.7}
+
+/* Quick actions */
+.ryh29-quick{
+  grid-template-columns:repeat(4,1fr)!important;
+  gap:6px!important;
+}
+.ryh29-q{
+  padding:8px 3px!important;
+  border-radius:11px!important;
+}
+.ryh29-q span{font-size:14px!important}
+.ryh29-q b{font-size:6.5px!important;margin-top:4px!important}
+
+/* Side menu */
+.ryh29-menu-panel{
+  width:min(310px,86vw)!important;
+  padding:15px!important;
+  background:linear-gradient(180deg,#0b1219,#070c11)!important;
+}
+.ryh29-menu-panel h3{font-size:14px!important;margin-bottom:9px!important}
+.ryh29-menu-item{
+  padding:10px!important;
+  margin:4px 0!important;
+  border-radius:11px!important;
+  font-size:8px!important;
+}
+
+/* Hide the old bottom bar; top nav replaces it */
+@media(max-width:760px){
+  .ryh29-nav{top:55px!important}
+  .ryh29-cards{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media(min-width:761px){
+  .ryh29-cards{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+}
+@media(max-width:390px){
+  #ryhV29Home.ryh29-home{padding-left:8px;padding-right:8px}
+  .ryh29-top{margin-left:-8px;margin-right:-8px;padding-left:8px;padding-right:8px}
+  .ryh29-brand-title{font-size:13px}
+  .ryh29-hero h2{font-size:15px!important}
+  .ryh29-cta{padding:8px!important;font-size:7px!important}
+}
+</style>
+
 </head>
 <body>
 <div class="app">
@@ -3452,13 +3668,37 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')ryh20Toggle(false)})
     document.getElementById('ryh29Shade')?.classList.toggle('open',!!open);
   };
   window.ryh29Go=function(page){
-    if(page==='home'){window.scrollTo({top:0,behavior:'smooth'});return}
+    const home=document.getElementById('ryhV29Home');
+    const nav=document.querySelector('.ryh29-nav');
+    const app=document.querySelector('.app');
+    if(page==='home'){
+      if(app) app.style.display='none';
+      if(home) home.style.display='block';
+      if(nav) nav.style.display='grid';
+      window.scrollTo({top:0,behavior:'smooth'});
+      return;
+    }
+    if(home) home.style.display='none';
+    if(nav) nav.style.display='none';
+    if(app) app.style.display='block';
     if(typeof window.ryhV16Go==='function'){window.ryhV16Go(page);return}
     const el=document.querySelector('[data-page="'+page+'"]');if(el)el.click();
   };
   window.ryh29OpenLogo=function(){ryh29Menu(false);document.getElementById('ryh29Menu')?.classList.add('open')};
 })();
 </script>
+
+<script id="ryhV30Boot">
+document.addEventListener('DOMContentLoaded',()=>{
+  const home=document.getElementById('ryhV29Home');
+  const app=document.querySelector('.app');
+  const nav=document.querySelector('.ryh29-nav');
+  if(home) home.style.display='block';
+  if(app) app.style.display='none';
+  if(nav) nav.style.display='grid';
+});
+</script>
+
 </body>
 </html>
 <script>
