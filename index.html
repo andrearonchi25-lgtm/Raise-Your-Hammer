@@ -737,11 +737,51 @@ body{background:
  .ryh22-bench .mini:nth-child(n+4){display:none}
 }
 </style>
+
+<style id="ryhV23TopMenuCSS">
+/* V23 — navigation moved to the top; Pro Upgrade lives only in the menu */
+#proControls{display:none!important}
+
+/* The app navigation is a compact top dock, never a bottom dock */
+#ryhV16Nav{
+  position:fixed!important;
+  top:62px!important;
+  left:50%!important;
+  transform:translateX(-50%)!important;
+  width:min(760px,calc(100% - 18px))!important;
+  margin:0!important;
+  z-index:80!important;
+  padding:6px!important;
+  border-radius:15px!important;
+  background:rgba(7,13,20,.96)!important;
+  box-shadow:0 10px 28px #0009!important;
+}
+#ryhV16Nav button{min-height:40px!important}
+#ryhV16Nav .ryh16-label{font-size:7px!important}
+
+/* Give the legacy app enough room below the top dock */
+.app{padding-top:58px!important;padding-bottom:18px!important}
+
+/* Make the main V19 header and its top menu feel like one navigation system */
+.ryh19-header{position:sticky!important;top:0!important;z-index:82!important;background:rgba(7,13,20,.97)!important}
+.ryh19-bottom{display:none!important}
+
+/* On narrow phones, keep five actions usable without horizontal overflow */
+@media(max-width:430px){
+  #ryhV16Nav{top:58px!important;width:calc(100% - 10px)!important;padding:5px!important}
+  #ryhV16Nav button{min-height:38px!important;font-size:9px!important}
+  #ryhV16Nav .ryh16-label{font-size:6px!important}
+  .app{padding-top:55px!important}
+}
+
+/* Clean up the old configuration area so the top dock remains the focus */
+#setupCard{margin-top:8px!important}
+</style>
 </head>
 <body>
 <div class="app">
   <div class="hero">
-  <!-- PRO UPGRADE -->
+  <!-- PRO UPGRADE: moved to hamburger menu -->
   <div class="card full" id="proControls" style="margin-bottom:16px">
     <h2>🚀 PRO UPGRADE</h2>
     <div class="row">
@@ -805,12 +845,13 @@ body{background:
 <div id="resumeBanner" class="resume-banner hidden"><span>💾 <b>Asta salvata automaticamente</b><br><small>Puoi riprendere da dove eri rimasto.</small></span><span><button onclick="resumeAuction()">Riprendi</button> <button class="secondary" onclick="discardSavedAuction()">Nuova asta</button></span></div>
 
   
-<div id="ryhV16Nav" class="ryh16-nav hidden">
+<div id="ryhV16Nav" class="ryh16-nav hidden" aria-label="Navigazione principale">
+  <button data-page="asta" onclick="ryhV16Go('asta')">⌂<span class="ryh16-label">HOME</span></button>
   <button data-page="asta" onclick="ryhV16Go('asta')">⚒️<span class="ryh16-label">ASTA</span></button>
-  <button data-page="rosa" onclick="ryhV16Go('rosa')">🏟️<span class="ryh16-label">ROSA</span></button>
+  <button data-page="rosa" onclick="ryhV16Go('rosa')">🏟️<span class="ryh16-label">CAMPO</span></button>
   <button data-page="analisi" onclick="ryhV16Go('analisi')">🧠<span class="ryh16-label">ANALISI</span></button>
   <button data-page="mercato" onclick="ryhV16Go('mercato')">📊<span class="ryh16-label">MERCATO</span></button>
-  <button data-page="altro" onclick="ryhV16Go('altro')">☰<span class="ryh16-label">ALTRO</span></button>
+  <button type="button" onclick="ryh20Toggle(true)">☰<span class="ryh16-label">MENU</span></button>
 </div>
 
 
@@ -943,7 +984,7 @@ body{background:
     <button class="ryh20-menu-item" onclick="ryh19Toast('Impostazioni') ; ryh20Toggle(false)"><div class="ico">⚙️</div><div><b>Impostazioni</b><span>Preferenze app</span></div></button>
     <button class="ryh20-menu-item" onclick="ryh19Toast('Archivio aperto') ; ryh20Toggle(false)"><div class="ico">💾</div><div><b>Archivio</b><span>Salva e carica sessioni</span></div></button>
     <button class="ryh20-menu-item" data-v20="config" onclick="ryh20Go('config')"><div class="ico">⚙️</div><div><b>Configurazione Asta</b><span>Crediti, rosa e strategia</span></div></button>
-    <button class="ryh20-menu-item" data-v20="pro" onclick="ryh20Go('pro')"><div class="ico">⚡</div><div><b>Pro Upgrade</b><span>Funzioni premium</span></div></button>
+    <button class="ryh20-menu-item" data-v20="pro" onclick="ryh20Go('pro')"><div class="ico">⚡</div><div><b>Pro Upgrade</b><span>Funzioni premium • solo dal menu</span></div></button>
   </div>
 </aside>
 
