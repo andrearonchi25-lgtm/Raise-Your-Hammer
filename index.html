@@ -43,6 +43,15 @@
 .ryh55-reasons{margin-top:7px;font-size:6px;line-height:1.45;color:#b6c1cb}
 .ryh55-toggle{display:flex;align-items:center;justify-content:space-between;padding:7px 0;font-size:7px;color:#b9c3cc}
 </style>
+
+<style id="ryh56-auction-css">
+.ryh56-advice{margin-top:9px;padding:11px;border:1px solid #80642f;border-radius:14px;background:linear-gradient(145deg,#241e13,#15130f)}
+.ryh56-advice h3{margin:0;font-size:10px;color:#e3c26c}.ryh56-advice strong{display:block;font-size:22px;color:#f1d17a;margin-top:4px}.ryh56-advice p{margin:4px 0 0;font-size:7px;color:#c7c0ae;line-height:1.4}
+.ryh56-price{display:flex;justify-content:space-between;align-items:end;gap:8px;margin-top:8px}.ryh56-price div{padding:7px 9px;border:1px solid #3a3528;border-radius:9px;background:#15130f;flex:1}.ryh56-price span{display:block;font-size:5px;color:#8f897c}.ryh56-price b{font-size:11px;color:#edf2f7}
+.ryh56-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}.ryh56-actions button{border-radius:9px;padding:9px;font-size:7px;font-weight:1000;border:1px solid #33495d;background:#0d1822;color:#e9eef2}.ryh56-actions .raise{border-color:#80642f;background:#241e13;color:#e5c46c}.ryh56-actions .pass{border-color:#3b3430;background:#191414;color:#b9a8a2}
+.ryh56-opps{display:grid;gap:5px;margin-top:7px}.ryh56-opp{display:flex;justify-content:space-between;gap:7px;align-items:center;padding:8px;border:1px solid #293d50;background:#0b1620;border-radius:9px}.ryh56-opp b{font-size:7px}.ryh56-opp small{display:block;font-size:5px;color:#7f8e9e;margin-top:2px}.ryh56-opp em{font-style:normal;font-size:5px;font-weight:1000;color:#e1bd64}
+.ryh56-log{font-size:6px;color:#8190a1;line-height:1.45;margin-top:6px}
+</style>
 </head><body><div class="app"><header class="top"><div class="brand"><div class="mark">🔨</div><div><b>RAISE YOUR HAMMER</b><small>FANTACALCIO COMMAND CENTER</small></div></div><button class="menu" onclick="openMenu()">☰</button></header><main id="home" class="view active"></main><main id="auction" class="view"></main><main id="brain" class="view"></main><main id="formation" class="view"></main></div><nav class="bottom"><button id="navHome" class="active" onclick="show('home')"><b>⌂</b>HOME</button><button id="navAuction" onclick="show('auction')"><b>🔨</b>ASTA</button><button id="navBrain" onclick="show('brain')"><b>🧠</b>BRAIN</button><button id="navFormation" onclick="show('formation')"><b>🏟</b>CAMPO</button></nav><div id="drawer" class="drawer" onclick="if(event.target===this)closeMenu()"><div class="drawerPanel"><div class="row"><b>MENU</b><button class="btn" onclick="closeMenu()">✕</button></div><button class="drawerItem" onclick="closeMenu();show('home')">⌂ Home</button><button class="drawerItem" onclick="closeMenu();show('auction')">🔨 Asta e partecipanti</button><button class="drawerItem" onclick="closeMenu();show('brain')">🧠 Hammer Brain</button><button class="drawerItem" onclick="closeMenu();show('formation')">🏟 Formazione consigliata</button></div></div><script>const DB=[["A", "Martinez L.", "Inter", 35, 68], ["A", "Malen", "Roma", 34, 66], ["D", "Dimarco", "Inter", 32, 62], ["C", "Paz N.", "Como", 30, 58], ["A", "Thuram", "Inter", 29, 56], ["A", "Hojlund", "Napoli", 28, 54], ["C", "McTominay", "Napoli", 28, 54], ["C", "Calhanoglu", "Inter", 27, 52], ["A", "Ramos G.", "Milan", 27, 52], ["A", "Kolo Muani", "Juventus", 26, 50], ["C", "Orsolini", "Bologna", 26, 50], ["A", "Kean", "Fiorentina", 25, 48], ["C", "Pulisic", "Milan", 25, 48], ["A", "Yildiz", "Juventus", 23, 44], ["C", "Rabiot", "Milan", 22, 42], ["A", "Douvikas", "Como", 20, 38], ["C", "Baturina", "Como", 19, 37], ["A", "Davis K.", "Udinese", 19, 37], ["C", "Mora", "Roma", 19, 37], ["A", "Scamacca", "Atalanta", 19, 37], ["A", "Berardi", "Sassuolo", 18, 35], ["C", "Da Cunha", "Como", 18, 35], ["A", "Krstovic", "Atalanta", 18, 35], ["A", "Leao", "Milan", 18, 35], ["D", "Molina N.", "Roma", 18, 35], ["P", "Svilar", "Roma", 18, 35], ["C", "Zaniolo", "Udinese", 18, 35], ["C", "Atta", "Fiorentina", 17, 33], ["C", "Barella", "Inter", 17, 33], ["A", "De Ketelaere", "Atalanta", 17, 33], ["P", "Martinez Jo.", "Inter", 17, 33], ["C", "McKennie", "Juventus", 17, 33], ["D", "Wesley", "Roma", 17, 33], ["D", "Akanji", "Inter", 16, 31], ["P", "Butez", "Como", 16, 31], ["P", "Carnesecchi", "Atalanta", 16, 31], ["A", "Dovbyk", "Bologna", 16, 31], ["A", "Esposito F.P.", "Inter", 16, 31], ["P", "Vicario", "Juventus", 16, 31], ["C", "Zaccagni", "Lazio", 16, 31], ["D", "Bremer", "Juventus", 15, 29], ["C", "De Bruyne", "Napoli", 15, 29], ["A", "Laurientè", "Sassuolo", 15, 29], ["P", "Maignan", "Milan", 15, 29], ["D", "Mancini", "Roma", 15, 29], ["A", "Pellegrino M.", "Fiorentina", 15, 29], ["A", "Simeone", "Torino", 15, 29], ["D", "Bastoni", "Inter", 14, 27], ["A", "Castro S.", "Roma", 14, 27], ["A", "Dybala", "Roma", 14, 27], ["D", "Pavlovic", "Milan", 14, 27], ["D", "Rrahmani", "Napoli", 14, 27], ["A", "Santos A.", "Napoli", 14, 27], ["C", "Vlasic", "Torino", 14, 27], ["P", "De Gea", "Fiorentina", 13, 25], ["A", "Esposito Se.", "Cagliari", 13, 25], ["C", "Gudmundsson A.", "Fiorentina", 13, 25], ["D", "Kalulu", "Juventus", 13, 25], ["A", "Kevin Carlos", "Cagliari", 13, 25], ["D", "N'Dicka", "Roma", 13, 25], ["A", "Nkunku", "Milan", 13, 25], ["A", "Pinamonti", "Sassuolo", 13, 25], ["A", "Raspadori", "Atalanta", 13, 25], ["D", "Solet", "Udinese", 13, 25], ["C", "Taylor K.", "Lazio", 13, 25], ["A", "Adams A.", "Venezia", 12, 23], ["C", "Alajbegovic", "Juventus", 12, 23], ["C", "Conceicao", "Juventus", 12, 23], ["D", "Di Lorenzo", "Napoli", 12, 23], ["C", "Ederson D.S.", "Atalanta", 12, 23], ["D", "Gila", "Milan", 12, 23], ["C", "Mastantuono", "Fiorentina", 12, 23], ["C", "Modric", "Milan", 12, 23], ["C", "Moreira", "Milan", 12, 23], ["C", "Rodriguez Je.", "Como", 12, 23], ["C", "Samardzic", "Atalanta", 12, 23], ["A", "Soulè", "Roma", 12, 23], ["D", "Spence", "Inter", 12, 23], ["D", "Stones", "Inter", 12, 23], ["C", "Baldanzi", "Genoa", 11, 21], ["D", "Bisseck", "Inter", 11, 21], ["A", "Colombo", "Genoa", 11, 21], ["A", "Diao", "Como", 11, 21], ["P", "Meret", "Napoli", 11, 21], ["D", "Ostigard", "Genoa", 11, 21], ["C", "Rowe", "Bologna", 11, 21], ["A", "Tourè E.", "Parma", 11, 21], ["C", "Zambo Anguissa", "Napoli", 11, 21], ["A", "Bowie", "Sassuolo", 10, 19], ["C", "Casadei", "Torino", 10, 19], ["A", "Dia", "Lazio", 10, 19], ["D", "Dodò", "Fiorentina", 10, 19], ["C", "Ekkelenkamp", "Udinese", 10, 19], ["D", "Hermoso", "Roma", 10, 19], ["C", "Konè M.", "Roma", 10, 19], ["C", "Pellegrini Lo.", "Roma", 10, 19], ["C", "Perrone", "Como", 10, 19], ["C", "Politano", "Napoli", 10, 19], ["D", "Ramon", "Como", 10, 19], ["A", "Ratkov", "Lazio", 10, 19], ["A", "Romero D.", "Parma", 10, 19], ["C", "Saelemaekers", "Milan", 10, 19], ["D", "Scalvini", "Atalanta", 10, 19], ["P", "Skorupski", "Bologna", 10, 19], ["C", "Thorstvedt", "Sassuolo", 10, 19], ["C", "Thuram K.", "Juventus", 10, 19], ["C", "Zielinski", "Inter", 10, 19]];
 let S=JSON.parse(localStorage.getItem('RYH51')||'null')||{credits:500,participants:[],myTeam:[],auctionLog:[],targets:[]};function save(){localStorage.setItem('RYH51',JSON.stringify(S))}function esc(x){return String(x??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}function show(id){document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.bottom button').forEach(x=>x.classList.remove('active'));document.getElementById('nav'+id[0].toUpperCase()+id.slice(1)).classList.add('active');render(id)}function openMenu(){document.getElementById('drawer').classList.add('open')}function closeMenu(){document.getElementById('drawer').classList.remove('open')}
 function roleName(r){return r==='P'?'Portiere':r==='D'?'Difensore':r==='C'?'Centrocampista':'Attaccante'}function score(p){return p[4]}function price(p){return p[3]}function find(q){q=q.toLowerCase().trim();return DB.filter(p=>(p[1]+' '+p[2]).toLowerCase().includes(q)).sort((a,b)=>score(b)-score(a)).slice(0,20)}
@@ -344,6 +353,107 @@ function boot(){
  nav();show('home');
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(boot,300));else setTimeout(boot,300);
+})();
+</script>
+
+<script id="ryh56-auction-brain">
+(function(){
+  const esc=x=>String(x??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  const read=(keys,fb)=>{for(const k of keys){try{const x=JSON.parse(localStorage.getItem(k));if(x!=null)return x}catch(e){}}return fb};
+  const write=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
+  const players=()=>read(['ryh_players','players'],[]);
+  const participants=()=>read(['ryh_participants','participants'],[]);
+  const purchases=()=>read(['ryh_auction_purchases','auction_purchases'],[]);
+  const brainState=()=>read(['ryh56_brain_state'],{});
+  const saveState=v=>write('ryh56_brain_state',v);
+
+  function currentPlayer(){
+    const s=brainState();
+    return s.currentPlayer || null;
+  }
+  function playerInfo(name){
+    const p=players().find(x=>String(x.name||'').toLowerCase()===String(name||'').toLowerCase());
+    return p || {name,score:75,target:0,max:0,role:'',team:''};
+  }
+
+  function analyze(){
+    const s=brainState(), p=currentPlayer(), info=p?playerInfo(p.name):null;
+    const opp=participants(), buys=purchases();
+    if(!info)return {action:'ATTENDI',max:0,next:0,reason:'Seleziona un giocatore per attivare il Brain d’asta.',pressure:0};
+    const score=Number(info.score)||75;
+    const target=Number(info.target)||0;
+    const declaredMax=Number(info.max)||0;
+    const hist=buys.filter(x=>String(x.player||x.name||'').toLowerCase()===String(info.name||'').toLowerCase());
+    const last=Math.max(0,...hist.map(x=>Number(x.price)||0));
+    const avgOpp=opp.length?opp.reduce((a,x)=>a+(Number(x.credits??x.budget)||500),0)/opp.length:500;
+    const aggressive=opp.length?Math.min(95,Math.round(45 + opp.reduce((a,x)=>a+(Number(x.purchases)||0),0)*2 + (500-avgOpp)/8)):35;
+    const ceiling=declaredMax||Math.max(target+5,Math.round(score*.9));
+    const suggested=Math.max(last+1,target||last+1);
+    const can=suggested<=ceiling;
+    return {
+      action: can ? (last>=ceiling*.85?'STOP':'RIALZA') : 'PASSA',
+      max:ceiling,
+      next:suggested,
+      reason: can
+        ? (last>=ceiling*.85?'Sei vicino al tuo limite: un altro rilancio solo se il giocatore è una priorità assoluta.':'Rilancio consigliato: il prezzo è ancora dentro il valore strategico.')
+        : 'Il prezzo ha superato il limite strategico: non inseguire.',
+      pressure:aggressive,
+      last
+    };
+  }
+
+  window.ryh56SetAuctionPlayer=function(name){
+    const s=brainState();s.currentPlayer={name};saveState(s);renderAuctionBrain();
+  };
+  window.ryh56Raise=function(){
+    const a=analyze();
+    if(a.action==='PASSA'||a.action==='STOP')return;
+    const p=currentPlayer();
+    const arr=purchases();arr.push({player:p.name,price:a.next,brain:true,time:Date.now()});write('ryh_auction_purchases',arr);
+    renderAuctionBrain();
+  };
+  window.ryh56Pass=function(){const s=brainState();s.lastDecision='PASSA';saveState(s);renderAuctionBrain()};
+
+  function renderAuctionBrain(){
+    const host=document.getElementById('ryh56AuctionBrain'); if(!host)return;
+    const p=currentPlayer(), a=analyze(), opp=participants();
+    if(!p){
+      host.innerHTML=`<div class="ryh56-advice"><h3>🧠 BRAIN ASTA LIVE</h3><strong>ATTENDI</strong><p>Inserisci/seleziona il giocatore chiamato per ricevere il consiglio di rilancio.</p></div>`;
+      return;
+    }
+    host.innerHTML=`<div class="ryh56-advice">
+      <h3>🧠 BRAIN ASTA LIVE · ${esc(p.name)}</h3>
+      <strong>${a.action==='RIALZA'?'🔨 RIALZA':a.action==='STOP'?'🛑 FERMATI':'✋ PASSA'}</strong>
+      <p>${esc(a.reason)}</p>
+      <div class="ryh56-price"><div><span>PROSSIMO RILANCIO</span><b>${a.next} cr</b></div><div><span>LIMITE ASSOLUTO</span><b>${a.max} cr</b></div><div><span>PRESSIONE MERCATO</span><b>${a.pressure}/100</b></div></div>
+      <div class="ryh56-actions"><button class="raise" onclick="ryh56Raise()">🔨 RIALZA A ${a.next}</button><button class="pass" onclick="ryh56Pass()">✋ PASSA</button></div>
+      <div class="ryh56-opps">${opp.slice(0,8).map((o,i)=>`<div class="ryh56-opp"><div><b>${esc(o.name||o.team||'Avversario '+(i+1))}</b><small>Crediti ${o.credits??o.budget??'—'} · Acquisti ${o.purchases??0}</small></div><em>${i===0?'AGGRESSIVO':'OSSERVA'}</em></div>`).join('')||'<div class="ryh56-opp"><small>Nessun avversario configurato</small></div>'}</div>
+      <div class="ryh56-log">Il limite viene calcolato usando valore del giocatore, target, max personale e pressione dell’asta. Il Brain non supera mai il tuo tetto senza una modifica esplicita.</div>
+    </div>`;
+  }
+
+  function inject(){
+    if(document.getElementById('ryh56AuctionBrain'))return;
+    const h=document.createElement('div');h.id='ryh56AuctionBrain';
+    const hosts=[...document.querySelectorAll('.ryh54-panel,.ryh54-screen,main,section')];
+    const auction=hosts.find(x=>/asta/i.test(x.textContent||'') && !/brain/i.test(x.textContent||''));
+    (auction||document.body).appendChild(h);
+    renderAuctionBrain();
+  }
+
+  // Connect the existing auction registration fields to the Brain.
+  function hook(){
+    inject();
+    const buy=document.querySelector('#buyname');
+    if(buy && !buy.dataset.ryh56){
+      buy.dataset.ryh56='1';
+      buy.addEventListener('input',()=>{
+        const s=brainState();s.currentPlayer={name:buy.value.trim()};saveState(s);renderAuctionBrain();
+      });
+    }
+  }
+  document.addEventListener('DOMContentLoaded',()=>setTimeout(hook,500));
+  setInterval(hook,1500);
 })();
 </script>
 </body></html>
