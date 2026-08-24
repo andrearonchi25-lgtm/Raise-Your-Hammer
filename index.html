@@ -10,6 +10,14 @@
 .ryh52list{display:grid;gap:5px;margin-top:7px}.ryh52row{padding:8px;border:1px solid #263a4d;background:#0c1721;border-radius:10px;display:flex;justify-content:space-between;gap:8px;align-items:center}.ryh52row b{font-size:8px}.ryh52row small{display:block;color:#7c8b9d;font-size:6px;margin-top:2px}.ryh52badge{font-size:6px;font-weight:1000;padding:4px 6px;border-radius:6px;background:#163222;color:#74dda0}.ryh52badge.warn{background:#352a18;color:#e3c36d}.ryh52badge.red{background:#3b201d;color:#ff9c91}
 .ryh52btn{width:100%;margin-top:7px;border:1px solid #765d2d;background:#201b12;color:#e2c36e;border-radius:10px;padding:9px;font-size:7px;font-weight:1000}
 </style>
+
+<style id="ryh53braincss">
+.ryh53-brain{box-sizing:border-box;width:100%;padding:14px;border-radius:18px;background:linear-gradient(145deg,#101b27,#081019);color:#edf2f7;font-family:inherit}
+.ryh53-brain *{box-sizing:border-box}.ryh53-head h2{margin:0;font-size:16px}.ryh53-head small,.ryh53-note small,.ryh53-row small{display:block;color:#8190a1;font-size:7px;margin-top:3px}
+.ryh53-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin:10px 0}.ryh53-tabs button{border:1px solid #2a3d50;background:#0b1621;color:#8493a5;border-radius:9px;padding:8px 2px;font-size:6px;font-weight:900}.ryh53-tabs button.on{color:#e1bd61;border-color:#80642d;background:#241f14}
+.ryh53-hero{padding:12px;border:1px solid #384655;border-radius:14px;background:#0b151f}.ryh53-hero small{font-size:6px;color:#8392a4}.ryh53-hero strong{display:block;font-size:30px;color:#e2be62;margin-top:2px}.ryh53-hero p{font-size:8px;line-height:1.35;margin:4px 0;color:#cbd4dc}.ryh53-bar{height:5px;border-radius:9px;background:#182635;overflow:hidden}.ryh53-bar i{display:block;height:100%;background:#62d993}.ryh53-metrics{display:flex;gap:12px;margin-top:9px;font-size:7px;color:#8190a1}.ryh53-metrics b{color:#edf2f7}
+.ryh53-note{padding:10px;border:1px solid #2a3d50;border-radius:12px;background:#0c1721}.ryh53-note b{font-size:9px}.ryh53-list{display:grid;gap:5px;margin-top:7px}.ryh53-row{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px;border:1px solid #25394c;background:#0c1721;border-radius:10px}.ryh53-row b{font-size:8px}.ryh53-row em{font-style:normal;font-size:6px;font-weight:900;color:#dfbe67;background:#292216;padding:4px 6px;border-radius:6px;white-space:nowrap}.ryh53-formation{margin-top:7px;padding:12px;text-align:center;border:1px solid #66542e;border-radius:12px;background:#201b12}.ryh53-formation b{font-size:22px;color:#e0bd63;display:block}.ryh53-formation span{font-size:6px;color:#8d8b80}.ryh53-empty{padding:18px;text-align:center;border:1px dashed #31465a;border-radius:12px;font-size:10px;color:#a9b5c0}.ryh53-empty small{display:block;color:#7f8e9f;font-size:7px;margin-top:5px}.ryh53-refresh{width:100%;margin-top:8px;padding:9px;border:1px solid #765e30;border-radius:10px;background:#211c13;color:#e2c269;font-size:7px;font-weight:900}
+</style>
 </head><body><div class="app"><header class="top"><div class="brand"><div class="mark">🔨</div><div><b>RAISE YOUR HAMMER</b><small>FANTACALCIO COMMAND CENTER</small></div></div><button class="menu" onclick="openMenu()">☰</button></header><main id="home" class="view active"></main><main id="auction" class="view"></main><main id="brain" class="view"></main><main id="formation" class="view"></main></div><nav class="bottom"><button id="navHome" class="active" onclick="show('home')"><b>⌂</b>HOME</button><button id="navAuction" onclick="show('auction')"><b>🔨</b>ASTA</button><button id="navBrain" onclick="show('brain')"><b>🧠</b>BRAIN</button><button id="navFormation" onclick="show('formation')"><b>🏟</b>CAMPO</button></nav><div id="drawer" class="drawer" onclick="if(event.target===this)closeMenu()"><div class="drawerPanel"><div class="row"><b>MENU</b><button class="btn" onclick="closeMenu()">✕</button></div><button class="drawerItem" onclick="closeMenu();show('home')">⌂ Home</button><button class="drawerItem" onclick="closeMenu();show('auction')">🔨 Asta e partecipanti</button><button class="drawerItem" onclick="closeMenu();show('brain')">🧠 Hammer Brain</button><button class="drawerItem" onclick="closeMenu();show('formation')">🏟 Formazione consigliata</button></div></div><script>const DB=[["A", "Martinez L.", "Inter", 35, 68], ["A", "Malen", "Roma", 34, 66], ["D", "Dimarco", "Inter", 32, 62], ["C", "Paz N.", "Como", 30, 58], ["A", "Thuram", "Inter", 29, 56], ["A", "Hojlund", "Napoli", 28, 54], ["C", "McTominay", "Napoli", 28, 54], ["C", "Calhanoglu", "Inter", 27, 52], ["A", "Ramos G.", "Milan", 27, 52], ["A", "Kolo Muani", "Juventus", 26, 50], ["C", "Orsolini", "Bologna", 26, 50], ["A", "Kean", "Fiorentina", 25, 48], ["C", "Pulisic", "Milan", 25, 48], ["A", "Yildiz", "Juventus", 23, 44], ["C", "Rabiot", "Milan", 22, 42], ["A", "Douvikas", "Como", 20, 38], ["C", "Baturina", "Como", 19, 37], ["A", "Davis K.", "Udinese", 19, 37], ["C", "Mora", "Roma", 19, 37], ["A", "Scamacca", "Atalanta", 19, 37], ["A", "Berardi", "Sassuolo", 18, 35], ["C", "Da Cunha", "Como", 18, 35], ["A", "Krstovic", "Atalanta", 18, 35], ["A", "Leao", "Milan", 18, 35], ["D", "Molina N.", "Roma", 18, 35], ["P", "Svilar", "Roma", 18, 35], ["C", "Zaniolo", "Udinese", 18, 35], ["C", "Atta", "Fiorentina", 17, 33], ["C", "Barella", "Inter", 17, 33], ["A", "De Ketelaere", "Atalanta", 17, 33], ["P", "Martinez Jo.", "Inter", 17, 33], ["C", "McKennie", "Juventus", 17, 33], ["D", "Wesley", "Roma", 17, 33], ["D", "Akanji", "Inter", 16, 31], ["P", "Butez", "Como", 16, 31], ["P", "Carnesecchi", "Atalanta", 16, 31], ["A", "Dovbyk", "Bologna", 16, 31], ["A", "Esposito F.P.", "Inter", 16, 31], ["P", "Vicario", "Juventus", 16, 31], ["C", "Zaccagni", "Lazio", 16, 31], ["D", "Bremer", "Juventus", 15, 29], ["C", "De Bruyne", "Napoli", 15, 29], ["A", "Laurientè", "Sassuolo", 15, 29], ["P", "Maignan", "Milan", 15, 29], ["D", "Mancini", "Roma", 15, 29], ["A", "Pellegrino M.", "Fiorentina", 15, 29], ["A", "Simeone", "Torino", 15, 29], ["D", "Bastoni", "Inter", 14, 27], ["A", "Castro S.", "Roma", 14, 27], ["A", "Dybala", "Roma", 14, 27], ["D", "Pavlovic", "Milan", 14, 27], ["D", "Rrahmani", "Napoli", 14, 27], ["A", "Santos A.", "Napoli", 14, 27], ["C", "Vlasic", "Torino", 14, 27], ["P", "De Gea", "Fiorentina", 13, 25], ["A", "Esposito Se.", "Cagliari", 13, 25], ["C", "Gudmundsson A.", "Fiorentina", 13, 25], ["D", "Kalulu", "Juventus", 13, 25], ["A", "Kevin Carlos", "Cagliari", 13, 25], ["D", "N'Dicka", "Roma", 13, 25], ["A", "Nkunku", "Milan", 13, 25], ["A", "Pinamonti", "Sassuolo", 13, 25], ["A", "Raspadori", "Atalanta", 13, 25], ["D", "Solet", "Udinese", 13, 25], ["C", "Taylor K.", "Lazio", 13, 25], ["A", "Adams A.", "Venezia", 12, 23], ["C", "Alajbegovic", "Juventus", 12, 23], ["C", "Conceicao", "Juventus", 12, 23], ["D", "Di Lorenzo", "Napoli", 12, 23], ["C", "Ederson D.S.", "Atalanta", 12, 23], ["D", "Gila", "Milan", 12, 23], ["C", "Mastantuono", "Fiorentina", 12, 23], ["C", "Modric", "Milan", 12, 23], ["C", "Moreira", "Milan", 12, 23], ["C", "Rodriguez Je.", "Como", 12, 23], ["C", "Samardzic", "Atalanta", 12, 23], ["A", "Soulè", "Roma", 12, 23], ["D", "Spence", "Inter", 12, 23], ["D", "Stones", "Inter", 12, 23], ["C", "Baldanzi", "Genoa", 11, 21], ["D", "Bisseck", "Inter", 11, 21], ["A", "Colombo", "Genoa", 11, 21], ["A", "Diao", "Como", 11, 21], ["P", "Meret", "Napoli", 11, 21], ["D", "Ostigard", "Genoa", 11, 21], ["C", "Rowe", "Bologna", 11, 21], ["A", "Tourè E.", "Parma", 11, 21], ["C", "Zambo Anguissa", "Napoli", 11, 21], ["A", "Bowie", "Sassuolo", 10, 19], ["C", "Casadei", "Torino", 10, 19], ["A", "Dia", "Lazio", 10, 19], ["D", "Dodò", "Fiorentina", 10, 19], ["C", "Ekkelenkamp", "Udinese", 10, 19], ["D", "Hermoso", "Roma", 10, 19], ["C", "Konè M.", "Roma", 10, 19], ["C", "Pellegrini Lo.", "Roma", 10, 19], ["C", "Perrone", "Como", 10, 19], ["C", "Politano", "Napoli", 10, 19], ["D", "Ramon", "Como", 10, 19], ["A", "Ratkov", "Lazio", 10, 19], ["A", "Romero D.", "Parma", 10, 19], ["C", "Saelemaekers", "Milan", 10, 19], ["D", "Scalvini", "Atalanta", 10, 19], ["P", "Skorupski", "Bologna", 10, 19], ["C", "Thorstvedt", "Sassuolo", 10, 19], ["C", "Thuram K.", "Juventus", 10, 19], ["C", "Zielinski", "Inter", 10, 19]];
 let S=JSON.parse(localStorage.getItem('RYH51')||'null')||{credits:500,participants:[],myTeam:[],auctionLog:[],targets:[]};function save(){localStorage.setItem('RYH51',JSON.stringify(S))}function esc(x){return String(x??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}function show(id){document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.bottom button').forEach(x=>x.classList.remove('active'));document.getElementById('nav'+id[0].toUpperCase()+id.slice(1)).classList.add('active');render(id)}function openMenu(){document.getElementById('drawer').classList.add('open')}function closeMenu(){document.getElementById('drawer').classList.remove('open')}
 function roleName(r){return r==='P'?'Portiere':r==='D'?'Difensore':r==='C'?'Centrocampista':'Attaccante'}function score(p){return p[4]}function price(p){return p[3]}function find(q){q=q.toLowerCase().trim();return DB.filter(p=>(p[1]+' '+p[2]).toLowerCase().includes(q)).sort((a,b)=>score(b)-score(a)).slice(0,20)}
@@ -25,72 +33,101 @@ function slots(arr){return arr.map(p=>`<div class="slot"><b>${esc(p[1])}</b>${es
 function render(id){document.getElementById(id).innerHTML={home,auction,brain,formation}[id]()}render('home');</script>
 <script id="ryh52brainjs">
 (function(){
-const KEY='ryh52_brain_state';
-let tab='overview';
-const esc=x=>String(x??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-const norm=x=>String(x||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();
+  const esc = x => String(x ?? '').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  const read = (keys, fallback) => {
+    for (const k of keys) {
+      try { const v = JSON.parse(localStorage.getItem(k)); if (v != null) return v; } catch(e) {}
+    }
+    return fallback;
+  };
+  const getPlayers = () => {
+    const p = read(['ryh_players','players','fantacalcio_players'], []);
+    if (Array.isArray(p) && p.length) return p;
+    return [
+      {name:'Giocatore Top',role:'ATT',team:'Serie A',score:90,target:70,max:82,priority:'A'},
+      {name:'Centrocampista Value',role:'C',team:'Serie A',score:86,target:35,max:45,priority:'A'},
+      {name:'Difensore Premium',role:'D',team:'Serie A',score:84,target:22,max:30,priority:'B'},
+      {name:'Portiere Affidabile',role:'P',team:'Serie A',score:81,target:15,max:22,priority:'B'}
+    ];
+  };
+  const getParticipants = () => {
+    const p = read(['ryh_participants','participants','fantacalcio_participants'], []);
+    return Array.isArray(p) ? p : [];
+  };
+  const getPurchases = () => {
+    const p = read(['ryh_auction_purchases','auction_purchases','ryh_purchases'], []);
+    return Array.isArray(p) ? p : [];
+  };
+  const state = () => {
+    const p=getPlayers(), o=getParticipants(), a=getPurchases();
+    const avg=p.reduce((n,x)=>n+(Number(x.score)||70),0)/Math.max(1,p.length);
+    const pressure=Math.min(95,Math.round(35+o.length*3+a.length*1.5));
+    return {
+      win:Math.max(25,Math.min(91,Math.round(avg*.62+(100-pressure)*.22))),
+      pressure,
+      confidence:Math.min(95,45+a.length*2)
+    };
+  };
 
-function readJSON(k,d={}){try{return JSON.parse(localStorage.getItem(k)||'null')||d}catch(e){return d}}
-function getState(){return readJSON('ryh52_brain_state',{})}
-function saveState(x){localStorage.setItem('ryh52_brain_state',JSON.stringify(x))}
-function players(){
- const raw=readJSON('ryh_players',[]);
- if(Array.isArray(raw)&&raw.length)return raw;
- return [
-  {name:'Giocatore Top',role:'ATT',team:'Serie A',score:90,target:70,max:82,priority:'A'},
-  {name:'Centrocampista Value',role:'C',team:'Serie A',score:86,target:35,max:45,priority:'A'},
-  {name:'Difensore Premium',role:'D',team:'Serie A',score:84,target:22,max:30,priority:'B'},
-  {name:'Portiere Affidabile',role:'P',team:'Serie A',score:81,target:15,max:22,priority:'B'}
- ];
-}
-function purchases(){return readJSON('ryh_auction_purchases',[])}
-function participants(){return readJSON('ryh_participants',[])}
-function analyse(){
- const ps=players(), pur=purchases(), opp=participants();
- const avg=ps.reduce((a,p)=>a+(+p.score||70),0)/Math.max(1,ps.length);
- const pressure=Math.min(95,Math.round(35+opp.length*3+pur.length*1.5));
- const win=Math.max(25,Math.min(91,Math.round(avg*.62+(100-pressure)*.22)));
- const state=getState();state.live={win,pressure,confidence:Math.min(95,45+pur.length*2),updated:Date.now()};saveState(state);
- return state.live;
-}
-function playerRows(){
- return players().sort((a,b)=>(+b.score||0)-(+a.score||0)).slice(0,8).map((p,i)=>`
- <div class="ryh52row"><div><b>${esc(p.name)}</b><small>${esc(p.team||'')} · ${esc(p.role||'')} · Score ${+p.score||70} · Target ${p.target??'—'} · Max ${p.max??'—'}</small></div><span class="ryh52badge ${i<2?'':'warn'}">${i<2?'🎯 PRIORITÀ':'VALUE'}</span></div>`).join('');
-}
-function opponentRows(){
- const opp=participants();
- if(!opp.length)return '<div class="ryh52card"><b>Nessun avversario configurato</b><small>Aggiungi i partecipanti nella sezione Asta per attivare lo studio comportamentale.</small></div>';
- return opp.map((o,i)=>`<div class="ryh52row"><div><b>${esc(o.name||o.team||'Avversario '+(i+1))}</b><small>Crediti: ${o.credits??o.budget??'—'} · Acquisti: ${o.purchases??0}</small></div><span class="ryh52badge ${i===0?'red':'warn'}">${i===0?'🔥 MINACCIA':'MONITOR'}</span></div>`).join('');
-}
-function formation(){
- const ps=players().sort((a,b)=>(+b.score||0)-(+a.score||0));
- const roles={P:[],D:[],C:[],M:[],A:[],ATT:[]};
- ps.forEach(p=>{let r=String(p.role||'').toUpperCase();if(roles[r])roles[r].push(p)});
- const pick=(arr,n)=>arr.slice(0,n);
- const xi=[...pick(roles.P,1),...pick(roles.D,3),...pick(roles.C,4),...pick(roles.A,3)];
- const names=xi.map(p=>esc(p.name)).join(' · ')||'Completa la rosa per generare la formazione.';
- return `<div class="ryh52hero"><div><b>🏟️ ROSA CONSIGLIATA</b><small>Formazione automatica basata sugli score disponibili.</small></div><div class="ryh52prob">${xi.length}/11</div></div><div class="ryh52list"><div class="ryh52row"><div><b>Modulo consigliato</b><small>3-4-3 · modificabile in base ai ruoli disponibili</small></div><span class="ryh52badge">BEST XI</span></div><div class="ryh52row"><div><b>Titolari</b><small>${names}</small></div></div></div>`;
-}
-function render(){
- const el=document.getElementById('ryh52brain');if(!el)return;
- const l=analyse();
- let body='';
- if(tab==='overview')body=`<div class="ryh52hero"><div><small>WIN PROBABILITY</small><b>${l.win>=70?'Situazione favorevole: seleziona i target senza inseguire il mercato.':l.win>=50?'Asta equilibrata: proteggi il budget e osserva gli avversari.':'Mercato ostile: evita guerre di rilanci.'}</b><div class="ryh52bar"><i style="width:${l.win}%"></i></div></div><div class="ryh52prob">${l.win}%</div></div><div class="ryh52grid"><div class="ryh52card"><b>PRESSIONE</b><small>${l.pressure}/100 · quanto il mercato sta rendendo difficile la strategia.</small></div><div class="ryh52card"><b>CONFIDENZA</b><small>${l.confidence}% · cresce con i dati reali dell'asta.</small></div></div>`;
- if(tab==='players')body=`<div class="ryh52card"><b>🎯 GIOCATORI PERFETTI DA CHIAMARE</b><small>Priorità dinamica: score, target e prezzo massimo. I dati reali dell'app vengono mantenuti.</small></div><div class="ryh52list">${playerRows()}</div>`;
- if(tab==='opponents')body=`<div class="ryh52card"><b>👥 STUDIO AVVERSARI</b><small>Durante l'asta il Brain aggiorna pressione, minacce e crediti residui usando gli acquisti registrati.</small></div><div class="ryh52list">${opponentRows()}</div>`;
- if(tab==='formation')body=formation();
- el.innerHTML=`<div class="ryh52brain"><h3>🧠 Hammer Brain</h3><div class="ryh52sub">Giocatori + avversari + strategia d'asta + rosa consigliata</div><div class="ryh52tabs">${[['overview','🧠 LIVE'],['players','🎯 TARGET'],['opponents','👥 AVVERSARI'],['formation','🏟️ ROSA']].map(x=>`<button class="ryh52tab ${tab===x[0]?'on':''}" onclick="ryh52Tab('${x[0]}')">${x[1]}</button>`).join('')}</div>${body}<button class="ryh52btn" onclick="ryh52Refresh()">🔄 AGGIORNA ANALISI</button></div>`;
-}
-window.ryh52Tab=x=>{tab=x;render()};
-window.ryh52Refresh=()=>render();
-function mount(){
- if(document.getElementById('ryh52brain'))return;
- const host=document.querySelector('[data-screen="brain"],#brain,#hammerBrain');
- if(host){host.id='ryh52brain';render();return}
- const menu=document.querySelector('main,.app,.container,.shell,body');
- const el=document.createElement('div');el.id='ryh52brain';menu.appendChild(el);render();
-}
-document.addEventListener('DOMContentLoaded',()=>setTimeout(mount,300));
+  let active='live';
+
+  function mount(){
+    let screen=document.querySelector('[data-screen="brain"], #brainScreen, #brain, #hammerBrain');
+    if(!screen){
+      // Find the existing navigation target by visible text and create the panel
+      // only if the app has no dedicated Brain container.
+      const candidates=[...document.querySelectorAll('section,main,div')];
+      screen=candidates.find(e=>/hammer brain|brain/i.test((e.textContent||'').trim()) && e.children.length<8);
+    }
+    if(!screen) return;
+    screen.id='ryh53BrainScreen';
+    screen.classList.add('ryh53-brain-screen');
+    render(screen);
+  }
+
+  function render(screen){
+    const b=state(), p=getPlayers().slice().sort((a,z)=>(Number(z.score)||0)-(Number(a.score)||0)).slice(0,8);
+    const o=getParticipants();
+    let body='';
+    if(active==='live'){
+      body=`<div class="ryh53-hero"><div><small>WIN PROBABILITY</small><strong>${b.win}%</strong><p>${b.win>=70?'Situazione favorevole: aspetta i momenti giusti e colpisci i target.':b.win>=50?'Asta equilibrata: proteggi il budget e osserva gli avversari.':'Mercato ostile: evita guerre di rilanci.'}</p><div class="ryh53-bar"><i style="width:${b.win}%"></i></div></div><div class="ryh53-metrics"><span>Pressione <b>${b.pressure}/100</b></span><span>Confidenza <b>${b.confidence}%</b></span></div></div>`;
+    } else if(active==='targets'){
+      body=`<div class="ryh53-note"><b>🎯 Giocatori perfetti da chiamare</b><small>Score, target e prezzo massimo vengono usati per ordinare le priorità.</small></div><div class="ryh53-list">${
+        p.map((x,i)=>`<div class="ryh53-row"><div><b>${esc(x.name||'Giocatore')}</b><small>${esc(x.team||'Serie A')} · ${esc(x.role||'')} · Score ${Number(x.score)||70} · Target ${x.target??'—'} · Max ${x.max??'—'}</small></div><em>${i<2?'🎯 PRIORITÀ':'VALUE'}</em></div>`).join('')
+      }</div>`;
+    } else if(active==='opponents'){
+      body=o.length
+        ? `<div class="ryh53-note"><b>👥 Studio avversari</b><small>La lettura migliora man mano che registri gli acquisti durante l'asta.</small></div><div class="ryh53-list">${
+          o.map((x,i)=>`<div class="ryh53-row"><div><b>${esc(x.name||x.team||('Avversario '+(i+1)))}</b><small>Crediti: ${x.credits??x.budget??'—'} · Acquisti: ${x.purchases??0}</small></div><em>${i===0?'🔥 MINACCIA':'MONITOR'}</em></div>`).join('')
+        }</div>`
+        : `<div class="ryh53-empty">👥 Nessun partecipante configurato.<small>Configura l'asta per attivare l'analisi degli avversari.</small></div>`;
+    } else {
+      body=`<div class="ryh53-note"><b>🏟️ Rosa consigliata</b><small>Il Brain seleziona i profili con score più alto tra i giocatori disponibili.</small></div><div class="ryh53-formation"><b>3-4-3</b><span>Modulo consigliato</span></div><div class="ryh53-list">${
+        p.slice(0,11).map((x,i)=>`<div class="ryh53-row"><div><b>${i+1}. ${esc(x.name||'Giocatore')}</b><small>${esc(x.role||'')} · ${esc(x.team||'')}</small></div><em>${Number(x.score)||70}</em></div>`).join('')
+      }</div>`;
+    }
+
+    screen.innerHTML=`<div class="ryh53-brain">
+      <div class="ryh53-head"><div><h2>🧠 Hammer Brain</h2><small>Strategia asta · giocatori · avversari · rosa</small></div></div>
+      <div class="ryh53-tabs">
+        <button data-tab="live" class="${active==='live'?'on':''}">🧠 LIVE</button>
+        <button data-tab="targets" class="${active==='targets'?'on':''}">🎯 TARGET</button>
+        <button data-tab="opponents" class="${active==='opponents'?'on':''}">👥 AVVERSARI</button>
+        <button data-tab="formation" class="${active==='formation'?'on':''}">🏟️ ROSA</button>
+      </div>${body}
+      <button class="ryh53-refresh" type="button">↻ AGGIORNA ANALISI</button>
+    </div>`;
+    screen.querySelectorAll('[data-tab]').forEach(btn=>btn.addEventListener('click',()=>{active=btn.dataset.tab;render(screen)}));
+    screen.querySelector('.ryh53-refresh').addEventListener('click',()=>render(screen));
+  }
+
+  function boot(){
+    if(window.__RYH53_BRAIN_READY) return;
+    window.__RYH53_BRAIN_READY=true;
+    setTimeout(mount,200);
+    setTimeout(mount,1000);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
 })();
 </script>
 </body></html>
