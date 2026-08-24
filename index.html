@@ -1049,20 +1049,6 @@ body{background:
  .ryh27-departments{grid-template-columns:repeat(4,1fr)}
 }
 </style>
-
-<style id="ryhV28LogoCSS">
-.ryh28-logo-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
-.ryh28-logo-choice{position:relative;border:1px solid #293a49;background:#0b141d;border-radius:14px;padding:8px;cursor:pointer;text-align:left;color:#e8edf2}
-.ryh28-logo-choice.selected{border-color:#e0b84d;box-shadow:0 0 0 1px #e0b84d55 inset}
-.ryh28-logo-choice img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block}
-.ryh28-logo-choice b{display:block;font-size:8px;margin-top:7px}
-.ryh28-logo-choice span{display:block;color:#788695;font-size:7px;margin-top:2px}
-.ryh28-check{position:absolute;top:13px;right:13px;width:21px;height:21px;border-radius:50%;display:grid;place-items:center;background:#0a1118dd;border:1px solid #4a5b6b;font-size:10px}
-.ryh28-logo-main{width:42px!important;height:42px!important;aspect-ratio:1!important;object-fit:cover!important;border-radius:12px!important;border:1px solid #c69d39;display:block}
-.ryh28-current{display:flex;align-items:center;gap:9px;margin-top:9px;padding:8px;border:1px solid #223241;border-radius:12px;background:#0b141d}
-.ryh28-current img{width:38px;height:38px;border-radius:9px;object-fit:cover}
-.ryh28-current small{display:block;color:#788695;font-size:7px}.ryh28-current b{font-size:9px}
-</style>
 </head>
 <body>
 <div class="app">
@@ -1741,28 +1727,6 @@ body{background:
         <div id="tableWrap"><div class="empty">Nessun acquisto registrato.</div></div>
       </div>
     </div>
-  </div>
-</div>
-
-
-<div class="ryh27-logo-panel" id="ryh28LogoPanel">
-  <h4>⚒️ Identità Raise Your Hammer</h4>
-  <p>Ho inserito i due stemmi che mi hai mandato. Puoi scegliere quale usare nell'app.</p>
-  <div class="ryh28-logo-grid">
-    <button type="button" class="ryh28-logo-choice" data-logo="assets/logo_hammer_skull.jpg" data-name="Hammer Skull">
-      <span class="ryh28-check">✓</span>
-      <img src="assets/logo_hammer_skull.jpg" alt="Hammer Skull">
-      <b>HAMMER SKULL</b><span>Stile oscuro • elettrico</span>
-    </button>
-    <button type="button" class="ryh28-logo-choice" data-logo="assets/logo_thor.jpg" data-name="Thor">
-      <span class="ryh28-check">✓</span>
-      <img src="assets/logo_thor.jpg" alt="Thor">
-      <b>THOR</b><span>Stile epico • calcistico</span>
-    </button>
-  </div>
-  <div class="ryh28-current">
-    <img id="ryh28CurrentLogo" alt="Logo selezionato">
-    <div><small>LOGO ATTIVO</small><b id="ryh28CurrentName">Hammer Skull</b></div>
   </div>
 </div>
 
@@ -3299,44 +3263,6 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')ryh20Toggle(false)})
     reader.onload=()=>applyLogo(reader.result);
     reader.readAsDataURL(file);
   });
-})();
-</script>
-
-<script id="ryhV28LogoJS">
-(function(){
-  const key='ryh_team_logo_v28';
-  const nameKey='ryh_team_logo_name_v28';
-  const defaultLogo='assets/logo_hammer_skull.jpg';
-
-  function setLogo(src,name){
-    localStorage.setItem(key,src);
-    localStorage.setItem(nameKey,name);
-    document.querySelectorAll('.ryh28-logo-choice').forEach(b=>{
-      b.classList.toggle('selected',b.dataset.logo===src);
-    });
-    const current=document.getElementById('ryh28CurrentLogo');
-    const currentName=document.getElementById('ryh28CurrentName');
-    if(current){current.src=src}
-    if(currentName){currentName.textContent=name}
-    // Update every header logo that may have been inserted by V27.
-    document.querySelectorAll('.ryh27-header-logo').forEach(img=>{
-      img.src=src;img.classList.add('has-logo');
-    });
-    // Also update any V27 preview.
-    const preview=document.getElementById('ryh27LogoPreview');
-    if(preview){preview.src=src;preview.style.display='block'}
-  }
-
-  document.addEventListener('click',e=>{
-    const choice=e.target.closest('.ryh28-logo-choice');
-    if(!choice)return;
-    e.preventDefault();
-    setLogo(choice.dataset.logo,choice.dataset.name);
-  });
-
-  const saved=localStorage.getItem(key)||defaultLogo;
-  const savedName=localStorage.getItem(nameKey)||'Hammer Skull';
-  setLogo(saved,savedName);
 })();
 </script>
 </body>
