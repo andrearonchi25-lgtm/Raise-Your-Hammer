@@ -1049,6 +1049,54 @@ body{background:
  .ryh27-departments{grid-template-columns:repeat(4,1fr)}
 }
 </style>
+
+<style id="ryhV28LogoCSS">
+.ryh28-logo-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.ryh28-logo-choice{position:relative;border:1px solid #293a49;background:#0b141d;border-radius:14px;padding:8px;cursor:pointer;text-align:left;color:#e8edf2}
+.ryh28-logo-choice.selected{border-color:#e0b84d;box-shadow:0 0 0 1px #e0b84d55 inset}
+.ryh28-logo-choice img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block}
+.ryh28-logo-choice b{display:block;font-size:8px;margin-top:7px}
+.ryh28-logo-choice span{display:block;color:#788695;font-size:7px;margin-top:2px}
+.ryh28-check{position:absolute;top:13px;right:13px;width:21px;height:21px;border-radius:50%;display:grid;place-items:center;background:#0a1118dd;border:1px solid #4a5b6b;font-size:10px}
+.ryh28-logo-main{width:42px!important;height:42px!important;aspect-ratio:1!important;object-fit:cover!important;border-radius:12px!important;border:1px solid #c69d39;display:block}
+.ryh28-current{display:flex;align-items:center;gap:9px;margin-top:9px;padding:8px;border:1px solid #223241;border-radius:12px;background:#0b141d}
+.ryh28-current img{width:38px;height:38px;border-radius:9px;object-fit:cover}
+.ryh28-current small{display:block;color:#788695;font-size:7px}.ryh28-current b{font-size:9px}
+</style>
+
+<style id="ryhV29CleanUI">
+/* V29 — clean mobile hierarchy */
+:root{--ryh-gold:#e0b84d;--ryh-bg:#070c12;--ryh-panel:#0d151e;--ryh-line:#233342}
+body{background:var(--ryh-bg)!important}
+.ryh-v29-hide{display:none!important}
+.ryh29-home{max-width:760px;margin:0 auto;padding:10px 12px 96px}
+.ryh29-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+.ryh29-brand{display:flex;align-items:center;gap:9px;min-width:0}
+.ryh29-brand img{width:42px;height:42px;border-radius:12px;object-fit:cover;border:1px solid #9e7d30;flex:0 0 auto}
+.ryh29-brand-mark{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(145deg,#e2bc55,#7d5c1c);font-size:20px}
+.ryh29-brand-title{font-size:16px;font-weight:1000;white-space:nowrap}.ryh29-brand-title em{color:var(--ryh-gold);font-style:normal}
+.ryh29-brand-sub{font-size:8px;color:#718090;margin-top:2px}
+.ryh29-menu{width:42px;height:42px;border-radius:12px;border:1px solid var(--ryh-line);background:#0b131c;color:#e6edf3;font-size:18px}
+.ryh29-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:10px}
+.ryh29-stat{background:var(--ryh-panel);border:1px solid var(--ryh-line);border-radius:14px;padding:10px}
+.ryh29-stat small{display:block;color:#718090;font-size:7px;text-transform:uppercase}.ryh29-stat b{display:block;font-size:15px;margin-top:3px}.ryh29-stat b.gold{color:var(--ryh-gold)}
+.ryh29-hero{background:linear-gradient(145deg,#15130d,#0c151e);border:1px solid #4d4022;border-radius:18px;padding:13px;margin-bottom:10px}
+.ryh29-hero-head{display:flex;align-items:center;justify-content:space-between;gap:8px}.ryh29-kicker{font-size:7px;color:#c5a44f;letter-spacing:.1em;font-weight:900}.ryh29-hero h2{margin:4px 0 2px;font-size:19px}.ryh29-hero p{margin:0;color:#7d8b9a;font-size:8px}
+.ryh29-cta{border:0;border-radius:11px;background:linear-gradient(180deg,#f0cf6a,#c99a35);color:#111;padding:10px 13px;font-size:9px;font-weight:1000;white-space:nowrap}
+.ryh29-advice{margin-top:10px;padding:10px;border-radius:12px;background:#0a131b;border:1px solid #243544;display:flex;gap:9px;align-items:flex-start}
+.ryh29-advice strong{font-size:9px}.ryh29-advice span{display:block;color:#8795a3;font-size:8px;line-height:1.4;margin-top:3px}
+.ryh29-section{background:var(--ryh-panel);border:1px solid var(--ryh-line);border-radius:18px;padding:12px;margin-bottom:10px}
+.ryh29-section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}.ryh29-section h3{margin:0;font-size:12px}.ryh29-section-head button{border:0;background:transparent;color:#b6c1cc;font-size:8px}
+.ryh29-cards{display:flex;gap:8px;overflow-x:auto;padding-bottom:3px;scrollbar-width:none}.ryh29-cards::-webkit-scrollbar{display:none}
+.ryh29-card{min-width:132px;background:#0a121a;border:1px solid #223241;border-radius:14px;padding:9px}.ryh29-card .pic{height:78px;border-radius:10px;background:#121c26;display:grid;place-items:center;color:#5e6d7b;font-size:26px}.ryh29-card b{display:block;font-size:10px;margin-top:7px}.ryh29-card small{display:block;color:#7e8b99;font-size:7px;margin-top:2px}.ryh29-card .price{color:var(--ryh-gold);font-size:9px;margin-top:6px}
+.ryh29-quick{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.ryh29-q{padding:11px 5px;text-align:center;background:#0a121a;border:1px solid #223241;border-radius:13px}.ryh29-q span{display:block;font-size:15px}.ryh29-q b{display:block;font-size:7px;margin-top:5px;color:#9aa6b2}
+.ryh29-nav{position:fixed;z-index:80;left:10px;right:10px;bottom:10px;display:grid;grid-template-columns:repeat(5,1fr);gap:5px;padding:5px;border:1px solid #253544;border-radius:17px;background:#070d14eF;backdrop-filter:blur(12px)}
+.ryh29-nav button{border:0;background:transparent;color:#748292;padding:7px 2px;border-radius:11px;font-size:7px;font-weight:900}.ryh29-nav button span{display:block;font-size:15px;margin-bottom:2px}.ryh29-nav button.active{background:#16180f;color:var(--ryh-gold)}
+.ryh29-menu-panel{position:fixed;z-index:100;top:0;right:0;bottom:0;width:min(330px,88vw);background:#0a1119;border-left:1px solid #293a49;padding:18px;transform:translateX(105%);transition:.22s ease;overflow:auto}.ryh29-menu-panel.open{transform:none}
+.ryh29-menu-panel h3{margin:0 0 12px;font-size:15px}.ryh29-menu-item{width:100%;text-align:left;border:1px solid #223241;background:#0e1822;color:#e6edf2;border-radius:13px;padding:12px;margin:5px 0;font-size:9px}.ryh29-menu-item span{float:right;color:#748292}
+.ryh29-overlay{position:fixed;inset:0;background:#0008;z-index:90;display:none}.ryh29-overlay.open{display:block}
+@media(max-width:430px){.ryh29-stats{grid-template-columns:repeat(3,1fr)}.ryh29-stat{padding:8px}.ryh29-stat b{font-size:13px}.ryh29-brand-title{font-size:14px}.ryh29-quick{grid-template-columns:repeat(2,1fr)}}
+</style>
 </head>
 <body>
 <div class="app">
@@ -1727,6 +1775,28 @@ body{background:
         <div id="tableWrap"><div class="empty">Nessun acquisto registrato.</div></div>
       </div>
     </div>
+  </div>
+</div>
+
+
+<div class="ryh27-logo-panel" id="ryh28LogoPanel">
+  <h4>⚒️ Identità Raise Your Hammer</h4>
+  <p>Ho inserito i due stemmi che mi hai mandato. Puoi scegliere quale usare nell'app.</p>
+  <div class="ryh28-logo-grid">
+    <button type="button" class="ryh28-logo-choice" data-logo="assets/logo_hammer_skull.jpg" data-name="Hammer Skull">
+      <span class="ryh28-check">✓</span>
+      <img src="assets/logo_hammer_skull.jpg" alt="Hammer Skull">
+      <b>HAMMER SKULL</b><span>Stile oscuro • elettrico</span>
+    </button>
+    <button type="button" class="ryh28-logo-choice" data-logo="assets/logo_thor.jpg" data-name="Thor">
+      <span class="ryh28-check">✓</span>
+      <img src="assets/logo_thor.jpg" alt="Thor">
+      <b>THOR</b><span>Stile epico • calcistico</span>
+    </button>
+  </div>
+  <div class="ryh28-current">
+    <img id="ryh28CurrentLogo" alt="Logo selezionato">
+    <div><small>LOGO ATTIVO</small><b id="ryh28CurrentName">Hammer Skull</b></div>
   </div>
 </div>
 
@@ -3148,6 +3218,77 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')ryh20Toggle(false)})
 })();
 </script>
 
+
+<div id="ryhV29Home" class="ryh29-home">
+  <div class="ryh29-top">
+    <div class="ryh29-brand">
+      <img id="ryh29Logo" src="assets/logo_hammer_skull.jpg" alt="Raise Your Hammer">
+      <div><div class="ryh29-brand-title">RAISE <em>YOUR HAMMER</em></div><div class="ryh29-brand-sub">Assistente intelligente per il Fantacalcio</div></div>
+    </div>
+    <button class="ryh29-menu" onclick="ryh29Menu(true)">☰</button>
+  </div>
+
+  <div class="ryh29-stats">
+    <div class="ryh29-stat"><small>Crediti</small><b class="gold">327</b></div>
+    <div class="ryh29-stat"><small>Rosa</small><b>8 / 25</b></div>
+    <div class="ryh29-stat"><small>Strategia</small><b>⚖️</b></div>
+  </div>
+
+  <section class="ryh29-hero">
+    <div class="ryh29-hero-head">
+      <div><div class="ryh29-kicker">ASTA • COPILOTA</div><h2>Pronto a battere il martello?</h2><p>Una sola modalità. L'app guida budget, target e rilanci.</p></div>
+      <button class="ryh29-cta" onclick="ryh26Open()">🚀 AVVIA ASTA</button>
+    </div>
+    <div class="ryh29-advice"><div>🎯</div><div><strong>Consiglio attuale</strong><span>Conserva almeno 141 crediti. Il prossimo obiettivo prioritario è un attaccante; limite consigliato 42.</span></div></div>
+  </section>
+
+  <section class="ryh29-section">
+    <div class="ryh29-section-head"><h3>🃏 La tua rosa</h3><button>VEDI TUTTA →</button></div>
+    <div class="ryh29-cards">
+      <div class="ryh29-card"><div class="pic">🧤</div><b>Portiere</b><small>Inter • POR</small><div class="price">12 crediti</div></div>
+      <div class="ryh29-card"><div class="pic">🛡️</div><b>Difensore</b><small>Serie A • DIF</small><div class="price">18 crediti</div></div>
+      <div class="ryh29-card"><div class="pic">⚙️</div><b>Centrocampista</b><small>Serie A • CEN</small><div class="price">31 crediti</div></div>
+      <div class="ryh29-card"><div class="pic">⚔️</div><b>Attaccante</b><small>Serie A • ATT</small><div class="price">42 crediti</div></div>
+    </div>
+  </section>
+
+  <section class="ryh29-section">
+    <div class="ryh29-section-head"><h3>⚡ Accesso rapido</h3></div>
+    <div class="ryh29-quick">
+      <button class="ryh29-q" onclick="ryh29Go('asta')"><span>⚒️</span><b>ASTA</b></button>
+      <button class="ryh29-q" onclick="ryh29Go('campo')"><span>🏟️</span><b>FORMAZIONE</b></button>
+      <button class="ryh29-q" onclick="ryh29Go('analisi')"><span>📊</span><b>ANALISI</b></button>
+      <button class="ryh29-q" onclick="ryh29Go('mercato')"><span>🔄</span><b>MERCATO</b></button>
+    </div>
+  </section>
+</div>
+
+<div id="ryh29Shade" class="ryh29-overlay" onclick="ryh29Menu(false)"></div>
+<aside id="ryh29Menu" class="ryh29-menu-panel">
+  <div style="display:flex;justify-content:space-between;align-items:center"><h3>☰ Menu</h3><button class="ryh29-menu" onclick="ryh29Menu(false)">×</button></div>
+  <button class="ryh29-menu-item" onclick="ryh26Open();ryh29Menu(false)">⚒️ Asta Rapida <span>→</span></button>
+  <button class="ryh29-menu-item" onclick="ryh29Go('asta');ryh29Menu(false)">⚙️ Configurazione asta <span>→</span></button>
+  <button class="ryh29-menu-item" onclick="ryh29OpenLogo();">🚀 Pro Upgrade <span>→</span></button>
+  <button class="ryh29-menu-item" onclick="ryh29Go('campo');ryh29Menu(false)">🏟️ Formazione <span>→</span></button>
+  <button class="ryh29-menu-item" onclick="ryh29Go('analisi');ryh29Menu(false)">📊 Analisi <span>→</span></button>
+  <button class="ryh29-menu-item" onclick="ryh29Go('mercato');ryh29Menu(false)">🔄 Mercato <span>→</span></button>
+  <div class="ryh27-logo-panel" style="margin-top:12px">
+    <h4>⚒️ Logo squadra</h4><p style="font-size:8px;color:#788695">Scegli lo stemma da usare nell'app.</p>
+    <div class="ryh28-logo-grid">
+      <button type="button" class="ryh28-logo-choice" data-logo="assets/logo_hammer_skull.jpg" data-name="Hammer Skull"><span class="ryh28-check">✓</span><img src="assets/logo_hammer_skull.jpg"><b>HAMMER SKULL</b></button>
+      <button type="button" class="ryh28-logo-choice" data-logo="assets/logo_thor.jpg" data-name="Thor"><span class="ryh28-check">✓</span><img src="assets/logo_thor.jpg"><b>THOR</b></button>
+    </div>
+  </div>
+</aside>
+
+<nav class="ryh29-nav">
+  <button class="active" onclick="ryh29Go('home')"><span>⌂</span>HOME</button>
+  <button onclick="ryh26Open()"><span>⚒️</span>ASTA</button>
+  <button onclick="ryh29Go('campo')"><span>🏟️</span>CAMPO</button>
+  <button onclick="ryh29Go('analisi')"><span>📊</span>ANALISI</button>
+  <button onclick="ryh29Go('mercato')"><span>🔄</span>MERCATO</button>
+</nav>
+
 <div id="ryhV26QuickAuction" class="ryh26-overlay" aria-hidden="true">
   <div class="ryh26-sheet" role="dialog" aria-modal="true" aria-labelledby="ryh26Title">
     <div class="ryh26-head">
@@ -3263,6 +3404,59 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')ryh20Toggle(false)})
     reader.onload=()=>applyLogo(reader.result);
     reader.readAsDataURL(file);
   });
+})();
+</script>
+
+<script id="ryhV28LogoJS">
+(function(){
+  const key='ryh_team_logo_v28';
+  const nameKey='ryh_team_logo_name_v28';
+  const defaultLogo='assets/logo_hammer_skull.jpg';
+
+  function setLogo(src,name){
+    localStorage.setItem(key,src);
+    localStorage.setItem(nameKey,name);
+    document.querySelectorAll('.ryh28-logo-choice').forEach(b=>{
+      b.classList.toggle('selected',b.dataset.logo===src);
+    });
+    const current=document.getElementById('ryh28CurrentLogo');
+    const currentName=document.getElementById('ryh28CurrentName');
+    if(current){current.src=src}
+    if(currentName){currentName.textContent=name}
+    // Update every header logo that may have been inserted by V27.
+    document.querySelectorAll('.ryh27-header-logo').forEach(img=>{
+      img.src=src;img.classList.add('has-logo');
+    });
+    // Also update any V27 preview.
+    const preview=document.getElementById('ryh27LogoPreview');
+    if(preview){preview.src=src;preview.style.display='block'}
+  }
+
+  document.addEventListener('click',e=>{
+    const choice=e.target.closest('.ryh28-logo-choice');
+    if(!choice)return;
+    e.preventDefault();
+    setLogo(choice.dataset.logo,choice.dataset.name);
+  });
+
+  const saved=localStorage.getItem(key)||defaultLogo;
+  const savedName=localStorage.getItem(nameKey)||'Hammer Skull';
+  setLogo(saved,savedName);
+})();
+</script>
+
+<script id="ryhV29UIJS">
+(function(){
+  window.ryh29Menu=function(open){
+    document.getElementById('ryh29Menu')?.classList.toggle('open',!!open);
+    document.getElementById('ryh29Shade')?.classList.toggle('open',!!open);
+  };
+  window.ryh29Go=function(page){
+    if(page==='home'){window.scrollTo({top:0,behavior:'smooth'});return}
+    if(typeof window.ryhV16Go==='function'){window.ryhV16Go(page);return}
+    const el=document.querySelector('[data-page="'+page+'"]');if(el)el.click();
+  };
+  window.ryh29OpenLogo=function(){ryh29Menu(false);document.getElementById('ryh29Menu')?.classList.add('open')};
 })();
 </script>
 </body>
