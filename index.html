@@ -871,8 +871,44 @@ body{background:
   <div class="ryh20-menu-grid">
     <button class="ryh20-menu-item" onclick="ryh19Toast('Impostazioni') ; ryh20Toggle(false)"><div class="ico">⚙️</div><div><b>Impostazioni</b><span>Preferenze app</span></div></button>
     <button class="ryh20-menu-item" onclick="ryh19Toast('Archivio aperto') ; ryh20Toggle(false)"><div class="ico">💾</div><div><b>Archivio</b><span>Salva e carica sessioni</span></div></button>
+    <button class="ryh20-menu-item" data-v20="config" onclick="ryh20Go('config')"><div class="ico">⚙️</div><div><b>Configurazione Asta</b><span>Crediti, rosa e strategia</span></div></button>
+    <button class="ryh20-menu-item" data-v20="pro" onclick="ryh20Go('pro')"><div class="ico">⚡</div><div><b>Pro Upgrade</b><span>Funzioni premium</span></div></button>
   </div>
 </aside>
+
+
+<section id="ryh19Pro" class="ryh19-screen">
+  <div class="ryh19-screen-title"><h2>⚡ Pro Upgrade</h2><span>PREMIUM</span></div>
+  <div class="ryh19-panel" style="border-color:#68531d;background:linear-gradient(145deg,#17140b,#0b1219)">
+    <div class="ryh19-row"><div><small>Analisi avanzate</small><b>Scouting + Matchday</b></div><span>🧠</span></div>
+    <div class="ryh19-row"><div><small>Strategia asta</small><b>Budget & target automatici</b></div><span>🎯</span></div>
+    <div class="ryh19-row"><div><small>Direttore Sportivo</small><b>Priorità e scambi</b></div><span>📈</span></div>
+    <div class="ryh19-row"><div><small>Road to Scudetto</small><b>Metriche evolute</b></div><span>🏆</span></div>
+  </div>
+  <div class="ryh19-grid-buttons">
+    <button class="ryh19-offer" onclick="ryh19Toast('Pro Upgrade selezionato')">⚡ ATTIVA PRO</button>
+    <button class="secondary" onclick="ryh19Toast('Funzioni Pro mostrate')">ℹ️ SCOPRI PRO</button>
+  </div>
+</section>
+
+<section id="ryh19Config" class="ryh19-screen">
+  <div class="ryh19-screen-title"><h2>⚙️ Configurazione Asta</h2><span>SETUP</span></div>
+  <div class="ryh19-panel">
+    <div class="ryh19-row"><div><small>Crediti iniziali</small><b>500</b></div><span>💰</span></div>
+    <div class="ryh19-row"><div><small>Giocatori rosa</small><b>25</b></div><span>👕</span></div>
+    <div class="ryh19-row"><div><small>Partecipanti</small><b>10</b></div><span>👥</span></div>
+    <div class="ryh19-row"><div><small>Strategia</small><b>Equilibrata</b></div><span>🎯</span></div>
+  </div>
+  <div class="ryh19-panel">
+    <div class="ryh19-row"><div><small>Budget minimo da conservare</small><b>50</b></div><span>🛡️</span></div>
+    <div class="ryh19-row"><div><small>Priorità reparto</small><b>Attacco</b></div><span>⚽</span></div>
+    <div class="ryh19-row"><div><small>Modificatore</small><b>Attivo</b></div><span>📊</span></div>
+  </div>
+  <div class="ryh19-grid-buttons">
+    <button class="ryh19-offer" onclick="ryh19Toast('Configurazione salvata')">💾 SALVA CONFIGURAZIONE</button>
+    <button class="secondary" onclick="ryh19Toast('Asta pronta')">🔨 VAI ALL'ASTA</button>
+  </div>
+</section>
 
 <section id="ryhV17Home">
   <div class="ryh17-kpis">
@@ -2612,7 +2648,7 @@ function ryh19Toast(msg){
 }
 function ryh19Go(name){
  document.querySelectorAll('.ryh19-screen').forEach(s=>s.classList.remove('active'));
- const id={home:'ryh19Home',asta:'ryh19Asta',campo:'ryh19Campo',rosa:'ryh19Rosa',analisi:'ryh19Analisi',mercato:'ryh19Mercato'}[name]||'ryh19Home';
+ const id={home:'ryh19Home',asta:'ryh19Asta',campo:'ryh19Campo',rosa:'ryh19Rosa',analisi:'ryh19Analisi',mercato:'ryh19Mercato',config:'ryh19Config',pro:'ryh19Pro'}[name]||'ryh19Home';
  document.getElementById(id).classList.add('active');
  document.querySelectorAll('.ryh19-bottom button').forEach(b=>b.classList.toggle('active',b.dataset.v19===name));
  window.scrollTo({top:0,behavior:'smooth'});
