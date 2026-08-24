@@ -505,6 +505,39 @@ body{background:
  .ryh17-bar{grid-template-columns:55px 1fr 25px}
 }
 </style>
+
+<style id="ryhV18AppShell">
+html,body{scroll-behavior:smooth}
+body{overflow-x:hidden!important}
+#ryhV17Home{transition:opacity .18s ease,transform .18s ease}
+.ryh18-view{display:none!important;animation:ryh18In .22s ease}
+.ryh18-view.active{display:block!important}
+@keyframes ryh18In{from{opacity:0;transform:translateX(12px)}to{opacity:1;transform:none}}
+.ryh18-top-actions{display:flex;gap:7px;margin-top:8px}
+.ryh18-top-actions button{flex:1;min-height:38px!important;font-size:9px!important}
+.ryh18-screen-title{display:flex;justify-content:space-between;align-items:center;margin:12px 2px 8px}
+.ryh18-screen-title h2{margin:0;font-size:20px}
+.ryh18-screen-title span{font-size:9px;color:#8998aa}
+.ryh18-panel{background:linear-gradient(145deg,#0b151f,#071019);border:1px solid #223244;border-radius:18px;padding:14px;margin-bottom:10px}
+.ryh18-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #1c2a38}
+.ryh18-row:last-child{border-bottom:0}
+.ryh18-row b{font-size:12px}.ryh18-row small{color:#8f9eaf;font-size:9px}
+.ryh18-actions{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:10px}
+.ryh18-actions button{min-height:46px!important;font-size:10px!important}
+.ryh18-pill{display:inline-block;border:1px solid #2b3d51;border-radius:20px;padding:5px 9px;color:#b8c3d0;font-size:8px}
+.ryh18-field{height:330px;border:1px solid #26402f;border-radius:18px;background:
+radial-gradient(circle at 50% 50%,rgba(35,150,75,.18),transparent 45%),
+linear-gradient(90deg,transparent 49.7%,#55785c 50%,transparent 50.3%),
+linear-gradient(#07140c,#0a1d12);position:relative;overflow:hidden}
+.ryh18-field:before{content:"";position:absolute;inset:14px;border:1px solid #5b8163;border-radius:12px}
+.ryh18-player{position:absolute;width:62px;height:44px;border-radius:12px;background:#0d1924;border:1px solid #2d4054;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:8px}
+.ryh18-player b{color:#fff;font-size:9px}.ryh18-player i{color:#7fe49b;font-style:normal;font-size:7px}
+.ryh18-p1{left:calc(50% - 31px);bottom:17px}.ryh18-p2{left:12%;bottom:90px}.ryh18-p3{left:38%;bottom:78px}.ryh18-p4{right:12%;bottom:90px}
+.ryh18-p5{left:20%;top:110px}.ryh18-p6{left:42%;top:98px}.ryh18-p7{right:20%;top:110px}
+.ryh18-p8{left:30%;top:38px}.ryh18-p9{right:30%;top:38px}
+.ryh18-p10{left:calc(50% - 31px);top:14px}
+@media(max-width:650px){.ryh18-field{height:300px}.ryh18-player{width:55px;height:40px}.ryh18-p1{left:calc(50% - 27px)}.ryh18-p10{left:calc(50% - 27px)}}
+</style>
 </head>
 <body>
 <div class="app">
@@ -649,12 +682,74 @@ body{background:
   </section>
 </section>
 
+
+<section id="ryh18Screens">
+  <section id="ryh18Asta" class="ryh18-view">
+    <div class="ryh18-screen-title"><h2>🔨 Asta Live</h2><span>FAST MODE</span></div>
+    <div class="ryh18-panel">
+      <div class="ryh18-row"><div><small>Giocatore chiamato</small><b> — </b></div><span class="ryh18-pill">IN ATTESA</span></div>
+      <div class="ryh18-row"><div><small>Budget disponibile</small><b>142 crediti</b></div><span class="ryh18-pill">28,4%</span></div>
+      <div class="ryh18-row"><div><small>Prossimo obiettivo</small><b>Attaccante</b></div><span class="ryh18-pill">ALTA</span></div>
+      <div class="ryh18-actions">
+        <button class="ryh17-offer" onclick="ryh18Toast('Modalità asta pronta')">🔨 AVVIA ASTA</button>
+        <button class="secondary" onclick="ryh18Toast('Ricerca giocatore')">🔎 CERCA</button>
+      </div>
+    </div>
+    <div class="ryh18-panel">
+      <div class="ryh18-row"><div><small>Strategia</small><b>Equilibrata</b></div><span>⚙️</span></div>
+      <div class="ryh18-row"><div><small>Budget conservato</small><b>50</b></div><span>💰</span></div>
+      <div class="ryh18-row"><div><small>Partecipanti</small><b>0 / 10</b></div><span>👥</span></div>
+    </div>
+  </section>
+
+  <section id="ryh18Campo" class="ryh18-view">
+    <div class="ryh18-screen-title"><h2>🏟️ Campo</h2><span>FORMAZIONE IDEALE</span></div>
+    <div class="ryh18-panel"><div class="ryh18-row"><div><small>Modulo</small><b>4-3-3</b></div><span class="ryh18-pill">OTTIMIZZATO</span></div></div>
+    <div class="ryh18-field">
+      <div class="ryh18-player ryh18-p1"><b>POR</b><i>La tua rosa</i></div>
+      <div class="ryh18-player ryh18-p2"><b>DC</b><i>—</i></div><div class="ryh18-player ryh18-p3"><b>DC</b><i>—</i></div><div class="ryh18-player ryh18-p4"><b>TD</b><i>—</i></div>
+      <div class="ryh18-player ryh18-p5"><b>CC</b><i>—</i></div><div class="ryh18-player ryh18-p6"><b>CC</b><i>—</i></div><div class="ryh18-player ryh18-p7"><b>CC</b><i>—</i></div>
+      <div class="ryh18-player ryh18-p8"><b>ATT</b><i>—</i></div><div class="ryh18-player ryh18-p9"><b>ATT</b><i>—</i></div><div class="ryh18-player ryh18-p10"><b>ATT</b><i>—</i></div>
+    </div>
+  </section>
+
+  <section id="ryh18Analisi" class="ryh18-view">
+    <div class="ryh18-screen-title"><h2>📊 Analisi</h2><span>MATCHDAY</span></div>
+    <div class="ryh18-panel">
+      <div class="ryh18-row"><div><small>Formazione consigliata</small><b>4-3-3</b></div><span class="ryh18-pill">AI</span></div>
+      <div class="ryh18-row"><div><small>Probabilità titolarità</small><b>—</b></div><span>🟢</span></div>
+      <div class="ryh18-row"><div><small>Rigoristi disponibili</small><b>—</b></div><span>⚽</span></div>
+      <div class="ryh18-row"><div><small>Match più favorevoli</small><b>—</b></div><span>⭐</span></div>
+    </div>
+    <div class="ryh18-actions"><button class="secondary" onclick="ryh18Toast('Analisi giornata pronta')">🧠 ANALIZZA GIORNATA</button><button class="secondary" onclick="ryh18Toast('Formazione aggiornata')">✨ FORMAZIONE IDEALE</button></div>
+  </section>
+
+  <section id="ryh18Mercato" class="ryh18-view">
+    <div class="ryh18-screen-title"><h2>💱 Mercato</h2><span>DS</span></div>
+    <div class="ryh18-panel">
+      <div class="ryh18-row"><div><small>Priorità #1</small><b>Attaccante titolare</b></div><span>🎯</span></div>
+      <div class="ryh18-row"><div><small>Budget libero</small><b>142</b></div><span>💰</span></div>
+      <div class="ryh18-row"><div><small>Scambi da valutare</small><b>0</b></div><span>↔️</span></div>
+    </div>
+    <div class="ryh18-actions"><button class="secondary" onclick="ryh18Toast('Simulatore scambio')">↔️ SIMULA SCAMBIO</button><button class="secondary" onclick="ryh18Toast('Consigli mercato')">🎯 CONSIGLI DS</button></div>
+  </section>
+
+  <section id="ryh18Altro" class="ryh18-view">
+    <div class="ryh18-screen-title"><h2>☰ Altro</h2><span>STRUMENTI</span></div>
+    <div class="ryh18-panel">
+      <div class="ryh18-row"><div><small>Partecipanti asta</small><b>Gestisci</b></div><span>👥</span></div>
+      <div class="ryh18-row"><div><small>Salva / carica asta</small><b>Archivio</b></div><span>💾</span></div>
+      <div class="ryh18-row"><div><small>Impostazioni</small><b>Preferenze</b></div><span>⚙️</span></div>
+    </div>
+  </section>
+</section>
+
 <nav class="ryh17-bottom">
-  <button class="active" onclick="ryh17Home()"><strong>⌂</strong><span>HOME</span></button>
-  <button onclick="ryhJump('v3Field')"><strong>▥</strong><span>CAMPO</span></button>
-  <button onclick="ryhJump('ryhMatchday')"><strong>⌁</strong><span>ANALISI</span></button>
-  <button onclick="ryhJump('ryh12trade')"><strong>⇄</strong><span>MERCATO</span></button>
-  <button onclick="navigator.share ? navigator.share({title:'Raise Your Hammer',text:'La mia asta Fantacalcio'}) : null"><strong>↗</strong><span>CONDIVIDI</span></button>
+  <button class="active" data-screen="home" onclick="ryh18Go('home')"><strong>⌂</strong><span>HOME</span></button>
+  <button data-screen="asta" onclick="ryh18Go('asta')"><strong>🔨</strong><span>ASTA</span></button>
+  <button data-screen="campo" onclick="ryh18Go('campo')"><strong>▥</strong><span>CAMPO</span></button>
+  <button data-screen="analisi" onclick="ryh18Go('analisi')"><strong>⌁</strong><span>ANALISI</span></button>
+  <button data-screen="mercato" onclick="ryh18Go('mercato')"><strong>⇄</strong><span>MERCATO</span></button>
 </nav>
 
 <div id="main" class="hidden">
@@ -2222,6 +2317,32 @@ document.addEventListener('DOMContentLoaded',()=>{
   // Home is the compact landing dashboard. Existing tools remain accessible.
   if(home) home.style.display='block';
   if(main) main.style.display='';
+});
+</script>
+
+<script id="ryhV18AppJS">
+function ryh18Toast(msg){
+  let t=document.getElementById('ryh18Toast');
+  if(!t){t=document.createElement('div');t.id='ryh18Toast';Object.assign(t.style,{position:'fixed',left:'50%',bottom:'78px',transform:'translateX(-50%)',zIndex:100,padding:'11px 15px',border:'1px solid #33465a',borderRadius:'13px',background:'#0b141e',color:'#fff',fontSize:'10px',boxShadow:'0 12px 35px #000b'});document.body.appendChild(t)}
+  t.textContent=msg;t.style.display='block';clearTimeout(window.__ryhToast);window.__ryhToast=setTimeout(()=>t.style.display='none',1800)
+}
+function ryh18Go(screen){
+  const home=document.getElementById('ryhV17Home');
+  document.querySelectorAll('.ryh18-view').forEach(x=>x.classList.remove('active'));
+  if(home) home.style.display=screen==='home'?'block':'none';
+  const map={asta:'ryh18Asta',campo:'ryh18Campo',analisi:'ryh18Analisi',mercato:'ryh18Mercato'};
+  if(map[screen]) document.getElementById(map[screen]).classList.add('active');
+  document.querySelectorAll('.ryh17-bottom button').forEach(b=>b.classList.toggle('active',b.dataset.screen===screen));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function ryhJump(id){
+  // Buttons inside the dashboard now open the relevant app screen.
+  const map={v3Field:'campo',ryhMatchday:'analisi',ryhDS:'mercato',ryh12trade:'mercato',squadBuilder:'campo',ryh13FinalShell:'analisi'};
+  ryh18Go(map[id]||'home');
+}
+document.addEventListener('DOMContentLoaded',()=>{
+  const home=document.getElementById('ryhV17Home');
+  if(home) home.style.display='block';
 });
 </script>
 </body>
