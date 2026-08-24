@@ -1015,6 +1015,54 @@ body{background:
 .ryh26-note{margin-top:8px;text-align:center;color:#697786;font-size:8px}
 @media(max-width:430px){.ryh26-grid{grid-template-columns:1fr}.ryh26-sheet{padding-bottom:16px}}
 </style>
+
+<style id="ryhV27CopilotCSS">
+/* V27 — Auction Copilot + customizable team logo */
+.ryh27-logo{width:34px;height:34px;border-radius:10px;border:1px solid #354657;background:#101a24;object-fit:cover;display:none}
+.ryh27-logo.has-logo{display:block}
+.ryh19-header:before{display:none!important}
+.ryh27-brand{display:flex;align-items:center;gap:8px}
+.ryh27-brand-mark{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:linear-gradient(145deg,#e0b84d,#7b5b1c);color:#101010;font-weight:1000}
+.ryh27-copilot{margin-top:10px;border:1px solid #293a4a;border-radius:18px;background:linear-gradient(145deg,#101b26,#091119);padding:12px}
+.ryh27-topline{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.ryh27-label{font-size:8px;color:#7f8d9c;letter-spacing:.08em}
+.ryh27-budget{font-size:18px;font-weight:1000;color:#f0cf68}
+.ryh27-bar{height:7px;border-radius:8px;background:#17232f;overflow:hidden;margin:9px 0 7px}
+.ryh27-bar i{display:block;width:62%;height:100%;background:linear-gradient(90deg,#3ed982,#e0b84d);border-radius:8px}
+.ryh27-status{padding:10px;border-radius:13px;background:#0a151d;border:1px solid #263747;margin-top:9px}
+.ryh27-status b{font-size:12px}.ryh27-status p{margin:4px 0 0;font-size:8px;line-height:1.45;color:#8795a3}
+.ryh27-actions{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}
+.ryh27-actions button{border:1px solid #2b3b4b;border-radius:11px;background:#101b25;color:#dce3e9;padding:10px 4px;font-size:8px;font-weight:900}
+.ryh27-actions button:first-child{border-color:#397955;background:#10231b;color:#6ff09d}
+.ryh27-targets{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}
+.ryh27-target{padding:8px;border-radius:11px;background:#0b141d;border:1px solid #202f3e}
+.ryh27-target small{display:block;color:#758493;font-size:7px}.ryh27-target b{display:block;font-size:9px;margin-top:3px}.ryh27-target span{display:block;color:#e0b84d;font-size:8px;margin-top:4px}
+.ryh27-departments{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:8px}
+.ryh27-dept{padding:7px 4px;text-align:center;border:1px solid #1e2d3a;border-radius:10px;background:#0a131c}.ryh27-dept b{display:block;font-size:9px}.ryh27-dept span{font-size:7px;color:#7f8d9b}
+.ryh27-logo-panel{margin-top:10px;padding:12px;border:1px solid #253543;border-radius:15px;background:#0c151e}
+.ryh27-logo-panel h4{margin:0 0 4px;font-size:11px}.ryh27-logo-panel p{margin:0 0 9px;font-size:8px;color:#7f8d9b}
+.ryh27-logo-upload{display:flex;align-items:center;gap:8px}
+.ryh27-logo-preview{width:50px;height:50px;border-radius:13px;border:1px solid #354657;object-fit:cover;background:#101a24;display:grid;place-items:center;font-size:18px}
+.ryh27-upload-btn{padding:9px 11px;border-radius:10px;border:1px solid #765e27;background:#1c180e;color:#f0d477;font-size:8px;font-weight:900;cursor:pointer}
+@media(max-width:430px){
+ .ryh27-targets{grid-template-columns:1fr 1fr}.ryh27-target:last-child{grid-column:span 2}
+ .ryh27-departments{grid-template-columns:repeat(4,1fr)}
+}
+</style>
+
+<style id="ryhV28LogoCSS">
+.ryh28-logo-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.ryh28-logo-choice{position:relative;border:1px solid #293a49;background:#0b141d;border-radius:14px;padding:8px;cursor:pointer;text-align:left;color:#e8edf2}
+.ryh28-logo-choice.selected{border-color:#e0b84d;box-shadow:0 0 0 1px #e0b84d55 inset}
+.ryh28-logo-choice img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:10px;display:block}
+.ryh28-logo-choice b{display:block;font-size:8px;margin-top:7px}
+.ryh28-logo-choice span{display:block;color:#788695;font-size:7px;margin-top:2px}
+.ryh28-check{position:absolute;top:13px;right:13px;width:21px;height:21px;border-radius:50%;display:grid;place-items:center;background:#0a1118dd;border:1px solid #4a5b6b;font-size:10px}
+.ryh28-logo-main{width:42px!important;height:42px!important;aspect-ratio:1!important;object-fit:cover!important;border-radius:12px!important;border:1px solid #c69d39;display:block}
+.ryh28-current{display:flex;align-items:center;gap:9px;margin-top:9px;padding:8px;border:1px solid #223241;border-radius:12px;background:#0b141d}
+.ryh28-current img{width:38px;height:38px;border-radius:9px;object-fit:cover}
+.ryh28-current small{display:block;color:#788695;font-size:7px}.ryh28-current b{font-size:9px}
+</style>
 </head>
 <body>
 <div class="app">
@@ -1142,6 +1190,40 @@ body{background:
   <div class="ryh19-quick">
     <div class="q"><small>CREDITI</small><b>142</b></div>
 
+
+<section class="ryh27-copilot" id="ryh27Copilot">
+  <div class="ryh27-topline">
+    <div><div class="ryh27-label">ASTA LIVE • COPILOTA</div><div class="ryh27-budget">327 <small style="font-size:8px;color:#8290a0">CREDITI</small></div></div>
+    <div style="text-align:right"><div class="ryh27-label">ROSA</div><b style="font-size:13px">8 / 25</b></div>
+  </div>
+  <div class="ryh27-bar"><i></i></div>
+  <div style="display:flex;justify-content:space-between;font-size:7px;color:#718091"><span>Minimo per completare: 141</span><b style="color:#4be18a">Disponibili: 186</b></div>
+
+  <div class="ryh27-status">
+    <div><span style="font-size:9px">🎯</span> <b>Strategia: Equilibrata</b></div>
+    <p>Il centrocampo è quasi completo. Se il prossimo attaccante supera <b style="color:#e0b84d">42</b>, fermati e passa al piano B.</p>
+  </div>
+
+  <div class="ryh27-actions">
+    <button onclick="ryh27Decision('PUNTA')">🟢 PUNTA</button>
+    <button onclick="ryh27Decision('OSSERVA')">🟡 OSSERVA</button>
+    <button onclick="ryh27Decision('LASCIA')">🔴 LASCIA</button>
+  </div>
+
+  <div class="ryh27-targets">
+    <div class="ryh27-target"><small>⭐ TARGET 1</small><b>Retegui</b><span>Max 38</span></div>
+    <div class="ryh27-target"><small>⭐ TARGET 2</small><b>Thuram</b><span>Max 42</span></div>
+    <div class="ryh27-target"><small>🎯 PIANO B</small><b>Bonny</b><span>Max 17</span></div>
+  </div>
+
+  <div class="ryh27-departments">
+    <div class="ryh27-dept"><b>🧤 1/3</b><span>POR • 18€</span></div>
+    <div class="ryh27-dept"><b>🛡️ 2/8</b><span>DIF • 55€</span></div>
+    <div class="ryh27-dept"><b>⚙️ 3/8</b><span>CEN • 72€</span></div>
+    <div class="ryh27-dept"><b>⚔️ 2/6</b><span>ATT • 95€</span></div>
+  </div>
+</section>
+
 <section class="ryh22-player-section">
   <div class="ryh22-section-head"><h2>👕 I tuoi giocatori</h2><span>CARDS • ROSA</span></div>
   <div class="ryh22-chipbar">
@@ -1217,6 +1299,17 @@ body{background:
 <aside id="ryh20Menu" class="ryh20-menu" aria-label="Menu principale">
   <div class="ryh20-menu-head">
     <div><h2>RAISE YOUR HAMMER</h2><small>NAVIGAZIONE RAPIDA</small></div>
+<div class="ryh27-logo-panel">
+  <h4>⚒️ Logo della squadra</h4>
+  <p>Carica il tuo stemma e usalo nell'header dell'app.</p>
+  <div class="ryh27-logo-upload">
+    <img id="ryh27LogoPreview" class="ryh27-logo-preview" alt="Logo squadra" />
+    <label class="ryh27-upload-btn">CARICA LOGO
+      <input id="ryh27LogoInput" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml" hidden>
+    </label>
+  </div>
+</div>
+
     <button class="ryh20-close" onclick="ryh20Toggle(false)">✕</button>
   </div>
   <div class="ryh20-section-label">APP</div>
@@ -1648,6 +1741,28 @@ body{background:
         <div id="tableWrap"><div class="empty">Nessun acquisto registrato.</div></div>
       </div>
     </div>
+  </div>
+</div>
+
+
+<div class="ryh27-logo-panel" id="ryh28LogoPanel">
+  <h4>⚒️ Identità Raise Your Hammer</h4>
+  <p>Ho inserito i due stemmi che mi hai mandato. Puoi scegliere quale usare nell'app.</p>
+  <div class="ryh28-logo-grid">
+    <button type="button" class="ryh28-logo-choice" data-logo="assets/logo_hammer_skull.jpg" data-name="Hammer Skull">
+      <span class="ryh28-check">✓</span>
+      <img src="assets/logo_hammer_skull.jpg" alt="Hammer Skull">
+      <b>HAMMER SKULL</b><span>Stile oscuro • elettrico</span>
+    </button>
+    <button type="button" class="ryh28-logo-choice" data-logo="assets/logo_thor.jpg" data-name="Thor">
+      <span class="ryh28-check">✓</span>
+      <img src="assets/logo_thor.jpg" alt="Thor">
+      <b>THOR</b><span>Stile epico • calcistico</span>
+    </button>
+  </div>
+  <div class="ryh28-current">
+    <img id="ryh28CurrentLogo" alt="Logo selezionato">
+    <div><small>LOGO ATTIVO</small><b id="ryh28CurrentName">Hammer Skull</b></div>
   </div>
 </div>
 
@@ -3155,6 +3270,73 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')ryh20Toggle(false)})
     }
   },true);
   overlay()?.addEventListener('click',e=>{if(e.target===overlay())ryh26Close()});
+})();
+</script>
+
+<script id="ryhV27JS">
+(function(){
+  window.ryh27Decision=function(action){
+    const msg={
+      PUNTA:'🟢 PUNTA — sei sotto il limite consigliato.',
+      OSSERVA:'🟡 OSSERVA — aspetta di vedere dove arriva il prezzo.',
+      LASCIA:'🔴 LASCIA — il rapporto prezzo/valore non conviene.'
+    }[action]||action;
+    if(typeof window.ryh19Toast==='function') window.ryh19Toast(msg);
+  };
+
+  function applyLogo(src){
+    const preview=document.getElementById('ryh27LogoPreview');
+    if(preview){preview.src=src;preview.style.display='block'}
+    document.querySelectorAll('.ryh27-header-logo').forEach(x=>{x.src=src;x.classList.add('has-logo')});
+    localStorage.setItem('ryh_team_logo',src);
+  }
+  const saved=localStorage.getItem('ryh_team_logo');
+  if(saved) applyLogo(saved);
+  document.addEventListener('change',e=>{
+    if(e.target.id!=='ryh27LogoInput')return;
+    const file=e.target.files?.[0];if(!file)return;
+    const reader=new FileReader();
+    reader.onload=()=>applyLogo(reader.result);
+    reader.readAsDataURL(file);
+  });
+})();
+</script>
+
+<script id="ryhV28LogoJS">
+(function(){
+  const key='ryh_team_logo_v28';
+  const nameKey='ryh_team_logo_name_v28';
+  const defaultLogo='assets/logo_hammer_skull.jpg';
+
+  function setLogo(src,name){
+    localStorage.setItem(key,src);
+    localStorage.setItem(nameKey,name);
+    document.querySelectorAll('.ryh28-logo-choice').forEach(b=>{
+      b.classList.toggle('selected',b.dataset.logo===src);
+    });
+    const current=document.getElementById('ryh28CurrentLogo');
+    const currentName=document.getElementById('ryh28CurrentName');
+    if(current){current.src=src}
+    if(currentName){currentName.textContent=name}
+    // Update every header logo that may have been inserted by V27.
+    document.querySelectorAll('.ryh27-header-logo').forEach(img=>{
+      img.src=src;img.classList.add('has-logo');
+    });
+    // Also update any V27 preview.
+    const preview=document.getElementById('ryh27LogoPreview');
+    if(preview){preview.src=src;preview.style.display='block'}
+  }
+
+  document.addEventListener('click',e=>{
+    const choice=e.target.closest('.ryh28-logo-choice');
+    if(!choice)return;
+    e.preventDefault();
+    setLogo(choice.dataset.logo,choice.dataset.name);
+  });
+
+  const saved=localStorage.getItem(key)||defaultLogo;
+  const savedName=localStorage.getItem(nameKey)||'Hammer Skull';
+  setLogo(saved,savedName);
 })();
 </script>
 </body>
