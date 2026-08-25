@@ -133,6 +133,7 @@
       <label>Crediti iniziali<input id="cfgBudget" type="number" min="1" value="500"></label>
       <label>Partecipanti<input id="cfgParticipants" type="number" min="2" max="20" value="10"></label>
       <label>Nome della tua squadra<input id="cfgMyName" type="text" value="La mia squadra"></label>
+      <div id="cfgNames" class="cfgNames"></div>
       <button class="mainBtn" id="start">🔨 CONFIGURA E AVVIA</button>
     </div>
     <button class="brainBtn" id="openBrain">🧠 BRAIN · STRATEGIA</button>
@@ -201,7 +202,8 @@ main{max-width:520px;margin:auto;padding:14px}.hidden{display:none}.mainBtn,.bra
 
 <script>
 (()=>{
-const R=(k,f)=>{try{return JSON.parse(localStorage.getItem(k))??f}catch(e){return f}};
+const show=(id)=>{["home","auction","brain"].forEach(x=>{const el=document.getElementById(x);if(el)el.classList.toggle("hidden",x!==id)})};
+ const R=(k,f)=>{try{return JSON.parse(localStorage.getItem(k))??f}catch(e){return f}};
 const W=(k,v)=>localStorage.setItem(k,JSON.stringify(v)),N=x=>Number(x)||0;
 let st=R("ryh66_state",{budget:500,history:[]});
 const $=id=>document.getElementById(id);
@@ -421,9 +423,15 @@ render();
    if(!others.length)return"Configura i partecipanti per analizzare le strategie.";
    return"Rose e budget degli avversari vengono aggiornati dopo ogni assegnazione.";
  }
+ function buildNames(){
+   const n=Math.max(2,N($("cfgParticipants").value)||10),my=$("cfgMyName").value.trim()||"La mia squadra";
+   $("cfgNames").innerHTML='<small>Nomi partecipanti (opzionali)</small>'+Array.from({length:n},(_,i)=>`<input class="cfgP" data-i="${i}" value="${i===0?my:`Partecipante ${i+1}`}" placeholder="Partecipante ${i+1}">`).join("");
+ }
  function setup(){
    const b=N($("cfgBudget").value)||500,n=Math.max(2,N($("cfgParticipants").value)||10),my=$("cfgMyName").value.trim()||"La mia squadra";
-   st={configured:true,budget:b,initial:b,myName:my,participants:Array.from({length:n},(_,i)=>i===0?my:`Partecipante ${i+1}`),history:[]};
+   const names=[...document.querySelectorAll(".cfgP")].slice(0,n).map((x,i)=>x.value.trim()||`Partecipante ${i+1}`);
+   names[0]=my;
+   st={configured:true,budget:b,initial:b,myName:my,participants:names,history:[]};
    W("ryh68_state",st);show("auction");render();
  }
  function assignBox(){
@@ -431,16 +439,18 @@ render();
    list.innerHTML=st.participants.map((x,i)=>`<button class="participant" data-p="${i}">${x}</button>`).join("");
    [...list.querySelectorAll(".participant")].forEach(b=>b.onclick=()=>{
      const p=selected||pFind(),pr=N($("price").value);if(!p||!pr)return;
-     st.budget=xBudgetAfter(st.budget,st.myName,b);
-     st.history.push({name:p.name,price:pr,owner:st.participants[Number(b.dataset.p)]});
+     const owner=st.participants[Number(b.dataset.p)];
+     if(owner===st.myName) st.budget=Math.max(0,st.budget-pr);
+     st.history.push({name:p.name,price:pr,owner});
      W("ryh68_state",st);selected=null;$("player").value="";$("price").value=1;$("assignBox").classList.add("hidden");render();
    });
  }
- function xBudgetAfter(cur,my,b){
-   return cur;
- }
+ function xBudgetAfter(cur,my,b){ return cur; }
  document.addEventListener("DOMContentLoaded",()=>{
    $("start").onclick=setup;
+   $("cfgParticipants").oninput=buildNames;
+   $("cfgMyName").oninput=()=>{const first=document.querySelector(".cfgP[data-i="0"]");if(first)first.value=$("cfgMyName").value};
+   buildNames();
    $("openBrain").onclick=()=>show("brain");
    document.querySelectorAll(".back").forEach(b=>b.onclick=()=>show("home"));
    $("player").oninput=()=>{selected=null;renderSuggestionsV68();render()};
