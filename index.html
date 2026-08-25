@@ -134,11 +134,18 @@
 
   <section id="auction" class="hidden">
     <div class="topline"><button class="back">←</button><b>ASTA</b><span id="budget">500</span></div>
-    <input id="player" class="bigInput" placeholder="Giocatore chiamato">
+    <div class="autocompleteWrap">
+  <input id="player" class="bigInput" placeholder="Inizia a scrivere il giocatore" autocomplete="off">
+  <div id="suggestions" class="suggestions hidden"></div>
+</div>
     <input id="price" type="number" min="0" value="1" class="priceInput">
 
     <div id="decision" class="decision"><b id="decisionText">Inserisci un giocatore</b><small id="reason">Brain analizzerà la chiamata.</small></div>
 
+    <div id="playerInfo" class="playerInfo hidden">
+      <div><b id="infoName">—</b><span id="infoTeam">—</span></div>
+      <div id="infoStats">—</div>
+    </div>
     <div class="grid">
       <div><small>SCORE</small><b id="score">—</b></div>
       <div><small>FVM</small><b id="fvm">—</b></div>
@@ -149,7 +156,11 @@
       <button id="raise">🔨 RIALZA +1</button>
       <button id="pass">PASSA</button>
     </div>
-    <button id="bought" class="bought">✓ ACQUISTATO</button>
+    <button id="bought" class="bought">✓ ASSEGNA GIOCATORE</button>
+    <div id="assignBox" class="assignBox hidden">
+      <div class="assignTitle">Chi lo ha acquistato?</div>
+      <div id="participantList" class="participantList"></div>
+    </div>
     <div class="mini">Ultimi acquisti: <span id="history">—</span></div>
   </section>
 
@@ -220,6 +231,119 @@ $("bought").onclick=()=>{
 };
 $("reset").onclick=()=>{if(confirm("Reset completo?")){localStorage.removeItem("ryh66_state");location.reload()}};
 render();
+})();
+</script>
+
+<script>
+(()=>{
+ const R=(k,f)=>{try{return JSON.parse(localStorage.getItem(k))??f}catch(e){return f}};
+ const W=(k,v)=>localStorage.setItem(k,JSON.stringify(v)),N=x=>Number(x)||0,$=id=>document.getElementById(id);
+ let st=R("ryh67_state",{budget:500,participants:[],history:[]});
+ let selected=null;
+
+ function players(){
+   return R("ryh_players",R("players",[]));
+ }
+ function matches(q){
+   q=q.trim().toLowerCase(); if(!q)return [];
+   return players().filter(p=>String(p.name||"").toLowerCase().includes(q)).slice(0,7);
+ }
+ function findSelected(){
+   if(selected)return selected;
+   let q=$("player").value.trim().toLowerCase();
+   return players().find(p=>String(p.name||"").toLowerCase()===q)||null;
+ }
+ function score(p){
+   return Math.max(0,Math.min(100,Math.round(N(p.score,70)*.68+N(p.goals)*2.5+N(p.assists)*1.7+(N(p.apps)?7:3)+(N(p.starts)?7:4))));
+ }
+ function maxPrice(p){
+   let sc=score(p),f=N(p.fvm),q=N(p.quote);
+   return Math.max(q||1,Math.round((f?f/10:Math.max(q+5,sc*.8))*(1+(sc-70)/220)));
+ }
+ function renderSuggestions(){
+   let box=$("suggestions"), arr=matches($("player").value);
+   if(!arr.length){box.classList.add("hidden");return}
+   box.innerHTML=arr.map((p,i)=>`<button class="suggestion" data-i="${i}"><span><b>${p.name||"—"}</b><small>${p.team||""} · ${p.role||""}</small></span><span>${N(p.fvm)?`FVM ${p.fvm}`:""}</span></button>`).join("");
+   box.classList.remove("hidden");
+   [...box.querySelectorAll(".suggestion")].forEach((b,i)=>b.onclick=()=>select(arr[i]));
+ }
+ function select(p){
+   selected=p;$("player").value=p.name||"";
+   $("suggestions").classList.add("hidden");
+   update();
+ }
+ function update(){
+   const p=findSelected(),pr=N($("price").value);
+   if(!p){
+     ["score","fvm","max"].forEach(x=>$(x).textContent="—");
+     $("playerInfo").classList.add("hidden");
+     $("decisionText").textContent="Inserisci il giocatore";
+     $("reason").textContent="Brain ti mostrerà subito analisi e limite.";
+     $("decision").className="decision";
+     $("brainAdvice").textContent="Inizia a scrivere il nome: scegli il giocatore dai suggerimenti.";
+     return;
+   }
+   $("playerInfo").classList.remove("hidden");
+   $("infoName").textContent=p.name||"—";
+   $("infoTeam").textContent=(p.team||"")+(p.role?` · ${p.role}`:"");
+   const extras=[
+     p.apps!=null?`Presenze ${p.apps}`:"",
+     p.starts!=null?`Titolare ${p.starts}`:"",
+     p.goals!=null?`Gol ${p.goals}`:"",
+     p.assists!=null?`Assist ${p.assists}`:"",
+     p.yellow!=null?`Gialli ${p.yellow}`:"",
+     p.red!=null?`Rossi ${p.red}`:"",
+     p.media!=null?`MV ${p.media}`:"",
+     p.fantamedia!=null?`FM ${p.fantamedia}`:""
+   ].filter(Boolean);
+   $("infoStats").textContent=extras.join(" · ")||"Statistiche disponibili limitate.";
+   const sc=score(p),max=maxPrice(p);
+   $("score").textContent=sc;$("fvm").textContent=N(p.fvm)||"—";$("max").textContent=max;
+   const d=$("decision"),t=$("decisionText"),r=$("reason");
+   if(pr>max){t.textContent="🛑 LASCIA";r.textContent=`Prezzo ${pr}: oltre il limite di ${max}.`;d.className="decision stop"}
+   else if(pr>max*.9){t.textContent="⚠️ ULTIMO RILANCIO";r.textContent=`Puoi arrivare a ${max}, poi fermati.`;d.className="decision warn"}
+   else if(pr<=max*.72){t.textContent="💰 AFFARE";r.textContent=`Prezzo basso: puoi attaccare. Limite ${max}.`;d.className="decision good"}
+   else if(sc>=82){t.textContent="🟢 PRENDI";r.textContent=`Obiettivo forte. Limite Brain ${max}.`;d.className="decision good"}
+   else if(sc>=74){t.textContent="🔨 RIALZA";r.textContent=`Rilancia senza superare ${max}.`;d.className="decision good"}
+   else{t.textContent="👀 ASPETTA";r.textContent=`Non inseguire il prezzo. Limite ${max}.`;d.className="decision warn"}
+   $("brainAdvice").textContent=`${p.name}: Score ${sc}/100 · FVM ${N(p.fvm)||"—"} · limite ${max}. ${pr>max?"Passa: conserva i crediti.":`Se il prezzo sale oltre ${max}, passa.`}`;
+ }
+ function renderHistory(){
+   $("budget").textContent=st.budget;
+   $("history").textContent=st.history.slice(-4).reverse().map(x=>`${x.name} ${x.price} → ${x.owner}`).join(" · ")||"—";
+ }
+ function assignBox(){
+   const box=$("assignBox"),list=$("participantList");
+   box.classList.remove("hidden");
+   if(!st.participants.length){
+     const n=Math.max(2,N(prompt("Quanti partecipanti?")||10));
+     st.participants=Array.from({length:n},(_,i)=>`Partecipante ${i+1}`);
+     W("ryh67_state",st);
+   }
+   list.innerHTML=st.participants.map((x,i)=>`<button class="participant" data-p="${i}">${x}</button>`).join("");
+   [...list.querySelectorAll(".participant")].forEach(b=>b.onclick=()=>assign(Number(b.dataset.p)));
+ }
+ function assign(i){
+   const p=findSelected(),pr=N($("price").value);if(!p||pr<=0)return;
+   st.budget=Math.max(0,st.budget-pr);
+   st.history.push({name:p.name,price:pr,owner:st.participants[i]});
+   W("ryh67_state",st);
+   selected=null;$("player").value="";$("price").value=1;$("assignBox").classList.add("hidden");
+   renderHistory();update();
+ }
+ document.addEventListener("DOMContentLoaded",()=>{
+   // Replace the setup flow: start goes straight to auction.
+   $("start").onclick=()=>{if(!st.participants.length){const n=Math.max(2,N(prompt("Numero partecipanti?")||10));st.participants=Array.from({length:n},(_,i)=>`Partecipante ${i+1}`);W("ryh67_state",st)};show("auction")};
+   $("openBrain").onclick=()=>show("brain");
+   document.querySelectorAll(".back").forEach(b=>b.onclick=()=>show("home"));
+   $("player").oninput=()=>{selected=null;renderSuggestions();update()};
+   $("price").oninput=update;
+   $("raise").onclick=()=>{$("price").value=N($("price").value)+1;update()};
+   $("pass").onclick=()=>{$("price").value=0;update()};
+   $("bought").onclick=assignBox;
+   $("reset").onclick=()=>{if(confirm("Reset completo di asta e partecipanti?")){localStorage.removeItem("ryh67_state");location.reload()}};
+   renderHistory();update();
+ });
 })();
 </script>
 </body>
