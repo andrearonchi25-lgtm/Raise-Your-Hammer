@@ -128,8 +128,14 @@
 
 <main>
   <section id="home">
-    <button class="mainBtn" id="start">🔨 AVVIA ASTA</button>
-    <button class="brainBtn" id="openBrain">🧠 BRAIN</button>
+    <div class="setupCard">
+      <div class="setupTitle">CONFIGURA LA TUA ASTA</div>
+      <label>Crediti iniziali<input id="cfgBudget" type="number" min="1" value="500"></label>
+      <label>Partecipanti<input id="cfgParticipants" type="number" min="2" max="20" value="10"></label>
+      <label>Nome della tua squadra<input id="cfgMyName" type="text" value="La mia squadra"></label>
+      <button class="mainBtn" id="start">🔨 CONFIGURA E AVVIA</button>
+    </div>
+    <button class="brainBtn" id="openBrain">🧠 BRAIN · STRATEGIA</button>
   </section>
 
   <section id="auction" class="hidden">
@@ -161,6 +167,11 @@
       <div class="assignTitle">Chi lo ha acquistato?</div>
       <div id="participantList" class="participantList"></div>
     </div>
+    <div class="strategyStrip" id="strategyStrip">🧠 Configura l'asta per attivare l'analisi degli avversari.</div>
+    <section class="rosters">
+      <div class="sectionHead">ROSE IN TEMPO REALE</div>
+      <div id="rosterList"></div>
+    </section>
     <div class="mini">Ultimi acquisti: <span id="history">—</span></div>
   </section>
 
@@ -170,6 +181,7 @@
       <h2>Il cervello dell'asta</h2>
       <p>Brain studia il giocatore, il prezzo e ciò che è successo nell'asta per dirti rapidamente se conviene rilanciare o lasciare.</p>
       <div class="brainRule">🟢 PRENDI · 🔨 RIALZA · ⚠️ FERMATI · 🛑 LASCIA</div>
+      <div id="brainStrategy" class="brainStrategy">Nessuna asta configurata.</div>
     </div>
   </section>
 </main>
@@ -344,6 +356,111 @@ render();
    $("reset").onclick=()=>{if(confirm("Reset completo di asta e partecipanti?")){localStorage.removeItem("ryh67_state");location.reload()}};
    renderHistory();update();
  });
+})();
+</script>
+
+<script>
+(()=>{
+ const R=(k,f)=>{try{return JSON.parse(localStorage.getItem(k))??f}catch(e){return f}};
+ const W=(k,v)=>localStorage.setItem(k,JSON.stringify(v)),N=x=>Number(x)||0,$=id=>document.getElementById(id);
+ let st=R("ryh68_state",{configured:false,budget:500,initial:500,myName:"La mia squadra",participants:[],history:[]});
+ let selected=null;
+
+ function players(){return R("ryh_players",R("players",[]))}
+ function pFind(){let q=$("player").value.trim().toLowerCase();if(!q)return null;return players().find(p=>String(p.name||"").toLowerCase()===q)||players().find(p=>String(p.name||"").toLowerCase().includes(q))}
+ function score(p){return Math.max(0,Math.min(100,Math.round(N(p.score,70)*.68+N(p.goals)*2.5+N(p.assists)*1.7+(N(p.apps)?7:3)+(N(p.starts)?7:4))))}
+ function maxP(p){let sc=score(p),f=N(p.fvm),q=N(p.quote);return Math.max(q||1,Math.round((f?f/10:Math.max(q+5,sc*.8))*(1+(sc-70)/220)))}
+
+ function renderRosters(){
+   const box=$("rosterList"); if(!box)return;
+   const all=[{name:st.myName,budget:st.budget,players:st.history.filter(x=>x.owner===st.myName)}].concat(
+     st.participants.filter(x=>x!==st.myName).map(name=>({name,budget:st.initial-st.history.filter(x=>x.owner===name).reduce((a,x)=>a+x.price,0),players:st.history.filter(x=>x.owner===name)}))
+   );
+   box.innerHTML=all.map(x=>{
+     const total=x.players.reduce((a,p)=>a+p.price,0);
+     const names=x.players.map(p=>`${p.name} (${p.price})`).join(", ")||"Nessun acquisto";
+     return `<div class="rosterRow"><div class="rosterTop"><span class="rosterName">${x.name}</span><span class="rosterBudget">${x.budget} cr</span></div><div class="rosterMeta">${x.players.length} giocatori · spesi ${total}</div><div class="rosterPlayers">${names}</div></div>`;
+   }).join("");
+   strategy();
+ }
+ function strategy(){
+   const recent=st.history.slice(-12);
+   const mine=st.history.filter(x=>x.owner===st.myName);
+   const others=st.participants.filter(x=>x!==st.myName);
+   const active=others.map(name=>{
+     const buys=st.history.filter(x=>x.owner===name),spent=buys.reduce((a,x)=>a+x.price,0);
+     return {name,buys,spent,budget:st.initial-spent};
+   });
+   const aggressive=active.filter(x=>x.buys.some(b=>b.price>=Math.max(20,st.initial*.12))).map(x=>x.name);
+   const quiet=active.filter(x=>x.buys.length<=1).map(x=>x.name);
+   let advice="Brain sta osservando i comportamenti.";
+   if(aggressive.length) advice=`Attenzione: ${aggressive.join(", ")} sta spendendo forte. Non seguirli nelle guerre di prezzo; conserva crediti per gli obiettivi prioritari.`;
+   else if(quiet.length) advice=`${quiet.join(", ")} è ancora prudente: potrebbe avere molto budget per colpire più avanti.`;
+   if(recent.length>=3) advice+=` Negli ultimi acquisti Brain ha registrato ${recent.length} movimenti e sta aggiornando la lettura delle strategie.`;
+   if($("strategyStrip"))$("strategyStrip").textContent="🧠 "+advice;
+   if($("brainStrategy"))$("brainStrategy").textContent=advice+` La tua rosa: ${mine.length} giocatori, ${mine.reduce((a,x)=>a+x.price,0)} crediti spesi.`;
+ }
+ function render(){
+   $("budget").textContent=st.budget;
+   $("history").textContent=st.history.slice(-4).reverse().map(x=>`${x.name} ${x.price} → ${x.owner}`).join(" · ")||"—";
+   const p=selected||pFind(),pr=N($("price").value);
+   if(!p){$("decisionText").textContent="Inserisci il giocatore";$("reason").textContent="Brain analizzerà giocatore, prezzo e stato delle rose.";["score","fvm","max"].forEach(x=>$(x).textContent="—");return}
+   const sc=score(p),max=maxP(p);$("score").textContent=sc;$("fvm").textContent=N(p.fvm)||"—";$("max").textContent=max;
+   let d=$("decision"),t=$("decisionText"),r=$("reason");
+   if(pr>max){t.textContent="🛑 LASCIA";r.textContent=`Oltre ${max}. Non farti trascinare dagli avversari.`;d.className="decision stop"}
+   else if(pr>max*.9){t.textContent="⚠️ ULTIMO RILANCIO";r.textContent=`Massimo ${max}. Poi passa.`;d.className="decision warn"}
+   else if(pr<=max*.72){t.textContent="💰 AFFARE";r.textContent=`Prezzo basso. Puoi attaccare.`;d.className="decision good"}
+   else if(sc>=82){t.textContent="🟢 PRENDI";r.textContent=`Obiettivo forte. Limite ${max}.`;d.className="decision good"}
+   else if(sc>=74){t.textContent="🔨 RIALZA";r.textContent=`Rilancia fino a ${max}.`;d.className="decision good"}
+   else{t.textContent="👀 ASPETTA";r.textContent=`Non inseguire. Limite ${max}.`;d.className="decision warn"}
+   $("brainAdvice").textContent=`Brain: ${p.name}. Score ${sc}/100 · FVM ${N(p.fvm)||"—"} · massimo ${max}. ${strategyText(p)}`;
+   renderRosters();
+ }
+ function strategyText(p){
+   const others=st.participants.filter(x=>x!==st.myName);
+   if(!others.length)return"Configura i partecipanti per analizzare le strategie.";
+   return"Rose e budget degli avversari vengono aggiornati dopo ogni assegnazione.";
+ }
+ function setup(){
+   const b=N($("cfgBudget").value)||500,n=Math.max(2,N($("cfgParticipants").value)||10),my=$("cfgMyName").value.trim()||"La mia squadra";
+   st={configured:true,budget:b,initial:b,myName:my,participants:Array.from({length:n},(_,i)=>i===0?my:`Partecipante ${i+1}`),history:[]};
+   W("ryh68_state",st);show("auction");render();
+ }
+ function assignBox(){
+   const list=$("participantList");$("assignBox").classList.remove("hidden");
+   list.innerHTML=st.participants.map((x,i)=>`<button class="participant" data-p="${i}">${x}</button>`).join("");
+   [...list.querySelectorAll(".participant")].forEach(b=>b.onclick=()=>{
+     const p=selected||pFind(),pr=N($("price").value);if(!p||!pr)return;
+     st.budget=xBudgetAfter(st.budget,st.myName,b);
+     st.history.push({name:p.name,price:pr,owner:st.participants[Number(b.dataset.p)]});
+     W("ryh68_state",st);selected=null;$("player").value="";$("price").value=1;$("assignBox").classList.add("hidden");render();
+   });
+ }
+ function xBudgetAfter(cur,my,b){
+   return cur;
+ }
+ document.addEventListener("DOMContentLoaded",()=>{
+   $("start").onclick=setup;
+   $("openBrain").onclick=()=>show("brain");
+   document.querySelectorAll(".back").forEach(b=>b.onclick=()=>show("home"));
+   $("player").oninput=()=>{selected=null;renderSuggestionsV68();render()};
+   $("price").oninput=render;
+   $("raise").onclick=()=>{$("price").value=N($("price").value)+1;render()};
+   $("pass").onclick=()=>{$("price").value=0;render()};
+   $("bought").onclick=assignBox;
+   $("reset").onclick=()=>{if(confirm("Reset completo di configurazione, rose e asta?")){localStorage.removeItem("ryh68_state");location.reload()}};
+   if(st.configured){$("cfgBudget").value=st.initial;$("cfgParticipants").value=st.participants.length;$("cfgMyName").value=st.myName}
+   renderRosters();render();
+ });
+ function renderSuggestionsV68(){
+   const box=$("suggestions"),q=$("player").value.trim().toLowerCase();
+   if(!q){box.classList.add("hidden");return}
+   const arr=players().filter(p=>String(p.name||"").toLowerCase().includes(q)).slice(0,7);
+   if(!arr.length){box.classList.add("hidden");return}
+   box.innerHTML=arr.map((p,i)=>`<button class="suggestion" data-i="${i}"><span><b>${p.name||"—"}</b><small>${p.team||""} · ${p.role||""}</small></span><span>${N(p.fvm)?`FVM ${p.fvm}`:""}</span></button>`).join("");
+   box.classList.remove("hidden");
+   [...box.querySelectorAll(".suggestion")].forEach((b,i)=>b.onclick=()=>{selected=arr[i];$("player").value=arr[i].name;$("suggestions").classList.add("hidden");render()});
+ }
 })();
 </script>
 </body>
