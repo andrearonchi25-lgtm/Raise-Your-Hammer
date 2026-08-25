@@ -117,823 +117,204 @@
 .ryh64-extra{display:none;margin-top:8px;padding:10px;border-radius:10px;background:#101820;border:1px solid #293b49;font-size:6px;line-height:1.5;color:#aeb8c0}.ryh64-extra.open{display:block}
 .ryh64-float{position:fixed;right:12px;bottom:12px;z-index:9998;border:0;border-radius:50%;width:54px;height:54px;background:#c49e4c;color:#111;font-size:9px;font-weight:1000;box-shadow:0 5px 20px #0008}
 </style>
-</head><body><div class="app"><header class="top"><div class="brand"><div class="mark">🔨</div><div><b>RAISE YOUR HAMMER</b><small>FANTACALCIO COMMAND CENTER</small></div></div><button class="menu" onclick="openMenu()">☰</button></header><main id="home" class="view active"></main><main id="auction" class="view"></main><main id="brain" class="view"></main><main id="formation" class="view"></main></div><nav class="bottom"><button id="navHome" class="active" onclick="show('home')"><b>⌂</b>HOME</button><button id="navAuction" onclick="show('auction')"><b>🔨</b>ASTA</button><button id="navBrain" onclick="show('brain')"><b>🧠</b>BRAIN</button><button id="navFormation" onclick="show('formation')"><b>🏟</b>CAMPO</button></nav><div id="drawer" class="drawer" onclick="if(event.target===this)closeMenu()"><div class="drawerPanel"><div class="row"><b>MENU</b><button class="btn" onclick="closeMenu()">✕</button></div><button class="drawerItem" onclick="closeMenu();show('home')">⌂ Home</button><button class="drawerItem" onclick="closeMenu();show('auction')">🔨 Asta e partecipanti</button><button class="drawerItem" onclick="closeMenu();show('brain')">🧠 Hammer Brain</button><button class="drawerItem" onclick="closeMenu();show('formation')">🏟 Formazione consigliata</button></div></div><script>const DB=[["A", "Martinez L.", "Inter", 35, 68], ["A", "Malen", "Roma", 34, 66], ["D", "Dimarco", "Inter", 32, 62], ["C", "Paz N.", "Como", 30, 58], ["A", "Thuram", "Inter", 29, 56], ["A", "Hojlund", "Napoli", 28, 54], ["C", "McTominay", "Napoli", 28, 54], ["C", "Calhanoglu", "Inter", 27, 52], ["A", "Ramos G.", "Milan", 27, 52], ["A", "Kolo Muani", "Juventus", 26, 50], ["C", "Orsolini", "Bologna", 26, 50], ["A", "Kean", "Fiorentina", 25, 48], ["C", "Pulisic", "Milan", 25, 48], ["A", "Yildiz", "Juventus", 23, 44], ["C", "Rabiot", "Milan", 22, 42], ["A", "Douvikas", "Como", 20, 38], ["C", "Baturina", "Como", 19, 37], ["A", "Davis K.", "Udinese", 19, 37], ["C", "Mora", "Roma", 19, 37], ["A", "Scamacca", "Atalanta", 19, 37], ["A", "Berardi", "Sassuolo", 18, 35], ["C", "Da Cunha", "Como", 18, 35], ["A", "Krstovic", "Atalanta", 18, 35], ["A", "Leao", "Milan", 18, 35], ["D", "Molina N.", "Roma", 18, 35], ["P", "Svilar", "Roma", 18, 35], ["C", "Zaniolo", "Udinese", 18, 35], ["C", "Atta", "Fiorentina", 17, 33], ["C", "Barella", "Inter", 17, 33], ["A", "De Ketelaere", "Atalanta", 17, 33], ["P", "Martinez Jo.", "Inter", 17, 33], ["C", "McKennie", "Juventus", 17, 33], ["D", "Wesley", "Roma", 17, 33], ["D", "Akanji", "Inter", 16, 31], ["P", "Butez", "Como", 16, 31], ["P", "Carnesecchi", "Atalanta", 16, 31], ["A", "Dovbyk", "Bologna", 16, 31], ["A", "Esposito F.P.", "Inter", 16, 31], ["P", "Vicario", "Juventus", 16, 31], ["C", "Zaccagni", "Lazio", 16, 31], ["D", "Bremer", "Juventus", 15, 29], ["C", "De Bruyne", "Napoli", 15, 29], ["A", "Laurientè", "Sassuolo", 15, 29], ["P", "Maignan", "Milan", 15, 29], ["D", "Mancini", "Roma", 15, 29], ["A", "Pellegrino M.", "Fiorentina", 15, 29], ["A", "Simeone", "Torino", 15, 29], ["D", "Bastoni", "Inter", 14, 27], ["A", "Castro S.", "Roma", 14, 27], ["A", "Dybala", "Roma", 14, 27], ["D", "Pavlovic", "Milan", 14, 27], ["D", "Rrahmani", "Napoli", 14, 27], ["A", "Santos A.", "Napoli", 14, 27], ["C", "Vlasic", "Torino", 14, 27], ["P", "De Gea", "Fiorentina", 13, 25], ["A", "Esposito Se.", "Cagliari", 13, 25], ["C", "Gudmundsson A.", "Fiorentina", 13, 25], ["D", "Kalulu", "Juventus", 13, 25], ["A", "Kevin Carlos", "Cagliari", 13, 25], ["D", "N'Dicka", "Roma", 13, 25], ["A", "Nkunku", "Milan", 13, 25], ["A", "Pinamonti", "Sassuolo", 13, 25], ["A", "Raspadori", "Atalanta", 13, 25], ["D", "Solet", "Udinese", 13, 25], ["C", "Taylor K.", "Lazio", 13, 25], ["A", "Adams A.", "Venezia", 12, 23], ["C", "Alajbegovic", "Juventus", 12, 23], ["C", "Conceicao", "Juventus", 12, 23], ["D", "Di Lorenzo", "Napoli", 12, 23], ["C", "Ederson D.S.", "Atalanta", 12, 23], ["D", "Gila", "Milan", 12, 23], ["C", "Mastantuono", "Fiorentina", 12, 23], ["C", "Modric", "Milan", 12, 23], ["C", "Moreira", "Milan", 12, 23], ["C", "Rodriguez Je.", "Como", 12, 23], ["C", "Samardzic", "Atalanta", 12, 23], ["A", "Soulè", "Roma", 12, 23], ["D", "Spence", "Inter", 12, 23], ["D", "Stones", "Inter", 12, 23], ["C", "Baldanzi", "Genoa", 11, 21], ["D", "Bisseck", "Inter", 11, 21], ["A", "Colombo", "Genoa", 11, 21], ["A", "Diao", "Como", 11, 21], ["P", "Meret", "Napoli", 11, 21], ["D", "Ostigard", "Genoa", 11, 21], ["C", "Rowe", "Bologna", 11, 21], ["A", "Tourè E.", "Parma", 11, 21], ["C", "Zambo Anguissa", "Napoli", 11, 21], ["A", "Bowie", "Sassuolo", 10, 19], ["C", "Casadei", "Torino", 10, 19], ["A", "Dia", "Lazio", 10, 19], ["D", "Dodò", "Fiorentina", 10, 19], ["C", "Ekkelenkamp", "Udinese", 10, 19], ["D", "Hermoso", "Roma", 10, 19], ["C", "Konè M.", "Roma", 10, 19], ["C", "Pellegrini Lo.", "Roma", 10, 19], ["C", "Perrone", "Como", 10, 19], ["C", "Politano", "Napoli", 10, 19], ["D", "Ramon", "Como", 10, 19], ["A", "Ratkov", "Lazio", 10, 19], ["A", "Romero D.", "Parma", 10, 19], ["C", "Saelemaekers", "Milan", 10, 19], ["D", "Scalvini", "Atalanta", 10, 19], ["P", "Skorupski", "Bologna", 10, 19], ["C", "Thorstvedt", "Sassuolo", 10, 19], ["C", "Thuram K.", "Juventus", 10, 19], ["C", "Zielinski", "Inter", 10, 19]];
-let S=JSON.parse(localStorage.getItem('RYH51')||'null')||{credits:500,participants:[],myTeam:[],auctionLog:[],targets:[]};function save(){localStorage.setItem('RYH51',JSON.stringify(S))}function esc(x){return String(x??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}function show(id){document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.bottom button').forEach(x=>x.classList.remove('active'));document.getElementById('nav'+id[0].toUpperCase()+id.slice(1)).classList.add('active');render(id)}function openMenu(){document.getElementById('drawer').classList.add('open')}function closeMenu(){document.getElementById('drawer').classList.remove('open')}
-function roleName(r){return r==='P'?'Portiere':r==='D'?'Difensore':r==='C'?'Centrocampista':'Attaccante'}function score(p){return p[4]}function price(p){return p[3]}function find(q){q=q.toLowerCase().trim();return DB.filter(p=>(p[1]+' '+p[2]).toLowerCase().includes(q)).sort((a,b)=>score(b)-score(a)).slice(0,20)}
-function home(){let n=S.participants.length;return `<section class="hero"><div class="eyebrow">ASTA 2026/27</div><h1>Pronto a costruire la tua rosa?</h1><p class="muted">Una base pulita: asta, partecipanti, Brain e formazione consigliata.</p><button class="btn gold" onclick="show('auction')">🔨 CONFIGURA ASTA</button><div class="grid3" style="margin-top:8px"><div class="stat"><b>${S.credits}</b><small>CREDITI</small></div><div class="stat"><b>${n}</b><small>PARTECIPANTI</small></div><div class="stat"><b>${S.myTeam.length}</b><small>ACQUISTI</small></div></div></section><div class="sectionTitle">Cosa vuoi fare?</div><div class="stack"><button class="drawerItem" onclick="show('auction')">🔨 Imposta partecipanti e asta</button><button class="drawerItem" onclick="show('brain')">🧠 Studia i giocatori e scegli i target</button><button class="drawerItem" onclick="show('formation')">🏟 Costruisci la formazione consigliata</button></div>`}
-function auction(){let parts=S.participants.map((x,i)=>`<div class="p"><div class="row"><div><b class="name">${esc(x.name)}</b><small>${x.credits} crediti · ${x.players.length} acquisti</small></div><span class="pill">PARTECIPANTE ${i+1}</span></div></div>`).join('');return `<div class="auctionShell"><div class="auctionBody"><section class="hero"><div class="eyebrow">🔨 ASTA</div><h1>Configurazione</h1><p class="muted">Imposta i partecipanti e poi registra ogni acquisto.</p><div class="formgrid"><input id="pname" class="input" placeholder="Nome partecipante"><input id="pcred" class="input" type="number" value="500" placeholder="Crediti"></div><button class="btn gold" style="margin-top:7px" onclick="addParticipant()">+ Aggiungi partecipante</button></section><div class="sectionTitle">Partecipanti (${S.participants.length})</div>${parts||'<div class="notice">Nessun partecipante ancora. Aggiungili qui.</div>'}<div class="sectionTitle">Registra acquisto</div><section class="card"><div class="formgrid"><input id="buyPlayer" class="input" placeholder="Giocatore"><input id="buyPrice" class="input" type="number" placeholder="Prezzo"></div><select id="buyBuyer" class="select" style="margin-top:7px">${S.participants.map((x,i)=>`<option value="${i}">${esc(x.name)}</option>`).join('')}</select><button class="btn gold" style="margin-top:7px" onclick="registerBuy()">Registra acquisto</button></section><section class="card"><div class="row"><b>Ultimi acquisti</b><span class="muted">${S.auctionLog.length}</span></div><div class="log">${S.auctionLog.slice().reverse().slice(0,20).map(x=>`<div>${esc(x.player)} — <b>${x.price}</b> cr · ${esc(x.buyer)}</div>`).join('')||'<div>Nessun acquisto registrato.</div>'}</div></section></div></div>`}
-function addParticipant(){let n=document.getElementById('pname').value.trim(),c=+document.getElementById('pcred').value||500;if(!n)return alert('Inserisci il nome del partecipante.');S.participants.push({name:n,credits:c,players:[]});save();render('auction')}
-function registerBuy(){let p=document.getElementById('buyPlayer').value.trim(),pr=+document.getElementById('buyPrice').value,b=+document.getElementById('buyBuyer').value;if(!p||!pr||!S.participants[b])return alert('Completa giocatore, prezzo e partecipante.');let t=S.participants[b];if(pr>t.credits)return alert('Crediti insufficienti.');t.credits-=pr;t.players.push({player:p,price:pr});S.auctionLog.push({player:p,price:pr,buyer:t.name});save();render('auction')}
-function brain(){let q=window.brainQ||'';let res=find(q);let targets=S.targets;return `<section class="hero"><div class="eyebrow">🧠 HAMMER BRAIN</div><h1>Chi devo chiamare?</h1><p class="muted">Cerca un giocatore: Hammer ordina i profili per score e valore stimato del database integrato.</p><input id="brainSearch" class="input" value="${esc(q)}" placeholder="Lautaro, Dimarco, Pulisic..." oninput="window.brainQ=this.value;render('brain')"><div class="sectionTitle">I tuoi target</div><div class="players">${targets.map(p=>playerCard(p,true)).join('')||'<div class="notice">Aggiungi qui i giocatori che vuoi nella tua rosa ideale.</div>'}</div></section><div class="sectionTitle">Risultati</div><div class="players">${res.map(p=>playerCard(p,false)).join('')||'<div class="notice">Scrivi il nome di un giocatore.</div>'}</div>`}
-function playerCard(p,target){let s=score(p), max=Math.max(price(p),Math.round(price(p)*1.25));return `<article class="p"><div class="row"><div><div class="name">${esc(p[1])}</div><small>${roleName(p[0])} · ${esc(p[2])}</small></div><div class="score">${s}</div></div><div class="pmeta"><div><small>VALORE</small><b>${price(p)}</b></div><div><small>MAX</small><b>${max}</b></div><div><small>PRIORITÀ</small><b>${s>=60?'ALTA':s>=40?'MEDIA':'BASSA'}</b></div></div><div style="margin-top:7px"><button class="btn ${target?'':'gold'}" onclick="${target?`removeTarget('${esc(p[1])}')`:`addTarget('${esc(p[1])}')`}">${target?'✓ Nella rosa ideale':'＋ Aggiungi alla rosa ideale'}</button></div></article>`}
-function addTarget(name){let p=DB.find(x=>x[1]===name);if(p&&!S.targets.some(x=>x[1]===name))S.targets.push(p);save();render('brain')}function removeTarget(name){S.targets=S.targets.filter(x=>x[1]!==name);save();render('brain')}
-function formation(){let pool=S.targets.length?S.targets:S.myTeam.map(x=>DB.find(p=>p[1].toLowerCase()===x.player.toLowerCase())).filter(Boolean);let by=r=>pool.filter(p=>p[0]===r).sort((a,b)=>score(b)-score(a));let ps=by('P').slice(0,1),ds=by('D').slice(0,3),cs=by('C').slice(0,4),as=by('A').slice(0,3);let all=[...ps,...ds,...cs,...as];let teamScore=all.length?Math.round(all.reduce((a,p)=>a+score(p),0)/all.length):0;let teamMap={};all.forEach(p=>teamMap[p[2]]=(teamMap[p[2]]||0)+score(p));let bestTeam=Object.entries(teamMap).sort((a,b)=>b[1]-a[1])[0];return `<section class="hero"><div class="eyebrow">🏟 FORMAZIONE CONSIGLIATA</div><h1>Il miglior XI disponibile</h1><p class="muted">Analisi basata sui profili dei giocatori e sulla forza relativa delle squadre presenti nel database.</p><div class="grid3"><div class="stat"><b>${teamScore||'—'}</b><small>SCORE XI</small></div><div class="stat"><b>3-4-3</b><small>MODULO</small></div><div class="stat"><b>${bestTeam?esc(bestTeam[0]):'—'}</b><small>TEAM TOP</small></div></div></section><div class="sectionTitle">XI consigliato</div><div class="formation"><div class="line">${slots(ps)}</div><div class="line">${slots(ds)}</div><div class="line">${slots(cs)}</div><div class="line">${slots(as)}</div></div><div class="sectionTitle">Perché questi giocatori</div><div class="notice">Hammer privilegia score, valore stimato e copertura dei quattro reparti. Se la tua rosa è incompleta, indica i ruoli mancanti invece di inventare giocatori.</div>`}
-function slots(arr){return arr.map(p=>`<div class="slot"><b>${esc(p[1])}</b>${esc(p[2])}<br><span class="pill">${score(p)}</span></div>`).join('')||'<div class="slot empty">—</div>'}
-function render(id){document.getElementById(id).innerHTML={home,auction,brain,formation}[id]()}render('home');</script>
-<script id="ryh52brainjs">
-(function(){
-  const esc = x => String(x ?? '').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-  const read = (keys, fallback) => {
-    for (const k of keys) {
-      try { const v = JSON.parse(localStorage.getItem(k)); if (v != null) return v; } catch(e) {}
-    }
-    return fallback;
-  };
-  const getPlayers = () => {
-    const p = read(['ryh_players','players','fantacalcio_players'], []);
-    if (Array.isArray(p) && p.length) return p;
-    return [
-      {name:'Giocatore Top',role:'ATT',team:'Serie A',score:90,target:70,max:82,priority:'A'},
-      {name:'Centrocampista Value',role:'C',team:'Serie A',score:86,target:35,max:45,priority:'A'},
-      {name:'Difensore Premium',role:'D',team:'Serie A',score:84,target:22,max:30,priority:'B'},
-      {name:'Portiere Affidabile',role:'P',team:'Serie A',score:81,target:15,max:22,priority:'B'}
-    ];
-  };
-  const getParticipants = () => {
-    const p = read(['ryh_participants','participants','fantacalcio_participants'], []);
-    return Array.isArray(p) ? p : [];
-  };
-  const getPurchases = () => {
-    const p = read(['ryh_auction_purchases','auction_purchases','ryh_purchases'], []);
-    return Array.isArray(p) ? p : [];
-  };
-  const state = () => {
-    const p=getPlayers(), o=getParticipants(), a=getPurchases();
-    const avg=p.reduce((n,x)=>n+(Number(x.score)||70),0)/Math.max(1,p.length);
-    const pressure=Math.min(95,Math.round(35+o.length*3+a.length*1.5));
-    return {
-      win:Math.max(25,Math.min(91,Math.round(avg*.62+(100-pressure)*.22))),
-      pressure,
-      confidence:Math.min(95,45+a.length*2)
-    };
-  };
-
-  let active='live';
-
-  function mount(){
-    let screen=document.querySelector('[data-screen="brain"], #brainScreen, #brain, #hammerBrain');
-    if(!screen){
-      // Find the existing navigation target by visible text and create the panel
-      // only if the app has no dedicated Brain container.
-      const candidates=[...document.querySelectorAll('section,main,div')];
-      screen=candidates.find(e=>/hammer brain|brain/i.test((e.textContent||'').trim()) && e.children.length<8);
-    }
-    if(!screen) return;
-    screen.id='ryh53BrainScreen';
-    screen.classList.add('ryh53-brain-screen');
-    render(screen);
-  }
-
-  function render(screen){
-    const b=state(), p=getPlayers().slice().sort((a,z)=>(Number(z.score)||0)-(Number(a.score)||0)).slice(0,8);
-    const o=getParticipants();
-    let body='';
-    if(active==='live'){
-      body=`<div class="ryh53-hero"><div><small>WIN PROBABILITY</small><strong>${b.win}%</strong><p>${b.win>=70?'Situazione favorevole: aspetta i momenti giusti e colpisci i target.':b.win>=50?'Asta equilibrata: proteggi il budget e osserva gli avversari.':'Mercato ostile: evita guerre di rilanci.'}</p><div class="ryh53-bar"><i style="width:${b.win}%"></i></div></div><div class="ryh53-metrics"><span>Pressione <b>${b.pressure}/100</b></span><span>Confidenza <b>${b.confidence}%</b></span></div></div>`;
-    } else if(active==='targets'){
-      body=`<div class="ryh53-note"><b>🎯 Giocatori perfetti da chiamare</b><small>Score, target e prezzo massimo vengono usati per ordinare le priorità.</small></div><div class="ryh53-list">${
-        p.map((x,i)=>`<div class="ryh53-row"><div><b>${esc(x.name||'Giocatore')}</b><small>${esc(x.team||'Serie A')} · ${esc(x.role||'')} · Score ${Number(x.score)||70} · Target ${x.target??'—'} · Max ${x.max??'—'}</small></div><em>${i<2?'🎯 PRIORITÀ':'VALUE'}</em></div>`).join('')
-      }</div>`;
-    } else if(active==='opponents'){
-      body=o.length
-        ? `<div class="ryh53-note"><b>👥 Studio avversari</b><small>La lettura migliora man mano che registri gli acquisti durante l'asta.</small></div><div class="ryh53-list">${
-          o.map((x,i)=>`<div class="ryh53-row"><div><b>${esc(x.name||x.team||('Avversario '+(i+1)))}</b><small>Crediti: ${x.credits??x.budget??'—'} · Acquisti: ${x.purchases??0}</small></div><em>${i===0?'🔥 MINACCIA':'MONITOR'}</em></div>`).join('')
-        }</div>`
-        : `<div class="ryh53-empty">👥 Nessun partecipante configurato.<small>Configura l'asta per attivare l'analisi degli avversari.</small></div>`;
-    } else {
-      body=`<div class="ryh53-note"><b>🏟️ Rosa consigliata</b><small>Il Brain seleziona i profili con score più alto tra i giocatori disponibili.</small></div><div class="ryh53-formation"><b>3-4-3</b><span>Modulo consigliato</span></div><div class="ryh53-list">${
-        p.slice(0,11).map((x,i)=>`<div class="ryh53-row"><div><b>${i+1}. ${esc(x.name||'Giocatore')}</b><small>${esc(x.role||'')} · ${esc(x.team||'')}</small></div><em>${Number(x.score)||70}</em></div>`).join('')
-      }</div>`;
-    }
-
-    screen.innerHTML=`<div class="ryh53-brain">
-      <div class="ryh53-head"><div><h2>🧠 Hammer Brain</h2><small>Strategia asta · giocatori · avversari · rosa</small></div></div>
-      <div class="ryh53-tabs">
-        <button data-tab="live" class="${active==='live'?'on':''}">🧠 LIVE</button>
-        <button data-tab="targets" class="${active==='targets'?'on':''}">🎯 TARGET</button>
-        <button data-tab="opponents" class="${active==='opponents'?'on':''}">👥 AVVERSARI</button>
-        <button data-tab="formation" class="${active==='formation'?'on':''}">🏟️ ROSA</button>
-      </div>${body}
-      <button class="ryh53-refresh" type="button">↻ AGGIORNA ANALISI</button>
-    </div>`;
-    screen.querySelectorAll('[data-tab]').forEach(btn=>btn.addEventListener('click',()=>{active=btn.dataset.tab;render(screen)}));
-    screen.querySelector('.ryh53-refresh').addEventListener('click',()=>render(screen));
-  }
-
-  function boot(){
-    if(window.__RYH53_BRAIN_READY) return;
-    window.__RYH53_BRAIN_READY=true;
-    setTimeout(mount,200);
-    setTimeout(mount,1000);
-  }
-  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
-})();
-</script>
-
-<script id="ryh54-functions">
-(function(){
-const $=(q,r=document)=>r.querySelector(q);
-const $$=(q,r=document)=>[...r.querySelectorAll(q)];
-const esc=x=>String(x??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-const read=(keys,fb)=>{for(const k of keys){try{const x=JSON.parse(localStorage.getItem(k));if(x!=null)return x}catch(e){}}return fb};
-const write=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
-let active='home';
-
-function getParticipants(){return read(['ryh_participants','participants'],[])}
-function getPurchases(){return read(['ryh_auction_purchases','auction_purchases'],[])}
-function getPlayers(){return read(['ryh_players','players'],[])}
-function setParticipants(v){write('ryh_participants',v)}
-function setPurchases(v){write('ryh_auction_purchases',v)}
-
-function findHost(){
-  let h=$('#ryh54-app');
-  if(h)return h;
-  h=document.createElement('div');h.id='ryh54-app';
-  const brain=$('#ryh53BrainScreen');
-  if(brain && brain.parentNode){brain.parentNode.insertBefore(h,brain);return h}
-  document.body.appendChild(h);return h
-}
-function nav(){
- const n=document.createElement('div');n.className='ryh54-nav';
- n.innerHTML=`<button data-s="home"><b>⌂</b>HOME</button><button data-s="auction"><b>🔨</b>ASTA</button><button data-s="brain"><b>🧠</b>BRAIN</button><button data-s="formation"><b>🏟️</b>FORMAZIONE</button><button data-s="listone"><b>📋</b>LISTONE</button>`;
- n.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;show(b.dataset.s)});
- document.body.appendChild(n);return n
-}
-function show(screen){
- active=screen;
- const host=findHost();
- host.className='ryh54-screen';
- host.innerHTML='';
- if(screen==='home')home(host);
- if(screen==='auction')auction(host);
- if(screen==='brain')brain(host);
- if(screen==='formation')formation(host);
- if(screen==='listone'){host.innerHTML='';window.ryh57OpenListone();}
- $$('.ryh54-nav button').forEach(b=>b.classList.toggle('on',b.dataset.s===screen));
-}
-function home(h){
- h.innerHTML=`<div class="ryh54-panel"><h2>🔨 Raise Your Hammer</h2><small>Command center</small><div class="ryh54-grid">
- <button class="ryh54-btn gold" data-go="auction">🔨 AVVIA ASTA</button>
- <button class="ryh54-btn" data-go="brain">🧠 HAMMER BRAIN</button>
- <button class="ryh54-btn" data-go="formation">🏟️ FORMAZIONE</button>
- <button class="ryh54-btn" data-go="participants">👥 PARTECIPANTI</button>
- </div></div>`;
- h.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(!b)return;const x=b.dataset.go;if(x==='participants')auction(h);else show(x)});
-}
-function auction(h){
- const ps=getParticipants(), pur=getPurchases();
- h.innerHTML=`<div class="ryh54-panel"><h2>🔨 Asta</h2><small>Configura i partecipanti e registra gli acquisti.</small>
- <div class="ryh54-fields">
- <div class="ryh54-field"><label>NOME PARTECIPANTE</label><input id="pname" placeholder="Es. Andrea"></div>
- <div class="ryh54-field"><label>CREDITI</label><input id="pcredits" type="number" min="1" value="500"></div>
- </div>
- <div class="ryh54-grid"><button class="ryh54-btn gold" id="addp">+ AGGIUNGI</button><button class="ryh54-btn" id="clearp">RESET PARTECIPANTI</button></div>
- <div class="ryh54-list">${ps.length?ps.map((p,i)=>`<div class="ryh54-row"><div><b>${esc(p.name||('Squadra '+(i+1)))}</b><small>Crediti: ${p.credits??p.budget??500} · Acquisti: ${p.purchases??0}</small></div><span class="ryh54-tag">#${i+1}</span></div>`).join(''):'<div class="ryh54-row"><small>Nessun partecipante inserito.</small></div>'}</div>
- <div class="ryh54-fields"><div class="ryh54-field"><label>GIOCATORE ACQUISTATO</label><input id="buyname" placeholder="Nome giocatore"></div><div class="ryh54-field"><label>PREZZO</label><input id="buyprice" type="number" min="1" value="1"></div></div>
- <button class="ryh54-btn gold" id="addbuy">REGISTRA ACQUISTO</button>
- <div class="ryh54-list">${pur.slice(-8).reverse().map(x=>`<div class="ryh54-row"><div><b>${esc(x.player||x.name||'Giocatore')}</b><small>${esc(x.team||'')} · ${x.price??'—'} crediti</small></div><span class="ryh54-tag">LIVE</span></div>`).join('')}</div>
- </div>`;
- $('#addp',h).onclick=()=>{const name=$('#pname',h).value.trim();const credits=Number($('#pcredits',h).value)||500;if(!name)return;const arr=getParticipants();arr.push({name,credits,purchases:0});setParticipants(arr);show('auction')};
- $('#clearp',h).onclick=()=>{setParticipants([]);show('auction')};
- $('#addbuy',h).onclick=()=>{const player=$('#buyname',h).value.trim();const price=Number($('#buyprice',h).value)||0;if(!player)return;const arr=getPurchases();arr.push({player,price,time:Date.now()});setPurchases(arr);show('auction')};
-}
-function brain(h){
- const existing=$('#ryh53BrainScreen');
- if(existing){h.appendChild(existing);existing.style.display='block';if(window.__RYH53_BRAIN_READY===true){try{existing.querySelector('[data-tab="live"]')?.click()}catch(e){}}return}
- h.innerHTML=`<div class="ryh54-panel"><h2>🧠 Hammer Brain</h2><small>Studio giocatori, avversari e strategia.</small></div>`;
-}
-function formation(h){
- const ps=getPlayers().slice().sort((a,b)=>(Number(b.score)||0)-(Number(a.score)||0));
- let mod=localStorage.getItem('ryh55_module')||'3-4-3';
- const mods=['3-4-3','3-5-2','4-3-3','4-4-2','4-5-1','5-3-2','5-4-1'];
- const num={ '3-4-3':[3,4,3], '3-5-2':[3,5,2], '4-3-3':[4,3,3], '4-4-2':[4,4,2], '4-5-1':[4,5,1], '5-3-2':[5,3,2], '5-4-1':[5,4,1] };
-
- const role=x=>String(x.role||'').toUpperCase();
- const bucket=r=>ps.filter(p=>role(p)===r);
- const defenders=ps.filter(p=>['D','DC','DEF','B'].includes(role(p)));
- const mids=ps.filter(p=>['C','M','CC','TRQ'].includes(role(p)));
- const attackers=ps.filter(p=>['A','ATT','PC','W'].includes(role(p)));
- const keepers=ps.filter(p=>['P','POR','GK'].includes(role(p)));
- const fallback=(arr,n)=>arr.slice(0,n);
-
- function build(){
-   const [nd,nm,na]=num[mod];
-   const gk=fallback(keepers,1);
-   const ds=fallback(defenders,nd);
-   const ms=fallback(mids,nm);
-   const as=fallback(attackers,na);
-   // If the imported database uses unknown role labels, fill remaining slots
-   // by score while keeping the selected module as the primary constraint.
-   let used=new Set([...gk,...ds,...ms,...as]);
-   const chosen=[...gk,...ds,...ms,...as];
-   const need=11-chosen.length;
-   if(need>0) chosen.push(...ps.filter(p=>!used.has(p)).slice(0,need));
-   return {gk,ds,ms,as,chosen:chosen.slice(0,11)};
- }
-
- function modifier(xi){
-   const d=xi.ds;
-   if(d.length<3 || !xi.gk.length) return {points:0,label:'Modificatore non attivo'};
-   const vals=[Number(xi.gk[0].score)||70,...d.map(p=>Number(p.score)||70)].sort((a,b)=>b-a);
-   const avg=vals.reduce((a,b)=>a+b,0)/vals.length;
-   // Generic Fantacalcio-style defense modifier: reward a stronger defensive unit.
-   // The thresholds are intentionally kept configurable in the UI.
-   let pts=0;
-   if(avg>=88) pts=4;
-   else if(avg>=84) pts=3;
-   else if(avg>=80) pts=2;
-   else if(avg>=76) pts=1;
-   return {points:pts,label:`+${pts} potenziale modificatore · media difesa ${avg.toFixed(1)}`};
- }
-
- function attackScore(xi){
-   const vals=xi.as.map(p=>Number(p.score)||70);
-   return vals.length ? vals.reduce((a,b)=>a+b,0)/vals.length : 0;
- }
-
- function total(xi){
-   const base=xi.chosen.reduce((a,p)=>a+(Number(p.score)||70),0);
-   const m=modifier(xi).points;
-   return base+m*8; // strategic weighting: a strong modifier matters, but does not dominate the XI
- }
-
- const xi=build();
- const m=modifier(xi);
- const base=xi.chosen.reduce((a,p)=>a+(Number(p.score)||70),0);
- const totalScore=total(xi);
- const attack=attackScore(xi);
-
- const card=(p)=>`<div class="ryh55-player"><b>${esc(p.name||'Giocatore')}</b><small>${esc(p.team||'')} · ${Number(p.score)||70}</small></div>`;
- const line=(arr)=>`<div class="ryh55-line">${arr.map(card).join('')||'<div class="ryh55-player"><small>Ruolo non disponibile</small></div>'}</div>`;
-
- h.innerHTML=`<div class="ryh54-panel">
-   <h2>🏟️ Formazione consigliata</h2>
-   <small>Il Brain cerca il miglior XI disponibile, confronta i moduli e valorizza il modificatore.</small>
-
-   <div class="ryh55-box">
-     <h3>MODULO</h3>
-     <small>Scegli il modulo: il Brain ricalcola immediatamente l'XI.</small>
-     <div class="ryh55-mods">${mods.map(x=>`<button class="ryh55-mod ${x===mod?'on':''}" data-mod="${x}">${x}</button>`).join('')}</div>
-   </div>
-
-   <div class="ryh55-score">
-     <div><span>PUNTEGGIO STRATEGICO</span><strong>${totalScore.toFixed(0)}</strong></div>
-     <div><span>ATTACCO</span><b>${attack.toFixed(1)}</b></div>
-   </div>
-
-   <div class="ryh55-box">
-     <h3>🛡️ MODIFICATORE DIFESA</h3>
-     <small>${m.label}. Il sistema premia una difesa forte senza sacrificare automaticamente l'attacco.</small>
-   </div>
-
-   <div class="ryh55-box">
-     <h3>XI CONSIGLIATO · ${mod}</h3>
-     <div class="ryh55-xi">
-       ${line(xi.gk)}
-       ${line(xi.ds)}
-       ${line(xi.ms)}
-       ${line(xi.as)}
-     </div>
-   </div>
-
-   <div class="ryh55-box">
-     <h3>🧠 PERCHÉ QUESTA FORMAZIONE</h3>
-     <div class="ryh55-reasons">
-       • massimizza gli score disponibili per ruolo<br>
-       • considera il potenziale del modificatore difensivo<br>
-       • confronta il modulo scelto con la composizione reale della rosa<br>
-       • puoi cambiare modulo in qualsiasi momento e vedere subito il nuovo XI
-     </div>
-   </div>
- </div>`;
-
- h.querySelectorAll('[data-mod]').forEach(btn=>btn.onclick=()=>{
-   localStorage.setItem('ryh55_module',btn.dataset.mod);
-   formation(h);
- });
-}
-function boot(){
- if(!document.body)return;
- // Hide only the V53 host from normal flow; do not delete its Brain implementation.
- const old=$('#ryh53BrainScreen'); if(old) old.style.display='none';
- nav();show('home');
-}
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(boot,300));else setTimeout(boot,300);
-})();
-</script>
-
-<script id="ryh56-auction-brain">
-(function(){
-  const esc=x=>String(x??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-  const read=(keys,fb)=>{for(const k of keys){try{const x=JSON.parse(localStorage.getItem(k));if(x!=null)return x}catch(e){}}return fb};
-  const write=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
-  const players=()=>read(['ryh_players','players'],[]);
-  const participants=()=>read(['ryh_participants','participants'],[]);
-  const purchases=()=>read(['ryh_auction_purchases','auction_purchases'],[]);
-  const brainState=()=>read(['ryh56_brain_state'],{});
-  const saveState=v=>write('ryh56_brain_state',v);
-
-  function currentPlayer(){
-    const s=brainState();
-    return s.currentPlayer || null;
-  }
-  function playerInfo(name){
-    const p=players().find(x=>String(x.name||'').toLowerCase()===String(name||'').toLowerCase());
-    return p || {name,score:75,target:0,max:0,role:'',team:''};
-  }
-
-  function analyze(){
-    const s=brainState(), p=currentPlayer(), info=p?playerInfo(p.name):null;
-    const opp=participants(), buys=purchases();
-    if(!info)return {action:'ATTENDI',max:0,next:0,reason:'Seleziona un giocatore per attivare il Brain d’asta.',pressure:0};
-    const score=Number(info.score)||75;
-    const target=Number(info.target)||0;
-    const declaredMax=Number(info.max)||0;
-    const hist=buys.filter(x=>String(x.player||x.name||'').toLowerCase()===String(info.name||'').toLowerCase());
-    const last=Math.max(0,...hist.map(x=>Number(x.price)||0));
-    const avgOpp=opp.length?opp.reduce((a,x)=>a+(Number(x.credits??x.budget)||500),0)/opp.length:500;
-    const aggressive=opp.length?Math.min(95,Math.round(45 + opp.reduce((a,x)=>a+(Number(x.purchases)||0),0)*2 + (500-avgOpp)/8)):35;
-    const ceiling=declaredMax||Math.max(target+5,Math.round(score*.9));
-    const suggested=Math.max(last+1,target||last+1);
-    const can=suggested<=ceiling;
-    return {
-      action: can ? (last>=ceiling*.85?'STOP':'RIALZA') : 'PASSA',
-      max:ceiling,
-      next:suggested,
-      reason: can
-        ? (last>=ceiling*.85?'Sei vicino al tuo limite: un altro rilancio solo se il giocatore è una priorità assoluta.':'Rilancio consigliato: il prezzo è ancora dentro il valore strategico.')
-        : 'Il prezzo ha superato il limite strategico: non inseguire.',
-      pressure:aggressive,
-      last
-    };
-  }
-
-  window.ryh56SetAuctionPlayer=function(name){
-    const s=brainState();s.currentPlayer={name};saveState(s);renderAuctionBrain();
-  };
-  window.ryh56Raise=function(){
-    const a=analyze();
-    if(a.action==='PASSA'||a.action==='STOP')return;
-    const p=currentPlayer();
-    const arr=purchases();arr.push({player:p.name,price:a.next,brain:true,time:Date.now()});write('ryh_auction_purchases',arr);
-    renderAuctionBrain();
-  };
-  window.ryh56Pass=function(){const s=brainState();s.lastDecision='PASSA';saveState(s);renderAuctionBrain()};
-
-  function renderAuctionBrain(){
-    const host=document.getElementById('ryh56AuctionBrain'); if(!host)return;
-    const p=currentPlayer(), a=analyze(), opp=participants();
-    if(!p){
-      host.innerHTML=`<div class="ryh56-advice"><h3>🧠 BRAIN ASTA LIVE</h3><strong>ATTENDI</strong><p>Inserisci/seleziona il giocatore chiamato per ricevere il consiglio di rilancio.</p></div>`;
-      return;
-    }
-    host.innerHTML=`<div class="ryh56-advice">
-      <h3>🧠 BRAIN ASTA LIVE · ${esc(p.name)}</h3>
-      <strong>${a.action==='RIALZA'?'🔨 RIALZA':a.action==='STOP'?'🛑 FERMATI':'✋ PASSA'}</strong>
-      <p>${esc(a.reason)}</p>
-      <div class="ryh56-price"><div><span>PROSSIMO RILANCIO</span><b>${a.next} cr</b></div><div><span>LIMITE ASSOLUTO</span><b>${a.max} cr</b></div><div><span>PRESSIONE MERCATO</span><b>${a.pressure}/100</b></div></div>
-      <div class="ryh56-actions"><button class="raise" onclick="ryh56Raise()">🔨 RIALZA A ${a.next}</button><button class="pass" onclick="ryh56Pass()">✋ PASSA</button></div>
-      <div class="ryh56-opps">${opp.slice(0,8).map((o,i)=>`<div class="ryh56-opp"><div><b>${esc(o.name||o.team||'Avversario '+(i+1))}</b><small>Crediti ${o.credits??o.budget??'—'} · Acquisti ${o.purchases??0}</small></div><em>${i===0?'AGGRESSIVO':'OSSERVA'}</em></div>`).join('')||'<div class="ryh56-opp"><small>Nessun avversario configurato</small></div>'}</div>
-      <div class="ryh56-log">Il limite viene calcolato usando valore del giocatore, target, max personale e pressione dell’asta. Il Brain non supera mai il tuo tetto senza una modifica esplicita.</div>
-    </div>`;
-  }
-
-  function inject(){
-    if(document.getElementById('ryh56AuctionBrain'))return;
-    const h=document.createElement('div');h.id='ryh56AuctionBrain';
-    const hosts=[...document.querySelectorAll('.ryh54-panel,.ryh54-screen,main,section')];
-    const auction=hosts.find(x=>/asta/i.test(x.textContent||'') && !/brain/i.test(x.textContent||''));
-    (auction||document.body).appendChild(h);
-    renderAuctionBrain();
-  }
-
-  // Connect the existing auction registration fields to the Brain.
-  function hook(){
-    inject();
-    const buy=document.querySelector('#buyname');
-    if(buy && !buy.dataset.ryh56){
-      buy.dataset.ryh56='1';
-      buy.addEventListener('input',()=>{
-        const s=brainState();s.currentPlayer={name:buy.value.trim()};saveState(s);renderAuctionBrain();
-      });
-    }
-  }
-  document.addEventListener('DOMContentLoaded',()=>setTimeout(hook,500));
-  setInterval(hook,1500);
-})();
-</script>
-
-<script id="ryh57-listone">
-(function(){
-const esc=x=>String(x??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-const read=(k,fb)=>{try{let x=JSON.parse(localStorage.getItem(k));return x??fb}catch(e){return fb}};
-const write=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
-const SEED_PLAYERS=[{"name": "Martinez L.", "team": "INT", "quote": 35, "fvm": 370, "score": 99, "role": "—"}, {"name": "Malen", "team": "ROM", "quote": 34, "fvm": 365, "score": 99, "role": "—"}, {"name": "Dimarco", "team": "INT", "quote": 32, "fvm": 265, "score": 99, "role": "—"}, {"name": "Paz N.", "team": "COM", "quote": 30, "fvm": 250, "score": 99, "role": "—"}, {"name": "Thuram", "team": "INT", "quote": 29, "fvm": 280, "score": 99, "role": "—"}, {"name": "McTominay", "team": "NAP", "quote": 28, "fvm": 240, "score": 99, "role": "—"}, {"name": "Hojlund", "team": "NAP", "quote": 28, "fvm": 271, "score": 99, "role": "—"}, {"name": "Calhanoglu", "team": "INT", "quote": 27, "fvm": 230, "score": 99, "role": "—"}, {"name": "Ramos G.", "team": "MIL", "quote": 27, "fvm": 232, "score": 99, "role": "—"}, {"name": "Orsolini", "team": "BOL", "quote": 26, "fvm": 200, "score": 95.0, "role": "—"}, {"name": "Kolo Muani", "team": "JUV", "quote": 26, "fvm": 225, "score": 99, "role": "—"}, {"name": "Kean", "team": "FIO", "quote": 25, "fvm": 200, "score": 95.0, "role": "—"}, {"name": "Pulisic", "team": "MIL", "quote": 25, "fvm": 180, "score": 91.0, "role": "—"}, {"name": "Yildiz", "team": "JUV", "quote": 23, "fvm": 192, "score": 93.4, "role": "—"}, {"name": "Rabiot", "team": "MIL", "quote": 22, "fvm": 128, "score": 80.6, "role": "—"}, {"name": "Douvikas", "team": "COM", "quote": 20, "fvm": 157, "score": 86.4, "role": "—"}, {"name": "Scamacca", "team": "ATA", "quote": 19, "fvm": 131, "score": 81.2, "role": "—"}, {"name": "Baturina", "team": "COM", "quote": 19, "fvm": 102, "score": 75.4, "role": "—"}, {"name": "Davis K.", "team": "UDI", "quote": 19, "fvm": 122, "score": 79.4, "role": "—"}, {"name": "Mora", "team": "ROM", "quote": 19, "fvm": 101, "score": 75.2, "role": "—"}, {"name": "Krstovic", "team": "ATA", "quote": 18, "fvm": 95, "score": 74.0, "role": "—"}, {"name": "Da Cunha", "team": "COM", "quote": 18, "fvm": 90, "score": 73.0, "role": "—"}, {"name": "Leao", "team": "MIL", "quote": 18, "fvm": 120, "score": 79.0, "role": "—"}, {"name": "Svilar", "team": "ROM", "quote": 18, "fvm": 65, "score": 68.0, "role": "—"}, {"name": "Berardi", "team": "SAS", "quote": 18, "fvm": 115, "score": 78.0, "role": "—"}, {"name": "Zaniolo", "team": "UDI", "quote": 18, "fvm": 100, "score": 75.0, "role": "—"}, {"name": "Molina N.", "team": "ROM", "quote": 18, "fvm": 87, "score": 72.4, "role": "—"}, {"name": "De Ketelaere", "team": "ATA", "quote": 17, "fvm": 106, "score": 76.2, "role": "—"}, {"name": "Atta", "team": "FIO", "quote": 17, "fvm": 87, "score": 72.4, "role": "—"}, {"name": "Martinez Jo.", "team": "INT", "quote": 17, "fvm": 63, "score": 67.6, "role": "—"}, {"name": "Barella", "team": "INT", "quote": 17, "fvm": 80, "score": 71.0, "role": "—"}, {"name": "McKennie", "team": "JUV", "quote": 17, "fvm": 68, "score": 68.6, "role": "—"}, {"name": "Wesley", "team": "ROM", "quote": 17, "fvm": 83, "score": 71.6, "role": "—"}, {"name": "Carnesecchi", "team": "ATA", "quote": 16, "fvm": 52, "score": 65.4, "role": "—"}, {"name": "Dovbyk", "team": "BOL", "quote": 16, "fvm": 73, "score": 69.6, "role": "—"}, {"name": "Butez", "team": "COM", "quote": 16, "fvm": 56, "score": 66.2, "role": "—"}, {"name": "Akanji", "team": "INT", "quote": 16, "fvm": 55, "score": 66.0, "role": "—"}, {"name": "Esposito F.P.", "team": "INT", "quote": 16, "fvm": 93, "score": 73.6, "role": "—"}, {"name": "Zaccagni", "team": "LAZ", "quote": 16, "fvm": 91, "score": 73.2, "role": "—"}, {"name": "Vicario", "team": "JUV", "quote": 16, "fvm": 55, "score": 66.0, "role": "—"}, {"name": "Bremer", "team": "JUV", "quote": 15, "fvm": 50, "score": 65.0, "role": "—"}, {"name": "Maignan", "team": "MIL", "quote": 15, "fvm": 50, "score": 65.0, "role": "—"}, {"name": "De Bruyne", "team": "NAP", "quote": 15, "fvm": 98, "score": 74.6, "role": "—"}, {"name": "Pellegrino M.", "team": "FIO", "quote": 15, "fvm": 60, "score": 67.0, "role": "—"}, {"name": "Mancini", "team": "ROM", "quote": 15, "fvm": 49, "score": 64.8, "role": "—"}, {"name": "Laurientè", "team": "SAS", "quote": 15, "fvm": 88, "score": 72.6, "role": "—"}, {"name": "Simeone", "team": "TOR", "quote": 15, "fvm": 82, "score": 71.4, "role": "—"}, {"name": "Bastoni", "team": "INT", "quote": 14, "fvm": 44, "score": 63.8, "role": "—"}, {"name": "Pavlovic", "team": "MIL", "quote": 14, "fvm": 48, "score": 64.6, "role": "—"}, {"name": "Rrahmani", "team": "NAP", "quote": 14, "fvm": 47, "score": 64.4, "role": "—"}, {"name": "Dybala", "team": "ROM", "quote": 14, "fvm": 67, "score": 68.4, "role": "—"}, {"name": "Castro S.", "team": "ROM", "quote": 14, "fvm": 81, "score": 71.2, "role": "—"}, {"name": "Vlasic", "team": "TOR", "quote": 14, "fvm": 80, "score": 71.0, "role": "—"}, {"name": "Raspadori", "team": "ATA", "quote": 13, "fvm": 62, "score": 67.4, "role": "—"}, {"name": "De Gea", "team": "FIO", "quote": 13, "fvm": 45, "score": 64.0, "role": "—"}, {"name": "Gudmundsson A.", "team": "FIO", "quote": 13, "fvm": 61, "score": 67.2, "role": "—"}, {"name": "Kalulu", "team": "JUV", "quote": 13, "fvm": 46, "score": 64.2, "role": "—"}, {"name": "Taylor K.", "team": "LAZ", "quote": 13, "fvm": 64, "score": 67.8, "role": "—"}, {"name": "Nkunku", "team": "MIL", "quote": 13, "fvm": 25, "score": 60.0, "role": "—"}, {"name": "N'Dicka", "team": "ROM", "quote": 13, "fvm": 44, "score": 63.8, "role": "—"}, {"name": "Pinamonti", "team": "SAS", "quote": 13, "fvm": 55, "score": 66.0, "role": "—"}, {"name": "Solet", "team": "UDI", "quote": 13, "fvm": 46, "score": 64.2, "role": "—"}, {"name": "Kevin Carlos", "team": "CAG", "quote": 13, "fvm": 47, "score": 64.4, "role": "—"}, {"name": "Ederson D.S.", "team": "ATA", "quote": 12, "fvm": 45, "score": 64.0, "role": "—"}, {"name": "Samardzic", "team": "ATA", "quote": 12, "fvm": 42, "score": 63.4, "role": "—"}, {"name": "Rodriguez Je.", "team": "COM", "quote": 12, "fvm": 32, "score": 61.4, "role": "—"}, {"name": "Stones", "team": "INT", "quote": 12, "fvm": 38, "score": 62.6, "role": "—"}, {"name": "Alajbegovic", "team": "JUV", "quote": 12, "fvm": 56, "score": 66.2, "role": "—"}, {"name": "Conceicao", "team": "JUV", "quote": 12, "fvm": 60, "score": 67.0, "role": "—"}, {"name": "Modric", "team": "MIL", "quote": 12, "fvm": 50, "score": 65.0, "role": "—"}, {"name": "Di Lorenzo", "team": "NAP", "quote": 12, "fvm": 40, "score": 63.0, "role": "—"}, {"name": "Soulè", "team": "ROM", "quote": 12, "fvm": 53, "score": 65.6, "role": "—"}, {"name": "Mastantuono", "team": "FIO", "quote": 12, "fvm": 58, "score": 66.6, "role": "—"}, {"name": "Spence", "team": "INT", "quote": 12, "fvm": 41, "score": 63.2, "role": "—"}, {"name": "Moreira", "team": "MIL", "quote": 12, "fvm": 52, "score": 65.4, "role": "—"}, {"name": "Jones C.", "team": "INT", "quote": 12, "fvm": 48, "score": 64.6, "role": "—"}, {"name": "Rowe", "team": "BOL", "quote": 11, "fvm": 37, "score": 62.4, "role": "—"}, {"name": "Diao", "team": "COM", "quote": 11, "fvm": 50, "score": 65.0, "role": "—"}, {"name": "Ostigard", "team": "GEN", "quote": 11, "fvm": 40, "score": 63.0, "role": "—"}, {"name": "Baldanzi", "team": "GEN", "quote": 11, "fvm": 30, "score": 61.0, "role": "—"}, {"name": "Colombo", "team": "GEN", "quote": 11, "fvm": 63, "score": 67.6, "role": "—"}, {"name": "Bisseck", "team": "INT", "quote": 11, "fvm": 33, "score": 61.6, "role": "—"}, {"name": "Meret", "team": "NAP", "quote": 11, "fvm": 45, "score": 64.0, "role": "—"}, {"name": "Zambo Anguissa", "team": "NAP", "quote": 11, "fvm": 54, "score": 65.8, "role": "—"}, {"name": "Scalvini", "team": "ATA", "quote": 10, "fvm": 28, "score": 60.6, "role": "—"}, {"name": "Skorupski", "team": "BOL", "quote": 10, "fvm": 37, "score": 62.4, "role": "—"}, {"name": "Perrone", "team": "COM", "quote": 10, "fvm": 38, "score": 62.6, "role": "—"}, {"name": "Dodò", "team": "FIO", "quote": 10, "fvm": 30, "score": 61.0, "role": "—"}, {"name": "Zielinski", "team": "INT", "quote": 10, "fvm": 41, "score": 63.2, "role": "—"}, {"name": "Thuram K.", "team": "JUV", "quote": 10, "fvm": 41, "score": 63.2, "role": "—"}, {"name": "Dia", "team": "LAZ", "quote": 10, "fvm": 31, "score": 61.2, "role": "—"}, {"name": "Saelemaekers", "team": "MIL", "quote": 10, "fvm": 43, "score": 63.6, "role": "—"}, {"name": "Politano", "team": "NAP", "quote": 10, "fvm": 47, "score": 64.4, "role": "—"}, {"name": "Lukaku", "team": "NAP", "quote": 10, "fvm": 45, "score": 64.0, "role": "—"}, {"name": "Hermoso", "team": "ROM", "quote": 10, "fvm": 26, "score": 60.2, "role": "—"}, {"name": "Konè M.", "team": "ROM", "quote": 10, "fvm": 42, "score": 63.4, "role": "—"}, {"name": "Thorstvedt", "team": "SAS", "quote": 10, "fvm": 41, "score": 63.2, "role": "—"}, {"name": "Casadei", "team": "TOR", "quote": 10, "fvm": 37, "score": 62.4, "role": "—"}, {"name": "Ekkelenkamp", "team": "UDI", "quote": 10, "fvm": 41, "score": 63.2, "role": "—"}, {"name": "Pasalic", "team": "ATA", "quote": 9, "fvm": 32, "score": 61.4, "role": "—"}, {"name": "Bernardeschi", "team": "BOL", "quote": 9, "fvm": 21, "score": 59.2, "role": "—"}, {"name": "Caprile", "team": "CAG", "quote": 9, "fvm": 27, "score": 60.4, "role": "—"}, {"name": "Mandragora", "team": "FIO", "quote": 9, "fvm": 28, "score": 60.6, "role": "—"}, {"name": "Vasquez", "team": "GEN", "quote": 9, "fvm": 33, "score": 61.6, "role": "—"}, {"name": "Di Gregorio", "team": "JUV", "quote": 9, "fvm": 10, "score": 57.0, "role": "—"}, {"name": "Cambiaso", "team": "JUV", "quote": 9, "fvm": 27, "score": 60.4, "role": "—"}, {"name": "David", "team": "JUV", "quote": 9, "fvm": 40, "score": 63.0, "role": "—"}, {"name": "Mandas", "team": "LAZ", "quote": 9, "fvm": 30, "score": 61.0, "role": "—"}, {"name": "Cancellieri", "team": "LAZ", "quote": 9, "fvm": 28, "score": 60.6, "role": "—"}, {"name": "Isaksen", "team": "LAZ", "quote": 9, "fvm": 25, "score": 60.0, "role": "—"}, {"name": "Cutrone", "team": "MON", "quote": 9, "fvm": 33, "score": 61.6, "role": "—"}, {"name": "Adams C.", "team": "TOR", "quote": 9, "fvm": 32, "score": 61.4, "role": "—"}, {"name": "Okoye", "team": "UDI", "quote": 9, "fvm": 29, "score": 60.8, "role": "—"}, {"name": "Chalobah T.", "team": "COM", "quote": 9, "fvm": 26, "score": 60.2, "role": "—"}, {"name": "Hien", "team": "ATA", "quote": 8, "fvm": 16, "score": 58.2, "role": "—"}, {"name": "Zappacosta", "team": "ATA", "quote": 8, "fvm": 24, "score": 59.8, "role": "—"}, {"name": "Lucumì", "team": "JUV", "quote": 8, "fvm": 18, "score": 58.6, "role": "—"}, {"name": "Miranda J.", "team": "BOL", "quote": 8, "fvm": 24, "score": 59.8, "role": "—"}, {"name": "Odgaard", "team": "BOL", "quote": 8, "fvm": 22, "score": 59.4, "role": "—"}];
-const players=()=>{const p=read('ryh_players',read('players',[]));return Array.isArray(p)&&p.length?p:SEED_PLAYERS;};
-function normalize(p){
- return {name:p.name||p.nome||'Giocatore',team:p.team||p.squadra||'—',role:p.role||p.ruolo||'—',
- quote:p.quote??p.quotazione??p.price??'—',fvm:p.fvm??p.FVM??'—',score:p.score??p.rating??p.media??70,
- apps:p.apps??p.presenze??p.pv??'—',minutes:p.minutes??p.minuti??'—',goals:p.goals??p.gol??'—',
- assists:p.assists??p.assist??'—',pens:p.pens??p.rigori??'—',yellow:p.yellow??p.ammonizioni??'—',
- red:p.red??p.espulsioni??'—',starts:p.starts??p.titolarita??'—',bonus:p.bonus??'—',
- form:p.form??p.fv_recent??'—',target:p.target??'—',max:p.max??'—'};
-}
-function advice(p){
- const score=Number(p.score)||70,q=Number(p.quote)||0,fvm=Number(p.fvm)||0;
- const target=Number(p.target)||0,max=Number(p.max)||0;
- const value=fvm>0 ? Math.min(99,Math.round(fvm/4)) : Math.min(99,Math.round(score));
- const recommended=(score>=78 || value>=75) && (max===0 || max>=Math.max(target,q));
- if(recommended) return {ok:true,text:`🟢 BRAIN CONSIGLIA · Priorità ${score>=88?'ALTA':score>=82?'MEDIA-ALTA':'MEDIA'}`};
- return {ok:false,text:`🟠 BRAIN MONITORA · da valutare al prezzo d'asta`};
-}
-function renderList(){
- const host=document.getElementById('ryh57Listone');if(!host)return;
- const arr=players().map(normalize);
- host.innerHTML=`<div class="ryh54-panel"><h2>📋 Listone</h2><small>Archivio giocatori con dati utili all'asta. Il Brain segnala i profili consigliati.</small>
- <div class="ryh57-filters"><input id="lsearch" placeholder="Cerca giocatore"><select id="lrole"><option value="">Ruolo</option><option>P</option><option>D</option><option>C</option><option>A</option></select><select id="lsort"><option value="score">Score</option><option value="quote">Quotazione</option><option value="goals">Gol</option><option value="assists">Assist</option></select></div>
- <div class="ryh57-summary"><b>📊 DATABASE: ${arr.length} GIOCATORI CARICATI</b><small>Listone 2026/27. Per usare l'elenco completo importa un CSV/JSON dal Listone ufficiale.</small><div style="margin-top:7px"><label class="ryh54-btn gold" style="display:block;text-align:center;cursor:pointer">⬆️ IMPORTA LISTONE<input id="ryh59file" type="file" accept=".csv,.json" style="display:none"></label></div></div><div class="ryh57-summary"><b>🧠 Alert Brain</b><small>Il consiglio combina rendimento, ruolo, valore economico, titolarità e storico disponibile. I dati mancanti non vengono inventati.</small></div>
- <div id="lcards" class="ryh57-list"></div></div>`;
- const draw=()=>{
-   let a=arr.slice(),raw=($('#lsearch',host).value||'').toLowerCase(),norm=x=>x.normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]/g,''),q=norm(raw),r=$('#lrole',host).value,sort=$('#lsort',host).value;
-   a=a.filter(p=>(norm(p.name).includes(q)||norm(p.team).includes(q))&&(!r||p.role==='—'||p.role===r));
-   a.sort((x,y)=>(Number(y[sort])||0)-(Number(x[sort])||0));
-   $('#lcards',host).innerHTML=a.slice(0,100).map(p=>{let ad=advice(p);return `<div class="ryh57-card"><div class="ryh57-top"><div class="ryh57-name">${esc(p.name)} <span style="color:#8290a0">· ${esc(p.team)}</span></div><div class="ryh57-role">${esc(p.role)}</div></div>
-   <div class="ryh57-grid">
-   <div class="ryh57-stat"><span>QUOTE</span><b>${p.quote}</b></div><div class="ryh57-stat"><span>FVM</span><b>${p.fvm}</b></div><div class="ryh57-stat"><span>SCORE</span><b>${p.score}</b></div><div class="ryh57-stat"><span>PRESENZE</span><b>${p.apps}</b></div>
-   <div class="ryh57-stat"><span>MINUTI</span><b>${p.minutes}</b></div><div class="ryh57-stat"><span>GOL</span><b>${p.goals}</b></div><div class="ryh57-stat"><span>ASSIST</span><b>${p.assists}</b></div><div class="ryh57-stat"><span>RIGORI</span><b>${p.pens}</b></div>
-   <div class="ryh57-stat"><span>AMMON.</span><b>${p.yellow}</b></div><div class="ryh57-stat"><span>ESPULS.</span><b>${p.red}</b></div><div class="ryh57-stat"><span>TITOLARITÀ</span><b>${p.starts}</b></div><div class="ryh57-stat"><span>FORMA</span><b>${p.form}</b></div>
-   </div><div class="ryh57-alert ${ad.ok?'yes':'no'}">${ad.text}</div></div>`}).join('')||'<div class="ryh57-card">Nessun giocatore nel database. Importa il listone per popolare le schede.</div>';
- };
- ['lsearch','lrole','lsort'].forEach(id=>$(id,host)?.addEventListener('input',draw));
- draw();
- const imp=$('#ryh59file',host); if(imp) imp.onchange=()=>window.ryh59ImportListone(imp.files[0]);
-}
-function $(id,r=document){return r.querySelector('#'+id)}
-function inject(){
- if(document.getElementById('ryh57Listone'))return;
- const h=document.createElement('div');h.id='ryh57Listone';
- const nav=document.querySelector('.ryh54-panel');
- (nav?.parentNode||document.body).appendChild(h);
- renderList();
-}
-window.ryh57OpenListone=()=>{inject();document.getElementById('ryh57Listone')?.scrollIntoView({behavior:'smooth'})};
-window.ryh59ImportListone=function(file){
- if(!file)return;
- const reader=new FileReader();
- reader.onload=function(){
-  try{
-   let text=String(reader.result||'').trim(), rows=[];
-   if(file.name.toLowerCase().endsWith('.json')){
-    const data=JSON.parse(text); rows=Array.isArray(data)?data:(data.players||data.calciatori||[]);
-   }else{
-    const lines=text.split(/\r?\n/).filter(Boolean), sep=lines[0].includes(';')?';':',';
-    const head=lines.shift().split(sep).map(x=>x.trim().toLowerCase());
-    rows=lines.map(line=>{
-      const c=line.split(sep); let o={};
-      head.forEach((h,i)=>o[h]=c[i]?.trim()||'');
-      return {name:o.name||o.nome||o.calciatore,team:o.team||o.sq||o.squadra,role:o.role||o.ruolo,
-        quote:o.quote||o.qi||o.quotazione,fvm:o.fvm||o.fantavalore,score:o.score||o.rating,
-        apps:o.pv||o.presenze,goals:o.gol,assists:o.ass||o.assist,yellow:o.amm||o.ammonizioni,red:o.esp||o.espulsioni,
-        pens:o.rig||o.rigori,starts:o.titolarita,form:o.form};
-    });
-   }
-   rows=rows.filter(x=>x.name).map(x=>({...x,name:String(x.name).trim()}));
-   localStorage.setItem('ryh_players',JSON.stringify(rows));
-   alert('Listone importato: '+rows.length+' giocatori.');
-   location.reload();
-  }catch(e){alert('Importazione non riuscita: controlla CSV/JSON.');}
- };
- reader.readAsText(file);
-};
-
-document.addEventListener('DOMContentLoaded',()=>setTimeout(inject,700));
-})();
-</script>
-
-<script id="ryh60-brain-engine">
-(function(){
- const read=(k,fb)=>{try{let x=JSON.parse(localStorage.getItem(k));return x??fb}catch(e){return fb}};
- const write=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
- const players=()=>read('ryh_players',read('players',[]));
- const parts=()=>read('ryh_participants',read('participants',[]));
- const purchases=()=>read('ryh_auction_purchases',read('auction_purchases',[]));
- const state=()=>read('ryh60_state',{});
- const save=x=>write('ryh60_state',x);
- const n=(x,d=0)=>Number(x)||d;
-
- window.ryh60AnalyzePlayer=function(p,price=0){
-   const fvm=n(p.fvm), score=n(p.score,70), quote=n(p.quote), goals=n(p.goals), ass=n(p.assists);
-   const apps=n(p.apps), starts=n(p.starts), form=n(p.form);
-   const bonus=goals*3+ass*2;
-   const consistency=apps?Math.min(12,apps/2):4;
-   const starter=starts?(Math.min(10,starts/10)):5;
-   const valueGap=fvm?Math.max(-20,Math.min(20,(fvm/10)-price)):0;
-   let auction=Math.round(Math.min(100,Math.max(0,score*.62+bonus+consistency+starter+valueGap)));
-   const maxBase=fvm?Math.round(fvm/10):Math.max(quote+5,Math.round(score*.8));
-   const max=Math.max(quote||1,Math.round(maxBase*(1+(auction-70)/220)));
-   let verdict=price>max?'LASCIA':price>max*.9?'ULTIMO RILANCIO':price>0&&price<=max*.72?'AFFARE':auction>=82?'DA PRENDERE':auction>=74?'RIALZA':'ASPETTA';
-   return {auction,max,verdict,score,fvm,quote,bonus,consistency,starter};
- };
-
- window.ryh60OpponentProfiles=function(){
-   return parts().map((o,i)=>{
-     const name=o.name||o.team||`Avversario ${i+1}`;
-     const budget=n(o.credits??o.budget,500);
-     const buys=n(o.purchases,0);
-     const spent=n(o.spent,500-budget);
-     const avg=buys?spent/buys:0;
-     let style=avg>=35?'AGGRESSIVO':avg>=22?'OPPORTUNISTA':'RISPARMIATORE';
-     return {name,budget,buys,spent,avg,style};
-   });
- };
-
- window.ryh60RenderLive=function(host,p,price){
-   if(!host||!p)return;
-   const a=window.ryh60AnalyzePlayer(p,price);
-   const opp=window.ryh60OpponentProfiles();
-   const pressure=opp.length?Math.round(opp.reduce((x,o)=>x+(o.style==='AGGRESSIVO'?85:o.style==='OPPORTUNISTA'?60:35),0)/opp.length):50;
-   let action=a.verdict;
-   if(action==='RIALZA') action='🔨 RIALZA';
-   else if(action==='AFFARE') action='💰 AFFARE';
-   else if(action==='DA PRENDERE') action='🟢 DA PRENDERE';
-   else if(action==='ULTIMO RILANCIO') action='⚠️ ULTIMO RILANCIO';
-   else if(action==='LASCIA') action='🛑 LASCIA';
-   else action='👀 ASPETTA';
-   host.innerHTML=`<div class="ryh60-live">
-     <h3>🧠 BRAIN PRO · ${p.name||'Giocatore'}</h3><div class="ryh60-action">${action}</div>
-     <div class="ryh60-sub">Il punteggio combina rendimento, valore di mercato, disponibilità e prezzo d'asta. Il limite è dinamico.</div>
-     <div class="ryh60-grid">
-       <div class="ryh60-box"><span>AUCTION SCORE</span><b>${a.auction}/100</b></div>
-       <div class="ryh60-box"><span>PREZZO ATTUALE</span><b>${price||0}</b></div>
-       <div class="ryh60-box"><span>MAX BRAIN</span><b>${a.max}</b></div>
-       <div class="ryh60-box"><span>FVM</span><b>${a.fvm||'—'}</b></div>
-       <div class="ryh60-box"><span>QUOTAZIONE</span><b>${a.quote||'—'}</b></div>
-       <div class="ryh60-box"><span>BONUS POT.</span><b>${a.bonus}</b></div>
-     </div>
-     <div class="ryh60-risk"><span>PRESSIONE AVVERSARI</span><b>${pressure}/100</b></div>
-     <div class="ryh60-bar"><i style="width:${pressure}%"></i></div>
-     <div class="ryh60-plans">
-       <div class="ryh60-plan"><b>Piano A</b> · Se il prezzo resta ≤ ${Math.round(a.max*.72)}: attacca.</div>
-       <div class="ryh60-plan"><b>Piano B</b> · Tra ${Math.round(a.max*.72)} e ${Math.round(a.max*.9)}: valuta il rilancio.</div>
-       <div class="ryh60-plan"><b>Piano C</b> · Oltre ${a.max}: non inseguire, passa al prossimo obiettivo.</div>
-     </div>
-     <div class="ryh60-note">👥 Avversari osservati: ${opp.length}. Il Brain costruisce progressivamente il loro profilo in base a crediti, acquisti e spesa media.</div>
-   </div>`;
- };
-})();
-</script>
-
-<script id="ryh60-hook">
-(function(){
- const read=(k,fb)=>{try{return JSON.parse(localStorage.getItem(k))??fb}catch(e){return fb}};
- function findPlayer(){
-   const s=read('ryh56_brain_state',{}), name=s.currentPlayer?.name;
-   const arr=read('ryh_players',read('players',[]));
-   return arr.find(p=>String(p.name||'').toLowerCase()===String(name||'').toLowerCase()) || (name?{name,score:75}:null);
- }
- function tick(){
-   const host=document.getElementById('ryh60BrainPro'),p=findPlayer();
-   if(!host||!p)return;
-   const price=Number(document.querySelector('#buyprice,#auctionprice,#price')?.value||0);
-   window.ryh60RenderLive(host,p,price);
- }
- setInterval(tick,1000);
- document.addEventListener('DOMContentLoaded',()=>setTimeout(tick,700));
-})();
-</script>
-
-<script id="ryh61-war-room">
-(function(){
- const read=(k,fb)=>{try{return JSON.parse(localStorage.getItem(k))??fb}catch(e){return fb}};
- const n=x=>Number(x)||0;
- function players(){return read('ryh_players',read('players',[]))}
- function parts(){return read('ryh_participants',read('participants',[]))}
- function purchases(){return read('ryh_auction_purchases',read('auction_purchases',[]))}
- function cur(){return read('ryh56_brain_state',{}).currentPlayer?.name}
- function analyze(p,price){
-   const f=n(p.fvm), score=n(p.score,70), q=n(p.quote), goals=n(p.goals), ass=n(p.assists);
-   const apps=n(p.apps), starts=n(p.starts), form=n(p.form);
-   const consistency=apps?Math.min(10,apps/3):4, starter=starts?Math.min(10,starts/10):5;
-   const raw=score*.62+goals*2.5+ass*1.7+consistency+starter+(form?Math.min(8,form):0);
-   const auction=Math.max(0,Math.min(100,Math.round(raw)));
-   const base=f?f/10:Math.max(q+5,score*.8);
-   const max=Math.max(q||1,Math.round(base*(1+(auction-70)/220)));
-   const verdict=price>max?'🛑 LASCIA':price>max*.9?'⚠️ ULTIMO RILANCIO':price<=max*.72&&price>0?'💰 AFFARE':auction>=82?'🟢 DA PRENDERE':auction>=74?'🔨 RIALZA':'👀 ASPETTA';
-   return {auction,max,verdict,f,q};
- }
- function profiles(){
-   return parts().map((o,i)=>{
-     const budget=n(o.credits??o.budget,500), spent=n(o.spent,500-budget), buys=n(o.purchases);
-     const avg=buys?spent/buys:0;
-     const style=avg>=35?'AGGRESSIVO':avg>=22?'OPPORTUNISTA':'RISPARMIATORE';
-     return {name:o.name||o.team||`Avversario ${i+1}`,budget,spent,buys,style};
-   });
- }
- function render(){
-   const host=document.getElementById('ryh61WarRoom'); if(!host)return;
-   const name=cur(); const p=players().find(x=>String(x.name||'').toLowerCase()===String(name||'').toLowerCase());
-   if(!p){host.innerHTML='<div class="ryh61-war"><div class="ryh61-title"><h3>🔨 WAR ROOM</h3><span class="ryh61-live">LIVE</span></div><div class="ryh61-advice">Seleziona il giocatore chiamato all’asta per attivare il Brain.</div></div>';return}
-   const price=n(document.querySelector('#buyprice,#auctionprice,#price')?.value);
-   const a=analyze(p,price), opp=profiles();
-   const pressure=opp.length?Math.round(opp.reduce((v,o)=>v+(o.style==='AGGRESSIVO'?85:o.style==='OPPORTUNITA'?60: o.style==='OPPORTUNISTA'?60:35),0)/opp.length):50;
-   const bought=purchases().length;
-   const budget=500-n(purchases().filter(x=>String(x.owner||x.user||'').toLowerCase()==='me').reduce((v,x)=>v+n(x.price),0));
-   const targets=players().filter(x=>x!==p).sort((x,y)=>n(y.fvm)-n(x.fvm)).slice(0,3);
-   host.innerHTML=`<div class="ryh61-war">
-    <div class="ryh61-title"><h3>🔨 WAR ROOM · BRAIN</h3><span class="ryh61-live">● LIVE</span></div>
-    <div class="ryh61-name">${p.name||'Giocatore'}</div><div class="ryh61-team">${p.team||''} · ${p.role||''}</div>
-    <div class="ryh61-action">${a.verdict}</div>
-    <div class="ryh61-grid">
-      <div class="ryh61-box"><span>AUCTION SCORE</span><b>${a.auction}</b></div>
-      <div class="ryh61-box"><span>PREZZO</span><b>${price||0}</b></div>
-      <div class="ryh61-box"><span>MAX</span><b>${a.max}</b></div>
-      <div class="ryh61-box"><span>FVM</span><b>${a.f||'—'}</b></div>
+</head>
+<body>
+<div id="ryh65App">
+  <header class="ryh65-header">
+    <div>
+      <div class="ryh65-brand">🔨 RAISE YOUR HAMMER</div>
+      <div class="ryh65-sub">ASTA · BRAIN</div>
     </div>
-    <div class="ryh61-advice">
-      <div class="ryh61-row"><span>Pressione avversari</span><b>${pressure}/100</b></div><div class="ryh61-bar"><i style="width:${pressure}%"></i></div>
-      <div class="ryh61-row"><span>Budget stimato disponibile</span><b>${budget}</b></div>
-      <div class="ryh61-row"><span>Acquisti registrati</span><b>${bought}</b></div>
-      <p>Strategia: ${price> a.max?'non inseguire il prezzo.':price>a.max*.9?'un solo rilancio, poi stop.':price>0?'puoi attaccare mantenendo margine.':'prepara il limite prima di rilanciare.'}</p>
-    </div>
-    <div class="ryh61-targets">${targets.map((x,i)=>`<div class="ryh61-target"><b>Piano ${String.fromCharCode(65+i)}</b> · ${x.name||''} · FVM ${x.fvm||'—'}</div>`).join('')}</div>
-   </div>`;
- }
- function inject(){if(document.getElementById('ryh61WarRoom'))return;const h=document.createElement('div');h.id='ryh61WarRoom';const anchor=document.getElementById('ryh60BrainPro')||document.getElementById('ryh56AuctionBrain');(anchor?.parentNode||document.body).appendChild(h);render()}
- document.addEventListener('DOMContentLoaded',()=>setTimeout(inject,600)); setInterval(()=>{inject();render()},1200);
-})();
-</script>
+    <button id="ryh65Reset" class="ryh65-icon">↻</button>
+  </header>
 
-<script id="ryh62-adaptive-brain">
+  <main class="ryh65-main">
+    <section class="ryh65-setup" id="ryh65Setup">
+      <h2>Imposta l'asta</h2>
+      <label>Crediti iniziali
+        <input id="ryh65Budget" type="number" min="1" value="500">
+      </label>
+      <label>Partecipanti
+        <input id="ryh65Participants" type="number" min="2" value="10">
+      </label>
+      <button id="ryh65Start" class="ryh65-primary">AVVIA ASTA</button>
+    </section>
+
+    <section id="ryh65Auction" class="ryh65-hidden">
+      <div class="ryh65-playerbox">
+        <div class="ryh65-label">GIOCATORE CHIAMATO</div>
+        <input id="ryh65Player" class="ryh65-player" placeholder="Scrivi il giocatore">
+        <input id="ryh65Team" class="ryh65-team" placeholder="Squadra (opzionale)">
+      </div>
+
+      <div class="ryh65-pricebox">
+        <div>
+          <span class="ryh65-label">PREZZO ATTUALE</span>
+          <input id="ryh65Price" type="number" min="0" value="1">
+        </div>
+        <div class="ryh65-max">
+          <span class="ryh65-label">MASSIMO BRAIN</span>
+          <b id="ryh65Max">—</b>
+        </div>
+      </div>
+
+      <div id="ryh65Decision" class="ryh65-decision neutral">
+        <span id="ryh65DecisionText">Inserisci il giocatore</span>
+        <small id="ryh65Reason">Brain analizzerà la situazione dell'asta.</small>
+      </div>
+
+      <div class="ryh65-kpis">
+        <div><span>SCORE</span><b id="ryh65Score">—</b></div>
+        <div><span>FVM</span><b id="ryh65Fvm">—</b></div>
+        <div><span>BUDGET</span><b id="ryh65BudgetLive">500</b></div>
+        <div><span>RILANCI</span><b id="ryh65Bids">0</b></div>
+      </div>
+
+      <div class="ryh65-actions">
+        <button id="ryh65Raise" class="ryh65-primary">🔨 RIALZA +1</button>
+        <button id="ryh65Pass" class="ryh65-danger">PASSA</button>
+      </div>
+
+      <button id="ryh65Buy" class="ryh65-buy">✓ ACQUISTATO</button>
+
+      <section class="ryh65-brain">
+        <div class="ryh65-brain-title">🧠 SUGGERIMENTO BRAIN</div>
+        <div id="ryh65BrainAdvice">Inserisci il giocatore e il prezzo.</div>
+      </section>
+
+      <section class="ryh65-history">
+        <div class="ryh65-section-title">ULTIMI ACQUISTI</div>
+        <div id="ryh65History">Nessun acquisto registrato.</div>
+      </section>
+    </section>
+  </main>
+</div>
+
+<style>
+#ryh65App{min-height:100vh;background:#0b1117;color:#e8edf0;font-family:system-ui,-apple-system,sans-serif}
+.ryh65-header{position:sticky;top:0;z-index:5;display:flex;justify-content:space-between;align-items:center;padding:12px 14px;background:#101820;border-bottom:1px solid #263540}
+.ryh65-brand{font-size:12px;font-weight:1000;color:#e3c16a}.ryh65-sub{font-size:5px;color:#82909c;margin-top:2px}
+.ryh65-icon{border:0;background:#1c2933;color:#d6dde2;border-radius:9px;padding:8px 10px;font-size:15px}
+.ryh65-main{max-width:560px;margin:auto;padding:12px}.ryh65-hidden{display:none}
+.ryh65-setup{padding:16px;border:1px solid #293b49;border-radius:14px;background:#101820}.ryh65-setup h2{font-size:16px;margin:0 0 12px}
+.ryh65-setup label{display:block;font-size:7px;color:#9daab4;margin:10px 0}.ryh65-setup input,.ryh65-player,.ryh65-team{box-sizing:border-box;width:100%;margin-top:4px;border:1px solid #304451;background:#0c141b;color:#eef2f4;border-radius:9px;padding:11px;font-size:11px}
+.ryh65-primary,.ryh65-danger,.ryh65-buy{border:0;border-radius:10px;padding:13px;font-size:8px;font-weight:1000}.ryh65-primary{background:#c39d4c;color:#101010}.ryh65-danger{background:#492525;color:#ffd0d0}.ryh65-buy{width:100%;margin-top:7px;background:#1d3a2a;color:#9be2b2}
+.ryh65-setup .ryh65-primary{width:100%;margin-top:8px}
+.ryh65-label{display:block;font-size:5px;color:#84929d}.ryh65-player{font-size:17px;font-weight:900}.ryh65-team{font-size:7px}
+.ryh65-pricebox{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px;padding:9px;border-radius:11px;background:#111c24}.ryh65-pricebox input{width:100%;box-sizing:border-box;margin-top:4px;background:#0b1319;color:#fff;border:1px solid #304451;border-radius:8px;padding:10px;font-size:16px;font-weight:900}
+.ryh65-max{padding:2px 5px}.ryh65-max b{display:block;font-size:22px;color:#e5c36a;margin-top:4px}
+.ryh65-decision{margin-top:8px;padding:13px;border-radius:12px;text-align:center;border:1px solid #304451;background:#15212a}.ryh65-decision span{display:block;font-size:15px;font-weight:1000}.ryh65-decision small{display:block;margin-top:4px;font-size:6px;color:#aeb9c2}.ryh65-decision.good{background:#16271e;border-color:#31583f}.ryh65-decision.warn{background:#292415;border-color:#64572e}.ryh65-decision.stop{background:#2b1818;border-color:#643636}
+.ryh65-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:7px}.ryh65-kpis div{padding:7px;text-align:center;background:#111b23;border-radius:8px}.ryh65-kpis span{display:block;font-size:4px;color:#82909c}.ryh65-kpis b{font-size:10px}
+.ryh65-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}.ryh65-actions button{min-height:44px}
+.ryh65-brain{margin-top:8px;padding:10px;border:1px solid #6d582c;border-radius:11px;background:#1c1912}.ryh65-brain-title{font-size:7px;font-weight:1000;color:#e3c16a}.ryh65-brain #ryh65BrainAdvice{font-size:7px;line-height:1.45;color:#c8c1b3;margin-top:5px}
+.ryh65-history{margin-top:9px;padding:9px;border-radius:10px;background:#101820}.ryh65-section-title{font-size:6px;color:#82909c;margin-bottom:5px}.ryh65-history div:last-child{font-size:6px;color:#adb8c1;line-height:1.5}
+</style>
+
+<script>
 (function(){
  const R=(k,f)=>{try{return JSON.parse(localStorage.getItem(k))??f}catch(e){return f}};
  const W=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
  const N=x=>Number(x)||0;
- const getPlayers=()=>R('ryh_players',R('players',[]));
- const getParts=()=>R('ryh_participants',R('participants',[]));
- const getPurchases=()=>R('ryh_auction_purchases',R('auction_purchases',[]));
- const getState=()=>R('ryh62_brain_state',{});
+ let state=R('ryh65_state',{started:false,budget:500,initial:500,bids:0,history:[]});
 
- function inferOwner(p){
-   const name=String(p?.owner||p?.user||'').toLowerCase();
-   if(name==='me'||name==='io'||name==='user'||name==='mia') return 'me';
-   return name||'unknown';
+ function players(){return R('ryh_players',R('players',[]))}
+ function findPlayer(){
+   const q=document.getElementById('ryh65Player').value.trim().toLowerCase();
+   if(!q)return null;
+   return players().find(p=>String(p.name||'').toLowerCase()===q)
+       ||players().find(p=>String(p.name||'').toLowerCase().includes(q));
  }
- function learn(){
-   const buys=getPurchases(), map={};
-   buys.forEach(x=>{
-     const o=inferOwner(x); if(!map[o])map[o]={name:o,buys:0,spent:0,prices:[],roles:{},last:[]};
-     const m=map[o], price=N(x.price); m.buys++;m.spent+=price;m.prices.push(price);
-     const role=x.role||x.ruolo||'—';m.roles[role]=(m.roles[role]||0)+1;m.last.push({name:x.name||x.player,price});
-   });
-   Object.values(map).forEach(m=>{
-     m.avg=m.buys?m.spent/m.buys:0;
-     m.aggression=Math.min(100,Math.round(35+m.avg*1.35+m.buys*1.5));
-     m.style=m.aggression>=78?'AGGRESSIVO':m.aggression>=58?'OPPORTUNISTA':'RISPARMIATORE';
-     m.trend=m.prices.length>=3 ? (m.prices.slice(-3).reduce((a,b)=>a+b,0)/3 > m.avg*1.15?'STA ALZANDO':'STABILE') : 'IN OSSERVAZIONE';
-     m.budget=500-m.spent;
-   });
-   W('ryh62_opponent_profiles',map); return map;
- }
- function current(){
-   const st=getState(), legacy=R('ryh56_brain_state',{});
-   return st.currentPlayer||legacy.currentPlayer||{};
- }
- function render(){
-   const host=document.getElementById('ryh62Adaptive');if(!host)return;
-   const m=learn(), entries=Object.values(m).filter(x=>x.name!=='me').sort((a,b)=>b.aggression-a.aggression);
-   const total=getPurchases().length;
-   const avg=total?getPurchases().reduce((a,x)=>a+N(x.price),0)/total:0;
-   const current=current();
-   let lines=entries.slice(0,4).map(x=>`<div class="ryh62-row"><span>👤 ${x.name}</span><b>${x.style} · ${x.aggression}/100 · ${x.trend}</b></div>`).join('');
-   let insight='Servono ancora alcuni acquisti per riconoscere con affidabilità i pattern.';
-   if(entries.length){
-     const ag=entries.filter(x=>x.style==='AGGRESSIVO').sort((a,b)=>b.aggression-a.aggression)[0];
-     if(ag) insight=`🧠 ${ag.name} è il profilo più aggressivo: media ${Math.round(ag.avg)} crediti per acquisto. Non conviene inseguirlo sui suoi target.`;
+ function brain(){
+   const p=findPlayer(), price=N(document.getElementById('ryh65Price').value);
+   const d=document.getElementById('ryh65Decision'),t=document.getElementById('ryh65DecisionText'),r=document.getElementById('ryh65Reason');
+   if(!p){
+     document.getElementById('ryh65Max').textContent='—';
+     document.getElementById('ryh65Score').textContent='—';
+     document.getElementById('ryh65Fvm').textContent='—';
+     t.textContent='Inserisci il giocatore';
+     r.textContent='Brain analizzerà la situazione dell’asta.';
+     d.className='ryh65-decision neutral';
+     document.getElementById('ryh65BrainAdvice').textContent='Inserisci il giocatore e il prezzo.';
+     return;
    }
-   host.innerHTML=`<div class="ryh62-adaptive">
-     <div class="ryh62-head"><b>🧠 BRAIN ADAPTIVE · APPRENDE L'ASTA</b><span class="ryh62-badge">● LIVE</span></div>
-     <div class="ryh62-grid">
-       <div class="ryh62-kpi"><span>ACQUISTI ANALIZZATI</span><b>${total}</b></div>
-       <div class="ryh62-kpi"><span>MEDIA PREZZO</span><b>${Math.round(avg)||0}</b></div>
-       <div class="ryh62-kpi"><span>AVVERSARI PROFILATI</span><b>${entries.length}</b></div>
-     </div>
-     <div class="ryh62-alert">${insight}</div>
-     <div class="ryh62-text">Brain aggiorna aggressività, spesa media, andamento dei rilanci e distribuzione dei ruoli ogni volta che viene registrato un acquisto. Più dati accumuli, più il profilo diventa specifico.</div>
-     <div class="ryh62-table">${lines||'<div class="ryh62-row"><span>Nessun profilo ancora</span><b>Registra i primi acquisti</b></div>'}</div>
-   </div>`;
- }
- function inject(){
-   if(document.getElementById('ryh62Adaptive'))return;
-   const h=document.createElement('div');h.id='ryh62Adaptive';
-   const anchor=document.getElementById('ryh61WarRoom')||document.getElementById('ryh60BrainPro');
-   (anchor?.parentNode||document.body).appendChild(h);render();
- }
- document.addEventListener('DOMContentLoaded',()=>setTimeout(inject,700));
- setInterval(()=>{inject();render()},1500);
- window.ryh62LearnAuction=learn;
-})();
-</script>
+   const score=N(p.score,70),fvm=N(p.fvm),quote=N(p.quote),goals=N(p.goals),assists=N(p.assists);
+   const sc=Math.max(0,Math.min(100,Math.round(score*.68+goals*2.5+assists*1.7+(N(p.apps)?7:3)+(N(p.starts)?7:4))));
+   const max=Math.max(quote||1,Math.round((fvm?fvm/10:Math.max(quote+5,sc*.8))*(1+(sc-70)/220)));
+   document.getElementById('ryh65Max').textContent=max;
+   document.getElementById('ryh65Score').textContent=sc;
+   document.getElementById('ryh65Fvm').textContent=fvm||'—';
 
-<script id="ryh63-fast-flow">
-(function(){
- const R=(k,f)=>{try{return JSON.parse(localStorage.getItem(k))??f}catch(e){return f}};
- const N=x=>Number(x)||0;
- const P=()=>R('ryh_players',R('players',[]));
- function current(){
-   const a=R('ryh56_brain_state',{}),b=R('ryh62_brain_state',{});
-   return a.currentPlayer||b.currentPlayer||{};
- }
- function price(){
-   const el=document.querySelector('#buyprice,#auctionprice,#price');return N(el?.value);
- }
- function calc(p,pr){
-   const f=N(p.fvm),score=N(p.score,70),g=N(p.goals),a=N(p.assists),q=N(p.quote);
-   const auction=Math.max(0,Math.min(100,Math.round(score*.68+g*2.5+a*1.7+(N(p.apps)?7:3)+(N(p.starts)?7:4))));
-   const max=Math.max(q||1,Math.round((f?f/10:Math.max(q+5,score*.8))*(1+(auction-70)/220)));
-   if(pr>max)return ['🛑 LASCIA','stop'];
-   if(pr>max*.9)return ['⚠️ ULTIMO RILANCIO','warn'];
-   if(pr>0&&pr<=max*.72)return ['💰 AFFARE',''];
-   if(auction>=82)return ['🟢 DA PRENDERE',''];
-   if(auction>=74)return ['🔨 RIALZA',''];
-   return ['👀 ASPETTA','warn'];
+   if(price>max){
+     t.textContent='🛑 LASCIA';r.textContent=`Prezzo oltre il limite Brain (${max}). Non inseguire.`;
+     d.className='ryh65-decision stop';
+   }else if(price>max*.9){
+     t.textContent='⚠️ ULTIMO RILANCIO';r.textContent=`Puoi arrivare a ${max}, poi fermati.`;
+     d.className='ryh65-decision warn';
+   }else if(price>0&&price<=max*.72){
+     t.textContent='💰 AFFARE';r.textContent=`Prezzo molto sotto il limite. Puoi attaccare.`;
+     d.className='ryh65-decision good';
+   }else if(sc>=82){
+     t.textContent='🟢 DA PRENDERE';r.textContent=`Giocatore prioritario. Limite Brain: ${max}.`;
+     d.className='ryh65-decision good';
+   }else if(sc>=74){
+     t.textContent='🔨 RIALZA';r.textContent=`Rilancia mantenendo il tetto di ${max}.`;
+     d.className='ryh65-decision good';
+   }else{
+     t.textContent='👀 ASPETTA';r.textContent='Profilo interessante, ma non inseguire il prezzo.';
+     d.className='ryh65-decision warn';
+   }
+   document.getElementById('ryh65BrainAdvice').textContent=
+     `Score ${sc}/100 · FVM ${fvm||'—'} · massimo ${max}. `+
+     (price>max?'Passa e conserva i crediti per il prossimo obiettivo.':`Se il prezzo supera ${max}, passa immediatamente.`);
  }
  function render(){
-   let host=document.getElementById('ryh63Fast');if(!host){host=document.createElement('div');host.id='ryh63Fast';document.body.prepend(host)}
-   const p=current(), name=p.name||'In attesa del giocatore';
-   const obj=P().find(x=>String(x.name||'').toLowerCase()===String(name).toLowerCase())||p;
-   const pr=price(), [act,cls]=calc(obj,pr), f=N(obj.fvm), score=N(obj.score,70);
-   host.innerHTML=`<div class="ryh63-fast">
-    <div class="ryh63-head"><b>🔨 WAR ROOM</b><span class="ryh63-live">● BRAIN LIVE</span></div>
-    <div class="ryh63-main">
-      <div><div class="ryh63-label">GIOCATORE</div><div class="ryh63-price">${name}</div><div class="ryh63-label">${obj.team||''} · ${obj.role||''} · FVM ${f||'—'}</div></div>
-      <div class="ryh63-action ${cls}">${act}</div>
-    </div>
-    <div class="ryh63-kpis">
-      <div class="ryh63-kpi"><span>PREZZO</span><b>${pr}</b></div>
-      <div class="ryh63-kpi"><span>MAX</span><b>${Math.max(1,Math.round((f?f/10:score*.8)*(1+(score-70)/220)))}</b></div>
-      <div class="ryh63-kpi"><span>SCORE</span><b>${Math.round(score)}</b></div>
-      <div class="ryh63-kpi"><span>FVM</span><b>${f||'—'}</b></div>
-    </div>
-    <div class="ryh63-row">
-      <button class="ryh63-btn primary" id="ryh63Raise">🔨 RIALZA</button>
-      <button class="ryh63-btn danger" id="ryh63Stop">🛑 PASSA</button>
-      <button class="ryh63-btn" id="ryh63More">☰ DETTAGLI</button>
-    </div>
-    <div id="ryh63Drawer" class="ryh63-drawer">
-      <button class="ryh63-btn" onclick="document.querySelector('#ryh63Drawer').classList.remove('open')">Chiudi dettagli</button>
-      <div class="ryh63-mini">Brain aggiorna automaticamente score e limite in base al giocatore e al prezzo corrente. I dettagli degli avversari restano disponibili senza occupare la schermata principale.</div>
-    </div>
-   </div>`;
-   document.getElementById('ryh63More').onclick=()=>document.getElementById('ryh63Drawer').classList.toggle('open');
-   document.getElementById('ryh63Raise').onclick=()=>{const e=document.querySelector('#buyprice,#auctionprice,#price');if(e){e.focus();e.value=N(e.value)+1;e.dispatchEvent(new Event('input',{bubbles:true}));e.dispatchEvent(new Event('change',{bubbles:true}));}};
-   document.getElementById('ryh63Stop').onclick=()=>{const b=document.querySelector('#stop,#pass,#skip,[data-action="pass"]');if(b)b.click();};
+   document.getElementById('ryh65BudgetLive').textContent=Math.max(0,state.budget);
+   document.getElementById('ryh65Bids').textContent=state.bids;
+   const h=document.getElementById('ryh65History');
+   h.innerHTML=state.history.length
+     ?state.history.slice(-5).reverse().map(x=>`<div>✓ ${x.name} · ${x.price} crediti</div>`).join('')
+     :'Nessun acquisto registrato.';
+   brain();
  }
- document.addEventListener('DOMContentLoaded',()=>setTimeout(render,500));
- setInterval(render,1000);
+ function start(){
+   const b=N(document.getElementById('ryh65Budget').value)||500;
+   state={started:true,budget:b,initial:b,bids:0,history:[]};
+   W('ryh65_state',state);
+   document.getElementById('ryh65Setup').classList.add('ryh65-hidden');
+   document.getElementById('ryh65Auction').classList.remove('ryh65-hidden');
+   render();
+ }
+ document.addEventListener('DOMContentLoaded',()=>{
+   if(state.started){
+     document.getElementById('ryh65Setup').classList.add('ryh65-hidden');
+     document.getElementById('ryh65Auction').classList.remove('ryh65-hidden');
+   }
+   document.getElementById('ryh65Start').onclick=start;
+   document.getElementById('ryh65Price').oninput=render;
+   document.getElementById('ryh65Player').oninput=render;
+   document.getElementById('ryh65Raise').onclick=()=>{
+     const e=document.getElementById('ryh65Price');
+     e.value=N(e.value)+1;state.bids++;W('ryh65_state',state);render();
+   };
+   document.getElementById('ryh65Pass').onclick=()=>{
+     document.getElementById('ryh65Price').value=0;render();
+   };
+   document.getElementById('ryh65Buy').onclick=()=>{
+     const p=findPlayer(),price=N(document.getElementById('ryh65Price').value);
+     if(!p||price<=0)return;
+     state.budget=Math.max(0,state.budget-price);
+     state.history.push({name:p.name,price});state.bids=0;
+     W('ryh65_state',state);
+     document.getElementById('ryh65Player').value='';
+     document.getElementById('ryh65Price').value=1;
+     render();
+   };
+   document.getElementById('ryh65Reset').onclick=()=>{
+     if(confirm('Reset completo dell’asta?')){localStorage.removeItem('ryh65_state');location.reload();}
+   };
+   render();
+ });
 })();
 </script>
-
-<script id="ryh64-live-js">
-(function(){
- const R=(k,f)=>{try{return JSON.parse(localStorage.getItem(k))??f}catch(e){return f}};
- const N=x=>Number(x)||0;
- const players=()=>R('ryh_players',R('players',[]));
- function current(){const a=R('ryh56_brain_state',{}),b=R('ryh62_brain_state',{});return a.currentPlayer||b.currentPlayer||{}}
- function price(){return N(document.querySelector('#buyprice,#auctionprice,#price')?.value)}
- function calc(p,pr){
-  const f=N(p.fvm),score=N(p.score,70),g=N(p.goals),a=N(p.assists),q=N(p.quote);
-  const sc=Math.max(0,Math.min(100,Math.round(score*.68+g*2.5+a*1.7+(N(p.apps)?7:3)+(N(p.starts)?7:4))));
-  const max=Math.max(q||1,Math.round((f?f/10:Math.max(q+5,sc*.8))*(1+(sc-70)/220)));
-  let v=pr>max?'🛑 LASCIA':pr>max*.9?'⚠️ ULTIMO RILANCIO':pr>0&&pr<=max*.72?'💰 AFFARE':sc>=82?'🟢 DA PRENDERE':sc>=74?'🔨 RIALZA':'👀 ASPETTA';
-  return {sc,max,f,q,v};
- }
- function ensure(){
-  let live=document.getElementById('ryh64Live');
-  if(!live){
-   live=document.createElement('div');live.id='ryh64Live';
-   live.innerHTML=`<div class="ryh64-top"><span class="ryh64-brand">🔨 RAISE YOUR HAMMER · ASTA LIVE</span><button class="ryh64-x" id="ryh64Close">✕</button></div><div class="ryh64-body" id="ryh64Content"></div>`;
-   document.body.appendChild(live);
-   document.getElementById('ryh64Close').onclick=()=>live.classList.remove('open');
-  }
-  let f=document.getElementById('ryh64Float');
-  if(!f){f=document.createElement('button');f.id='ryh64Float';f.className='ryh64-float';f.textContent='ASTA\\nLIVE';f.onclick=()=>{live.classList.add('open');render()};document.body.appendChild(f)}
- }
- function render(){
-  const c=document.getElementById('ryh64Content');if(!c)return;
-  const p0=current(),name=p0.name||'Nessun giocatore';const p=players().find(x=>String(x.name||'').toLowerCase()===String(name).toLowerCase())||p0;
-  const pr=price(),a=calc(p,pr),cls=a.v.startsWith('🛑')?'stop':a.v.startsWith('⚠️')||a.v.startsWith('👀')?'warn':'';
-  c.innerHTML=`<div class="ryh64-kicker">GIOCATORE CHIAMATO</div><div class="ryh64-player">${name}</div><div class="ryh64-meta">${p.team||''} · ${p.role||''}</div>
-  <div class="ryh64-decision ${cls}"><b>${a.v}</b><div class="ryh64-limit">Prezzo massimo Brain: <strong>${a.max}</strong> · Prezzo attuale: <strong>${pr}</strong></div></div>
-  <div class="ryh64-cards"><div class="ryh64-card"><span>SCORE</span><b>${a.sc}</b></div><div class="ryh64-card"><span>FVM</span><b>${a.f||'—'}</b></div><div class="ryh64-card"><span>QUOTA</span><b>${a.q||'—'}</b></div></div>
-  <div class="ryh64-actions"><button class="ryh64-btn ryh64-raise" id="ryh64Raise">🔨 RIALZA +1</button><button class="ryh64-btn ryh64-pass" id="ryh64Pass">🛑 PASSA</button></div>
-  <button class="ryh64-more" id="ryh64More">☰ Vedi analisi e avversari</button><div class="ryh64-extra" id="ryh64Extra">Il Brain continua ad aggiornare i profili degli avversari e la strategia dell'asta in background. La schermata principale resta volutamente essenziale.</div>`;
-  document.getElementById('ryh64More').onclick=()=>document.getElementById('ryh64Extra').classList.toggle('open');
-  document.getElementById('ryh64Raise').onclick=()=>{let e=document.querySelector('#buyprice,#auctionprice,#price');if(e){e.value=N(e.value)+1;e.dispatchEvent(new Event('input',{bubbles:true}));e.dispatchEvent(new Event('change',{bubbles:true}));render()}};
-  document.getElementById('ryh64Pass').onclick=()=>{const b=document.querySelector('#stop,#pass,#skip,[data-action="pass"]');if(b)b.click();document.getElementById('ryh64Live').classList.remove('open')};
- }
- document.addEventListener('DOMContentLoaded',()=>{ensure();setTimeout(render,500)});
- setInterval(()=>{ensure();render()},1000);
- window.ryh64Open=()=>{ensure();document.getElementById('ryh64Live').classList.add('open');render()};
-})();
-</script>
-</body></html>
+</body>
+</html>
