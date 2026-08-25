@@ -1,478 +1,201 @@
-<!doctype html><html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#070d14"><title>Raise Your Hammer</title><style>
-:root{--bg:#070d14;--panel:#0e1823;--panel2:#111e2b;--line:#263a4e;--text:#eef3f7;--muted:#7f8d9f;--gold:#d8b55e;--green:#62d993;--red:#ff8177}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif}.app{max-width:760px;margin:auto;min-height:100vh;padding:14px 12px 88px}.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}.brand{display:flex;gap:9px;align-items:center}.mark{width:34px;height:34px;border:1px solid #81662e;border-radius:10px;display:grid;place-items:center;background:#16170f}.brand b{font-size:11px;letter-spacing:.8px}.brand small{display:block;color:var(--muted);font-size:6px;margin-top:2px}.menu{width:36px;height:36px;border:1px solid var(--line);background:var(--panel);border-radius:11px;color:#fff;font-size:17px}.view{display:none}.view.active{display:block}.hero,.card{background:linear-gradient(145deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:18px;padding:14px;margin-bottom:9px}.hero{background:radial-gradient(circle at 100% 0,#2b2517 0,#111b26 40%,#0b141d 100%)}h1{font-size:21px;margin:4px 0}.eyebrow{font-size:7px;letter-spacing:1.2px;color:#b6a16d;font-weight:900}.muted{color:var(--muted);font-size:8px}.btn{border:1px solid var(--line);background:#142131;color:#fff;border-radius:11px;padding:10px 12px;font-weight:900;font-size:8px}.btn.gold{background:linear-gradient(135deg,#e4c36c,#a67f2f);color:#0b1117;border-color:#b18a39}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.stat{padding:8px;border:1px solid var(--line);border-radius:11px;background:#0b141e;text-align:center}.stat b{font-size:12px}.stat small{display:block;color:var(--muted);font-size:6px;margin-top:2px}.row{display:flex;justify-content:space-between;gap:8px;align-items:center}.sectionTitle{font-size:10px;font-weight:900;margin:11px 0 6px}.input,.select{width:100%;padding:10px;border:1px solid var(--line);background:#0a131c;color:#fff;border-radius:10px;font-size:9px;outline:none}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.stack{display:grid;gap:7px}.players{display:grid;grid-template-columns:1fr;gap:7px}.p{padding:10px;border:1px solid var(--line);border-radius:14px;background:linear-gradient(145deg,#122131,#0b151f)}.p .name{font-size:10px;font-weight:900}.p small{font-size:6px;color:var(--muted)}.score{font-size:18px;font-weight:1000;color:var(--gold)}.pill{font-size:6px;font-weight:900;padding:4px 6px;border-radius:7px;background:#173225;color:var(--green)}.pmeta{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:7px}.pmeta div{background:#09121a;border-radius:7px;padding:5px;text-align:center}.pmeta small{display:block;font-size:5px}.pmeta b{font-size:8px}.bottom{position:fixed;left:50%;bottom:8px;transform:translateX(-50%);width:min(94%,500px);padding:5px;display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:rgba(8,14,21,.96);border:1px solid #314457;border-radius:17px;backdrop-filter:blur(12px);z-index:20}.bottom button{border:0;background:none;color:#75869a;font-size:6px;font-weight:900;padding:5px}.bottom button b{display:block;font-size:13px;margin-bottom:2px}.bottom button.active{color:var(--gold)}.drawer{position:fixed;inset:0;background:rgba(0,0,0,.62);z-index:50;display:none}.drawer.open{display:block}.drawerPanel{position:absolute;right:0;top:0;height:100%;width:min(86%,360px);background:#0b141e;border-left:1px solid var(--line);padding:18px;overflow:auto}.drawerItem{width:100%;padding:13px 10px;margin:4px 0;text-align:left;border:1px solid var(--line);background:var(--panel);color:#fff;border-radius:11px;font-size:9px;font-weight:900}.auctionShell{min-height:calc(100vh - 105px);display:flex;flex-direction:column}.auctionBody{flex:1;overflow:auto;padding-bottom:8px}.stickyActions{position:sticky;bottom:0;padding-top:8px;background:linear-gradient(transparent,var(--bg) 35%);display:flex;gap:7px}.log{max-height:170px;overflow:auto;font-size:7px;color:#aeb9c6}.log div{padding:5px 0;border-bottom:1px solid #182838}.target{border:1px solid #5a4928;background:#1b1710;border-radius:12px;padding:10px}.big{font-size:28px;font-weight:1000;color:var(--gold)}.formation{display:grid;gap:7px}.line{display:grid;grid-template-columns:repeat(5,1fr);gap:5px}.slot{min-height:56px;border:1px solid var(--line);border-radius:10px;background:#0d1822;padding:6px;text-align:center;font-size:6px}.slot b{display:block;font-size:8px}.empty{color:#66778b}.notice{padding:9px;border-radius:11px;background:#152335;border:1px solid var(--line);font-size:7px}.danger{background:#321b1a;color:#ffb0a9}.success{background:#123022;color:#8de6ad}@media(min-width:600px){.players{grid-template-columns:1fr 1fr}}
-</style>
-<style id="ryh52braincss">
-.ryh52brain{margin-top:12px;padding:14px;border:1px solid #30465b;border-radius:18px;background:linear-gradient(145deg,#101d2a,#09111a);color:#edf2f7}
-.ryh52brain h3{margin:0;font-size:15px}.ryh52sub{font-size:7px;color:#8190a2;margin-top:3px}
-.ryh52tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin:10px 0}.ryh52tab{border:1px solid #263a4d;border-radius:9px;background:#0c1722;color:#8291a3;padding:7px 2px;font-size:6px;font-weight:1000}.ryh52tab.on{color:#e3c36d;border-color:#80652f;background:#241f14}
-.ryh52hero{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:11px;border:1px solid #3c3b2e;border-radius:14px;background:#0c1620}.ryh52prob{font-size:27px;font-weight:1000;color:#e2bd60}.ryh52hero small{display:block;font-size:6px;color:#7d8da0}.ryh52hero b{font-size:9px}.ryh52bar{height:5px;background:#172534;border-radius:99px;margin-top:6px;overflow:hidden}.ryh52bar i{display:block;height:100%;background:#63d895;border-radius:99px}
-.ryh52grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-top:7px}.ryh52card{padding:9px;border:1px solid #263a4d;background:#0d1823;border-radius:12px}.ryh52card b{font-size:9px}.ryh52card small{display:block;font-size:6px;color:#7d8da0;margin-top:3px}.ryh52score{float:right;color:#e1bd61;font-size:14px;font-weight:1000}
-.ryh52list{display:grid;gap:5px;margin-top:7px}.ryh52row{padding:8px;border:1px solid #263a4d;background:#0c1721;border-radius:10px;display:flex;justify-content:space-between;gap:8px;align-items:center}.ryh52row b{font-size:8px}.ryh52row small{display:block;color:#7c8b9d;font-size:6px;margin-top:2px}.ryh52badge{font-size:6px;font-weight:1000;padding:4px 6px;border-radius:6px;background:#163222;color:#74dda0}.ryh52badge.warn{background:#352a18;color:#e3c36d}.ryh52badge.red{background:#3b201d;color:#ff9c91}
-.ryh52btn{width:100%;margin-top:7px;border:1px solid #765d2d;background:#201b12;color:#e2c36e;border-radius:10px;padding:9px;font-size:7px;font-weight:1000}
-</style>
-
-<style id="ryh53braincss">
-.ryh53-brain{box-sizing:border-box;width:100%;padding:14px;border-radius:18px;background:linear-gradient(145deg,#101b27,#081019);color:#edf2f7;font-family:inherit}
-.ryh53-brain *{box-sizing:border-box}.ryh53-head h2{margin:0;font-size:16px}.ryh53-head small,.ryh53-note small,.ryh53-row small{display:block;color:#8190a1;font-size:7px;margin-top:3px}
-.ryh53-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin:10px 0}.ryh53-tabs button{border:1px solid #2a3d50;background:#0b1621;color:#8493a5;border-radius:9px;padding:8px 2px;font-size:6px;font-weight:900}.ryh53-tabs button.on{color:#e1bd61;border-color:#80642d;background:#241f14}
-.ryh53-hero{padding:12px;border:1px solid #384655;border-radius:14px;background:#0b151f}.ryh53-hero small{font-size:6px;color:#8392a4}.ryh53-hero strong{display:block;font-size:30px;color:#e2be62;margin-top:2px}.ryh53-hero p{font-size:8px;line-height:1.35;margin:4px 0;color:#cbd4dc}.ryh53-bar{height:5px;border-radius:9px;background:#182635;overflow:hidden}.ryh53-bar i{display:block;height:100%;background:#62d993}.ryh53-metrics{display:flex;gap:12px;margin-top:9px;font-size:7px;color:#8190a1}.ryh53-metrics b{color:#edf2f7}
-.ryh53-note{padding:10px;border:1px solid #2a3d50;border-radius:12px;background:#0c1721}.ryh53-note b{font-size:9px}.ryh53-list{display:grid;gap:5px;margin-top:7px}.ryh53-row{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px;border:1px solid #25394c;background:#0c1721;border-radius:10px}.ryh53-row b{font-size:8px}.ryh53-row em{font-style:normal;font-size:6px;font-weight:900;color:#dfbe67;background:#292216;padding:4px 6px;border-radius:6px;white-space:nowrap}.ryh53-formation{margin-top:7px;padding:12px;text-align:center;border:1px solid #66542e;border-radius:12px;background:#201b12}.ryh53-formation b{font-size:22px;color:#e0bd63;display:block}.ryh53-formation span{font-size:6px;color:#8d8b80}.ryh53-empty{padding:18px;text-align:center;border:1px dashed #31465a;border-radius:12px;font-size:10px;color:#a9b5c0}.ryh53-empty small{display:block;color:#7f8e9f;font-size:7px;margin-top:5px}.ryh53-refresh{width:100%;margin-top:8px;padding:9px;border:1px solid #765e30;border-radius:10px;background:#211c13;color:#e2c269;font-size:7px;font-weight:900}
-</style>
-
-<style id="ryh54-nav-css">
-.ryh54-nav{position:fixed;left:50%;bottom:10px;transform:translateX(-50%);z-index:99999;width:min(94vw,430px);display:grid;grid-template-columns:repeat(4,1fr);gap:3px;padding:5px;border:1px solid #304559;border-radius:17px;background:rgba(7,13,20,.96);backdrop-filter:blur(12px);box-shadow:0 12px 35px rgba(0,0,0,.35)}
-.ryh54-nav button{border:0;background:transparent;color:#8190a2;border-radius:11px;padding:7px 2px;font-size:6px;font-weight:1000}.ryh54-nav button b{display:block;font-size:13px;margin-bottom:2px}.ryh54-nav button.on{color:#e2bf65;background:#211b12}
-.ryh54-screen{padding-bottom:82px}
-.ryh54-panel{padding:13px;border:1px solid #2b4054;border-radius:17px;background:linear-gradient(145deg,#101c28,#09121b);color:#edf2f7;margin-top:10px}
-.ryh54-panel h2{font-size:16px;margin:0 0 3px}.ryh54-panel small{font-size:7px;color:#8291a2}
-.ryh54-fields{display:grid;gap:7px;margin-top:10px}.ryh54-field{padding:9px;border:1px solid #263b4e;border-radius:10px;background:#0b1620}.ryh54-field label{display:block;font-size:6px;color:#8291a2;margin-bottom:4px}.ryh54-field input,.ryh54-field select{width:100%;padding:8px;border-radius:8px;border:1px solid #31475b;background:#08111a;color:#edf2f7;font-size:9px;outline:none}
-.ryh54-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}.ryh54-btn{width:100%;padding:10px;border-radius:10px;border:1px solid #31475b;background:#0c1722;color:#edf2f7;font-size:7px;font-weight:1000}.ryh54-btn.gold{border-color:#80642e;background:#241f14;color:#e2c168}.ryh54-list{display:grid;gap:5px;margin-top:8px}.ryh54-row{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px;border:1px solid #263a4d;background:#0b1620;border-radius:10px}.ryh54-row b{font-size:8px}.ryh54-row small{display:block;font-size:6px;color:#8190a2;margin-top:2px}.ryh54-tag{font-size:6px;color:#e0bd64;font-weight:1000}
-</style>
-
-<style id="ryh55-formation-css">
-.ryh55-box{margin-top:9px;padding:10px;border:1px solid #293e52;border-radius:13px;background:#0b1620}
-.ryh55-box h3{margin:0 0 5px;font-size:9px}.ryh55-box small{font-size:6px;color:#8190a2}
-.ryh55-mods{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:7px}
-.ryh55-mod{border:1px solid #293e52;background:#0c1721;color:#8291a2;border-radius:8px;padding:7px 2px;font-size:6px;font-weight:1000}
-.ryh55-mod.on{border-color:#80642f;background:#241f14;color:#e2c169}
-.ryh55-score{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-top:8px;padding:8px;border-radius:10px;background:#101d29}
-.ryh55-score strong{font-size:18px;color:#e2c169}.ryh55-score span{font-size:6px;color:#8a98a8}
-.ryh55-xi{display:grid;gap:5px;margin-top:7px}.ryh55-line{display:flex;gap:5px;flex-wrap:wrap}
-.ryh55-player{flex:1;min-width:75px;padding:7px;border:1px solid #2a3e51;border-radius:9px;background:#0c1721;text-align:center}
-.ryh55-player b{display:block;font-size:7px}.ryh55-player small{font-size:5px}
-.ryh55-reasons{margin-top:7px;font-size:6px;line-height:1.45;color:#b6c1cb}
-.ryh55-toggle{display:flex;align-items:center;justify-content:space-between;padding:7px 0;font-size:7px;color:#b9c3cc}
-</style>
-
-<style id="ryh56-auction-css">
-.ryh56-advice{margin-top:9px;padding:11px;border:1px solid #80642f;border-radius:14px;background:linear-gradient(145deg,#241e13,#15130f)}
-.ryh56-advice h3{margin:0;font-size:10px;color:#e3c26c}.ryh56-advice strong{display:block;font-size:22px;color:#f1d17a;margin-top:4px}.ryh56-advice p{margin:4px 0 0;font-size:7px;color:#c7c0ae;line-height:1.4}
-.ryh56-price{display:flex;justify-content:space-between;align-items:end;gap:8px;margin-top:8px}.ryh56-price div{padding:7px 9px;border:1px solid #3a3528;border-radius:9px;background:#15130f;flex:1}.ryh56-price span{display:block;font-size:5px;color:#8f897c}.ryh56-price b{font-size:11px;color:#edf2f7}
-.ryh56-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}.ryh56-actions button{border-radius:9px;padding:9px;font-size:7px;font-weight:1000;border:1px solid #33495d;background:#0d1822;color:#e9eef2}.ryh56-actions .raise{border-color:#80642f;background:#241e13;color:#e5c46c}.ryh56-actions .pass{border-color:#3b3430;background:#191414;color:#b9a8a2}
-.ryh56-opps{display:grid;gap:5px;margin-top:7px}.ryh56-opp{display:flex;justify-content:space-between;gap:7px;align-items:center;padding:8px;border:1px solid #293d50;background:#0b1620;border-radius:9px}.ryh56-opp b{font-size:7px}.ryh56-opp small{display:block;font-size:5px;color:#7f8e9e;margin-top:2px}.ryh56-opp em{font-style:normal;font-size:5px;font-weight:1000;color:#e1bd64}
-.ryh56-log{font-size:6px;color:#8190a1;line-height:1.45;margin-top:6px}
-</style>
-
-<style id="ryh57-listone-css">
-.ryh57-list{display:grid;gap:6px;margin-top:8px}.ryh57-card{border:1px solid #293e52;background:#0b1620;border-radius:12px;padding:9px}
-.ryh57-top{display:flex;justify-content:space-between;gap:8px;align-items:center}.ryh57-name{font-size:9px;font-weight:1000}.ryh57-role{font-size:6px;color:#e0bd64}
-.ryh57-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:7px}.ryh57-stat{padding:5px;border-radius:7px;background:#101d29}.ryh57-stat span{display:block;font-size:4.5px;color:#7e8d9e}.ryh57-stat b{font-size:7px}
-.ryh57-alert{margin-top:7px;padding:7px;border-radius:8px;font-size:6px;font-weight:1000}.ryh57-alert.yes{background:#192a20;border:1px solid #3e7453;color:#76db9b}.ryh57-alert.no{background:#241b17;border:1px solid #67453b;color:#d49a84}.ryh57-filters{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:5px;margin-top:8px}.ryh57-filters input,.ryh57-filters select{width:100%;padding:8px;border:1px solid #293e52;background:#08121b;color:#e8edf2;border-radius:8px;font-size:7px}
-.ryh57-summary{margin-top:8px;padding:9px;border:1px solid #80642f;background:#241f14;border-radius:11px}.ryh57-summary b{font-size:8px;color:#e2c169}.ryh57-summary small{display:block;font-size:6px;color:#bcb4a3;margin-top:3px}
-</style>
-<style>.ryh54-nav{grid-template-columns:repeat(5,1fr)}</style>
-<style id="ryh60-brain-css">
-.ryh60-live{margin-top:8px;padding:11px;border:1px solid #80642f;border-radius:14px;background:linear-gradient(145deg,#251f14,#11100d)}
-.ryh60-live h3{margin:0;color:#e5c46d;font-size:10px}.ryh60-action{font-size:21px;font-weight:1000;margin-top:4px;color:#f0d27d}.ryh60-sub{font-size:6px;color:#c4bdad;line-height:1.4;margin-top:3px}
-.ryh60-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-top:8px}.ryh60-box{padding:7px;border-radius:8px;background:#141d25;border:1px solid #293c4e}.ryh60-box span{display:block;font-size:4.5px;color:#8190a0}.ryh60-box b{font-size:10px}
-.ryh60-risk{display:flex;justify-content:space-between;margin-top:7px;font-size:6px;color:#aeb9c3}.ryh60-bar{height:5px;border-radius:5px;background:#263542;margin-top:3px;overflow:hidden}.ryh60-bar i{display:block;height:100%;background:#d0ad5b}
-.ryh60-plans{display:grid;gap:4px;margin-top:7px}.ryh60-plan{padding:7px;border-radius:8px;background:#0c1721;border:1px solid #293d50;font-size:6px}.ryh60-plan b{font-size:7px}
-.ryh60-note{margin-top:7px;font-size:6px;color:#aeb9c3;line-height:1.45}
-</style>
-
-<style id="ryh61-war-css">
-.ryh61-war{margin-top:9px;padding:11px;border:1px solid #80642f;border-radius:15px;background:linear-gradient(145deg,#211c14,#0e151c)}
-.ryh61-title{display:flex;justify-content:space-between;align-items:center}.ryh61-title h3{margin:0;font-size:10px;color:#e7c66d}.ryh61-live{font-size:5px;padding:4px 6px;border-radius:8px;background:#17291f;color:#79d69a}
-.ryh61-name{font-size:17px;font-weight:1000;margin-top:6px}.ryh61-team{font-size:6px;color:#8d9aa8}
-.ryh61-action{font-size:18px;font-weight:1000;color:#f0ce73;margin-top:5px}.ryh61-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:8px}
-.ryh61-box{padding:7px;border:1px solid #293d50;background:#101b25;border-radius:8px}.ryh61-box span{display:block;font-size:4.5px;color:#7f8d9b}.ryh61-box b{font-size:10px}
-.ryh61-bar{height:5px;background:#263542;border-radius:5px;overflow:hidden;margin-top:3px}.ryh61-bar i{display:block;height:100%;background:#d0ad5b}
-.ryh61-advice{margin-top:8px;padding:8px;border-radius:9px;background:#101b25;font-size:6px;line-height:1.45;color:#bdc6ce}
-.ryh61-row{display:flex;justify-content:space-between;gap:8px;margin-top:5px}.ryh61-row b{color:#e5c36b}
-.ryh61-targets{display:grid;gap:5px;margin-top:8px}.ryh61-target{padding:7px;border:1px solid #293d50;border-radius:8px;background:#0b1620;font-size:6px}.ryh61-target b{font-size:7px}
-</style>
-
-<style id="ryh62-adaptive-css">
-.ryh62-adaptive{margin-top:8px;padding:10px;border:1px solid #6f592c;border-radius:13px;background:#101820}
-.ryh62-head{display:flex;justify-content:space-between;align-items:center}.ryh62-head b{font-size:9px;color:#e4c36d}.ryh62-badge{font-size:5px;padding:4px 6px;border-radius:7px;background:#172b20;color:#7bd59a}
-.ryh62-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-top:7px}.ryh62-kpi{padding:6px;border-radius:7px;background:#16232d;border:1px solid #273b4b}.ryh62-kpi span{display:block;font-size:4.5px;color:#81909e}.ryh62-kpi b{font-size:9px}
-.ryh62-text{font-size:6px;line-height:1.45;color:#b8c2ca;margin-top:7px}.ryh62-alert{margin-top:7px;padding:7px;border-radius:8px;background:#171d22;border:1px solid #30404d;font-size:6px}
-.ryh62-table{margin-top:7px;display:grid;gap:4px}.ryh62-row{display:flex;justify-content:space-between;padding:5px 6px;border-radius:6px;background:#0d151c;font-size:5.5px}.ryh62-row b{color:#e1c16a}
-</style>
-
-<style id="ryh63-fast-css">
-.ryh63-fast{position:sticky;top:0;z-index:50;margin:0 0 8px;padding:7px 8px;border:1px solid #6f592c;border-radius:12px;background:rgba(14,20,26,.97);backdrop-filter:blur(10px)}
-.ryh63-head{display:flex;align-items:center;justify-content:space-between;gap:6px}.ryh63-head b{font-size:9px;color:#e4c36d}.ryh63-live{font-size:5px;color:#7bd59a}
-.ryh63-main{display:grid;grid-template-columns:1.25fr .75fr;gap:6px;margin-top:6px}.ryh63-price{font-size:18px;font-weight:1000}.ryh63-label{font-size:4.5px;color:#81909e}
-.ryh63-action{display:flex;align-items:center;justify-content:center;border-radius:9px;min-height:44px;background:#17251d;font-size:10px;font-weight:1000;color:#8ee0a8;text-align:center}
-.ryh63-action.stop{background:#291a1a;color:#ff9b9b}.ryh63-action.warn{background:#292515;color:#e9ca73}
-.ryh63-row{display:flex;gap:5px;margin-top:6px}.ryh63-btn{flex:1;border:0;border-radius:8px;padding:8px 5px;font-size:6px;font-weight:900;background:#192631;color:#d6dde2}.ryh63-btn.primary{background:#b99445;color:#101010}.ryh63-btn.danger{background:#4a2222;color:#ffc0c0}
-.ryh63-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-top:6px}.ryh63-kpi{padding:5px;border-radius:7px;background:#121c24;text-align:center}.ryh63-kpi span{display:block;font-size:4px;color:#81909e}.ryh63-kpi b{font-size:8px}
-.ryh63-mini{font-size:5.5px;line-height:1.35;color:#aeb9c3;margin-top:5px}
-.ryh63-drawer{display:none;margin-top:6px;padding:7px;border-radius:9px;background:#101820;border:1px solid #293d50}.ryh63-drawer.open{display:block}.ryh63-drawer button{width:100%;margin:2px 0}
-</style>
-
-<style id="ryh64-live-css">
-#ryh64Live{position:fixed;inset:0;z-index:9999;background:#0a0f14;color:#e9edf0;display:none;font-family:inherit}
-#ryh64Live.open{display:flex;flex-direction:column}
-.ryh64-top{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid #273440;background:#0e151c}
-.ryh64-brand{font-size:12px;font-weight:1000;color:#e5c36d}.ryh64-x{border:0;background:#1a2731;color:#cfd7dd;border-radius:9px;padding:8px 11px;font-weight:900}
-.ryh64-body{padding:14px;overflow:auto}.ryh64-kicker{font-size:6px;color:#81909e}.ryh64-player{font-size:25px;font-weight:1000;margin-top:3px}.ryh64-meta{font-size:7px;color:#95a2ad}
-.ryh64-decision{margin-top:14px;padding:16px;border-radius:16px;text-align:center;background:#17281e;border:1px solid #31573d}.ryh64-decision.warn{background:#292415;border-color:#66572c}.ryh64-decision.stop{background:#2a1717;border-color:#613333}
-.ryh64-decision b{font-size:25px;color:#8ce0a5}.ryh64-decision.warn b{color:#e7cb74}.ryh64-decision.stop b{color:#ff9d9d}
-.ryh64-limit{font-size:7px;color:#aeb8c0;margin-top:6px}.ryh64-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px}
-.ryh64-card{padding:9px;border-radius:10px;background:#111b23;border:1px solid #263744;text-align:center}.ryh64-card span{display:block;font-size:5px;color:#81909e}.ryh64-card b{font-size:13px}
-.ryh64-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.ryh64-btn{border:0;border-radius:12px;padding:14px 8px;font-size:9px;font-weight:1000}.ryh64-raise{background:#c49e4c;color:#111}.ryh64-pass{background:#3a2020;color:#ffd0d0}
-.ryh64-more{width:100%;margin-top:8px;border:1px solid #293b49;background:#111b23;color:#cbd3d9;border-radius:10px;padding:10px;font-size:7px}
-.ryh64-extra{display:none;margin-top:8px;padding:10px;border-radius:10px;background:#101820;border:1px solid #293b49;font-size:6px;line-height:1.5;color:#aeb8c0}.ryh64-extra.open{display:block}
-.ryh64-float{position:fixed;right:12px;bottom:12px;z-index:9998;border:0;border-radius:50%;width:54px;height:54px;background:#c49e4c;color:#111;font-size:9px;font-weight:1000;box-shadow:0 5px 20px #0008}
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Raise Your Hammer — Clean V1</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#0b1117;color:#eef2f4;font-family:system-ui,-apple-system,sans-serif}
+button,input{font:inherit}button{cursor:pointer}
+.app{min-height:100vh}.header{height:60px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;background:#101820;border-bottom:1px solid #293844}
+.brand{font-weight:1000;font-size:12px;color:#e2c16a}.brand small{display:block;font-size:6px;color:#83919b;margin-top:2px}
+.reset{border:0;background:#1d2a34;color:#fff;border-radius:9px;padding:8px 11px}
+main{max-width:560px;margin:auto;padding:14px}.screen{display:none}.screen.active{display:block}
+.card{background:#101820;border:1px solid #293b48;border-radius:13px;padding:14px;margin-bottom:9px}
+h2{font-size:16px;margin:0 0 12px}.label{font-size:6px;color:#84929c;display:block;margin:8px 0 4px}
+input{width:100%;background:#0b141b;border:1px solid #304451;color:#fff;border-radius:9px;padding:11px}
+.primary,.secondary,.danger,.success{width:100%;border:0;border-radius:10px;padding:13px;font-size:8px;font-weight:1000}
+.primary{background:#c49f50;color:#111}.secondary{background:#172630;color:#e3c36c;border:1px solid #425563}.danger{background:#482525;color:#ffd0d0}.success{background:#1c3929;color:#a7e5b9}
+.nav{display:flex;gap:6px;margin-bottom:10px}.nav button{flex:1;border:0;border-radius:9px;padding:9px;background:#17232c;color:#aeb9c1;font-size:7px;font-weight:900}.nav button.active{background:#c49f50;color:#111}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px}.top b{font-size:10px}.budget{font-size:8px;color:#e3c36c}
+.playerWrap{position:relative}.suggestions{position:absolute;z-index:10;left:0;right:0;top:100%;background:#101a22;border:1px solid #334854;border-radius:0 0 10px 10px;overflow:hidden}.suggestions.hidden{display:none}.suggestion{display:block;width:100%;text-align:left;padding:10px;background:#101a22;border:0;border-bottom:1px solid #263640;color:#fff}.suggestion b{display:block;font-size:8px}.suggestion small{font-size:5px;color:#83919b}
+.price{font-size:18px;font-weight:1000;margin-top:7px}.decision{margin-top:8px;padding:13px;border-radius:11px;text-align:center;background:#17232c;border:1px solid #304451}.decision b{display:block;font-size:16px}.decision small{font-size:6px;color:#aeb9c2}.decision.good{background:#16271e;border-color:#31583f}.decision.warn{background:#292415;border-color:#64572e}.decision.stop{background:#2b1818;border-color:#643636}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:7px}.stat{background:#111c24;border-radius:8px;padding:8px;text-align:center}.stat small{display:block;font-size:4px;color:#83919b}.stat b{font-size:10px}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:7px}.actions button{min-height:43px;border:0;border-radius:10px;font-size:8px;font-weight:1000}.raise{background:#c49f50}.pass{background:#482525;color:#ffd0d0}
+.info{margin-top:7px;padding:9px;background:#111c24;border-radius:9px;font-size:6px;color:#aeb9c2;line-height:1.5}
+.participants{display:grid;grid-template-columns:1fr 1fr;gap:6px}.participant{border:1px solid #304451;background:#17232c;color:#fff;border-radius:9px;padding:10px;font-size:7px}.participant.mine{border-color:#c49f50}
+.roster{padding:9px;border-bottom:1px solid #293844}.roster:last-child{border-bottom:0}.rosterHead{display:flex;justify-content:space-between}.rosterHead b{font-size:8px}.rosterHead span{font-size:6px;color:#e3c36c}.roster p{font-size:5px;color:#9aa7b0;margin:4px 0 0;line-height:1.5}
+.brain{border-color:#66552d;background:#18160f}.brain h3{margin:0;color:#e3c36c;font-size:10px}.brain p{font-size:7px;color:#bbb5a7;line-height:1.5}
+.muted{font-size:6px;color:#83919b}.hidden{display:none!important}
 </style>
 </head>
-
 <body>
-<div id="ryh66">
-<header>
-  <div><strong>🔨 RAISE YOUR HAMMER</strong><small>ASTA + BRAIN</small></div>
-  <button id="reset">↻</button>
-</header>
-
+<div class="app">
+<header class="header"><div class="brand">🔨 RAISE YOUR HAMMER<small>ASTA · BRAIN</small></div><button class="reset" id="reset">↻</button></header>
 <main>
-  <section id="home">
-    <div class="setupCard">
-      <div class="setupTitle">CONFIGURA LA TUA ASTA</div>
-      <label>Crediti iniziali<input id="cfgBudget" type="number" min="1" value="500"></label>
-      <label>Partecipanti<input id="cfgParticipants" type="number" min="2" max="20" value="10"></label>
-      <label>Nome della tua squadra<input id="cfgMyName" type="text" value="La mia squadra"></label>
-      <div id="cfgNames" class="cfgNames"></div>
-      <button class="mainBtn" id="start">🔨 CONFIGURA E AVVIA</button>
-    </div>
-    <button class="brainBtn" id="openBrain">🧠 BRAIN · STRATEGIA</button>
-  </section>
 
-  <section id="auction" class="hidden">
-    <div class="topline"><button class="back">←</button><b>ASTA</b><span id="budget">500</span></div>
-    <div class="autocompleteWrap">
-  <input id="player" class="bigInput" placeholder="Inizia a scrivere il giocatore" autocomplete="off">
-  <div id="suggestions" class="suggestions hidden"></div>
+<section id="setup" class="screen active">
+<div class="card">
+<h2>Configura l'asta</h2>
+<label class="label">Crediti iniziali</label><input id="credits" type="number" min="1" value="500">
+<label class="label">Numero partecipanti</label><input id="count" type="number" min="2" max="20" value="10">
+<label class="label">Nome della tua squadra</label><input id="myName" value="La mia squadra">
+<div id="names"></div>
+<button class="primary" id="start" style="margin-top:10px">🔨 INIZIA ASTA</button>
 </div>
-    <input id="price" type="number" min="0" value="1" class="priceInput">
+</section>
 
-    <div id="decision" class="decision"><b id="decisionText">Inserisci un giocatore</b><small id="reason">Brain analizzerà la chiamata.</small></div>
-
-    <div id="playerInfo" class="playerInfo hidden">
-      <div><b id="infoName">—</b><span id="infoTeam">—</span></div>
-      <div id="infoStats">—</div>
-    </div>
-    <div class="grid">
-      <div><small>SCORE</small><b id="score">—</b></div>
-      <div><small>FVM</small><b id="fvm">—</b></div>
-      <div><small>MAX</small><b id="max">—</b></div>
-    </div>
-
-    <div class="actions">
-      <button id="raise">🔨 RIALZA +1</button>
-      <button id="pass">PASSA</button>
-    </div>
-    <button id="bought" class="bought">✓ ASSEGNA GIOCATORE</button>
-    <div id="assignBox" class="assignBox hidden">
-      <div class="assignTitle">Chi lo ha acquistato?</div>
-      <div id="participantList" class="participantList"></div>
-    </div>
-    <div class="strategyStrip" id="strategyStrip">🧠 Configura l'asta per attivare l'analisi degli avversari.</div>
-    <section class="rosters">
-      <div class="sectionHead">ROSE IN TEMPO REALE</div>
-      <div id="rosterList"></div>
-    </section>
-    <div class="mini">Ultimi acquisti: <span id="history">—</span></div>
-  </section>
-
-  <section id="brain" class="hidden">
-    <div class="topline"><button class="back">←</button><b>🧠 BRAIN</b><span>LIVE</span></div>
-    <div class="brainCard">
-      <h2>Il cervello dell'asta</h2>
-      <p>Brain studia il giocatore, il prezzo e ciò che è successo nell'asta per dirti rapidamente se conviene rilanciare o lasciare.</p>
-      <div class="brainRule">🟢 PRENDI · 🔨 RIALZA · ⚠️ FERMATI · 🛑 LASCIA</div>
-      <div id="brainStrategy" class="brainStrategy">Nessuna asta configurata.</div>
-    </div>
-  </section>
-</main>
+<section id="auction" class="screen">
+<div class="nav"><button data-go="auction" class="active">🔨 ASTA</button><button data-go="brain">🧠 BRAIN</button><button data-go="rosters">👥 ROSE</button></div>
+<div class="card">
+<div class="top"><b>ASTA LIVE</b><span class="budget" id="myBudget">500 cr</span></div>
+<label class="label">Giocatore chiamato</label>
+<div class="playerWrap"><input id="player" placeholder="Inizia a scrivere il nome" autocomplete="off"><div id="suggestions" class="suggestions hidden"></div></div>
+<input id="price" class="price" type="number" min="0" value="1">
+<div id="decision" class="decision"><b id="decisionText">Cerca un giocatore</b><small id="reason">Brain si attiverà appena selezioni un giocatore.</small></div>
+<div class="stats"><div class="stat"><small>SCORE</small><b id="score">—</b></div><div class="stat"><small>FVM</small><b id="fvm">—</b></div><div class="stat"><small>LIMITE</small><b id="limit">—</b></div></div>
+<div id="playerInfo" class="info">Nessun giocatore selezionato.</div>
+<div class="actions"><button class="raise" id="raise">🔨 RIALZA +1</button><button class="pass" id="pass">PASSA</button></div>
+<button class="success" id="assign" style="margin-top:7px">✓ ASSEGNA ACQUISTO</button>
+<div id="assignBox" class="card hidden" style="margin-top:7px;margin-bottom:0"><div class="muted">Chi ha acquistato il giocatore?</div><div id="assignList" class="participants" style="margin-top:7px"></div></div>
 </div>
+<div class="brain card"><h3>🧠 BRAIN</h3><p id="liveAdvice">Seleziona un giocatore per ricevere il consiglio.</p></div>
+</section>
 
-<style>
-*{box-sizing:border-box}body{margin:0;background:#080d12;color:#edf1f3;font-family:system-ui,-apple-system,sans-serif}
-#ryh66{min-height:100vh;background:#0b1117}header{height:58px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;background:#101820;border-bottom:1px solid #293845}
-header strong{display:block;font-size:12px;color:#e4c36d}header small{display:block;font-size:5px;color:#82909b;margin-top:2px}header button{border:0;background:#1b2832;color:#ddd;border-radius:9px;padding:8px 11px;font-size:15px}
-main{max-width:520px;margin:auto;padding:14px}.hidden{display:none}.mainBtn,.brainBtn{width:100%;border:0;border-radius:13px;padding:17px;margin-bottom:8px;font-size:10px;font-weight:1000}.mainBtn{background:#c49e4c;color:#101010}.brainBtn{background:#16232d;color:#e6c66e;border:1px solid #4b5b65}
-.topline{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;font-size:10px}.topline button{border:0;background:#1b2832;color:#ddd;border-radius:8px;padding:7px 10px}.topline span{color:#e4c36d}
-.bigInput,.priceInput{width:100%;border:1px solid #30434f;background:#0d151c;color:white;border-radius:10px;padding:13px;margin-bottom:7px}.bigInput{font-size:17px;font-weight:900}.priceInput{font-size:18px;font-weight:900}
-.decision{padding:14px;border-radius:12px;text-align:center;background:#17232c;border:1px solid #30434f}.decision b{display:block;font-size:17px}.decision small{display:block;margin-top:4px;font-size:6px;color:#aeb9c2}.decision.good{background:#16271e;border-color:#31583f}.decision.warn{background:#292415;border-color:#64572e}.decision.stop{background:#2b1818;border-color:#643636}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:7px 0}.grid div{background:#111b23;border-radius:8px;text-align:center;padding:8px}.grid small{display:block;font-size:4px;color:#82909c}.grid b{font-size:11px}
-.actions{display:grid;grid-template-columns:1fr 1fr;gap:7px}.actions button,.bought{border:0;border-radius:10px;padding:14px;font-size:8px;font-weight:1000}.actions button:first-child{background:#c49e4c;color:#111}.actions button:last-child{background:#492525;color:#ffd0d0}.bought{width:100%;margin-top:7px;background:#1d3a2a;color:#9be2b2}.mini{font-size:5px;color:#7f8d98;margin-top:9px}.brainCard{padding:15px;border:1px solid #6d582c;border-radius:13px;background:#1a1812}.brainCard h2{margin:0;color:#e4c36d;font-size:16px}.brainCard p{font-size:7px;line-height:1.5;color:#bcb6a8}.brainRule{font-size:7px;color:#e4c36d}
-</style>
+<section id="brain" class="screen">
+<div class="nav"><button data-go="auction">🔨 ASTA</button><button data-go="brain" class="active">🧠 BRAIN</button><button data-go="rosters">👥 ROSE</button></div>
+<div class="brain card"><h3>🧠 Brain — lettura dell'asta</h3><p id="strategy">Configura l'asta e assegna gli acquisti per permettere a Brain di leggere i comportamenti.</p></div>
+<div class="card"><h2>Situazione</h2><div id="brainSummary" class="muted">Nessun movimento ancora.</div></div>
+</section>
+
+<section id="rosters" class="screen">
+<div class="nav"><button data-go="auction">🔨 ASTA</button><button data-go="brain">🧠 BRAIN</button><button data-go="rosters" class="active">👥 ROSE</button></div>
+<div class="card"><h2>Rose in tempo reale</h2><div id="rosterList"></div></div>
+</section>
+
+</main></div>
 
 <script>
-(()=>{
-const show=(id)=>{["home","auction","brain"].forEach(x=>{const el=document.getElementById(x);if(el)el.classList.toggle("hidden",x!==id)})};
- const R=(k,f)=>{try{return JSON.parse(localStorage.getItem(k))??f}catch(e){return f}};
-const W=(k,v)=>localStorage.setItem(k,JSON.stringify(v)),N=x=>Number(x)||0;
-let st=R("ryh66_state",{budget:500,history:[]});
+(function(){
+"use strict";
 const $=id=>document.getElementById(id);
-function show(id){["home","auction","brain"].forEach(x=>$(x).classList.toggle("hidden",x!==id))}
-function players(){return R("ryh_players",R("players",[]))}
-function find(){
- let q=$("player").value.trim().toLowerCase(); if(!q)return null;
- return players().find(p=>String(p.name||"").toLowerCase()===q)||players().find(p=>String(p.name||"").toLowerCase().includes(q));
+const show=id=>document.querySelectorAll(".screen").forEach(s=>s.classList.toggle("active",s.id===id));
+const num=x=>Number(x)||0;
+let state={configured:false,credits:500,initial:500,myName:"La mia squadra",participants:[],purchases:[]};
+let selected=null;
+
+function save(){localStorage.setItem("ryh_clean_v1",JSON.stringify(state))}
+function load(){try{const x=JSON.parse(localStorage.getItem("ryh_clean_v1"));if(x)state=x}catch(e){}}
+function playerData(){
+ try{return JSON.parse(localStorage.getItem("ryh_players")||localStorage.getItem("players")||"[]")}catch(e){return[]}
+}
+function buildNameInputs(){
+ const n=Math.max(2,Math.min(20,num($("count").value)||10));
+ let h='<label class="label">Nomi partecipanti (opzionali)</label>';
+ for(let i=0;i<n;i++) h+=`<input class="pname" data-i="${i}" value="${i===0?($("myName").value||"La mia squadra"):"Partecipante "+(i+1)}" style="margin:3px 0">`;
+ $("names").innerHTML=h;
+}
+function configure(){
+ const n=Math.max(2,Math.min(20,num($("count").value)||10)), c=Math.max(1,num($("credits").value)||500), me=$("myName").value.trim()||"La mia squadra";
+ const names=[...document.querySelectorAll(".pname")].slice(0,n).map((x,i)=>x.value.trim()||"Partecipante "+(i+1));
+ names[0]=me;
+ state={configured:true,credits:c,initial:c,myName:me,participants:names,purchases:[]};
+ save(); show("auction"); render();
+}
+function matches(q){
+ q=q.trim().toLowerCase(); if(!q)return[];
+ return playerData().filter(p=>String(p.name||"").toLowerCase().includes(q)).slice(0,8);
+}
+function selectPlayer(p){selected=p;$("player").value=p.name||"";$("suggestions").classList.add("hidden");render()}
+function calcScore(p){return Math.max(0,Math.min(100,Math.round(num(p.score)||num(p.fantasyScore)||70)))}
+function calcLimit(p){
+ const sc=calcScore(p),f=num(p.fvm),q=num(p.quote);
+ return Math.max(q||1,Math.round((f?f/10:Math.max(q+5,sc*.8))*(1+(sc-70)/220)));
 }
 function brain(){
- let p=find(),pr=N($("price").value);
- if(!p){$("decisionText").textContent="Inserisci un giocatore";$("reason").textContent="Brain analizzerà la chiamata.";["score","fvm","max"].forEach(x=>$(x).textContent="—");$("decision").className="decision";return}
- let sc=Math.max(0,Math.min(100,Math.round(N(p.score,70)*.68+N(p.goals)*2.5+N(p.assists)*1.7+(N(p.apps)?7:3)+(N(p.starts)?7:4))));
- let max=Math.max(N(p.quote)||1,Math.round((N(p.fvm)?N(p.fvm)/10:Math.max(N(p.quote)+5,sc*.8))*(1+(sc-70)/220)));
- $("score").textContent=sc;$("fvm").textContent=N(p.fvm)||"—";$("max").textContent=max;
- let d=$("decision"),t=$("decisionText"),r=$("reason");
- if(pr>max){t.textContent="🛑 LASCIA";r.textContent=`Hai superato il limite di ${max}.`;d.className="decision stop"}
- else if(pr>max*.9){t.textContent="⚠️ ULTIMO RILANCIO";r.textContent=`Puoi arrivare a ${max}, poi fermati.`;d.className="decision warn"}
- else if(pr<=max*.72){t.textContent="💰 AFFARE";r.textContent=`Se ti serve, attacca. Limite ${max}.`;d.className="decision good"}
- else if(sc>=82){t.textContent="🟢 PRENDI";r.textContent=`Obiettivo forte. Limite ${max}.`;d.className="decision good"}
- else if(sc>=74){t.textContent="🔨 RIALZA";r.textContent=`Rilancia senza superare ${max}.`;d.className="decision good"}
- else{t.textContent="👀 ASPETTA";r.textContent="Non inseguire il prezzo.";d.className="decision warn"}
+ if(!selected){$("decisionText").textContent="Cerca un giocatore";$("reason").textContent="Brain si attiverà appena selezioni un giocatore.";return}
+ const price=num($("price").value), sc=calcScore(selected), lim=calcLimit(selected);
+ $("score").textContent=sc;$("fvm").textContent=num(selected.fvm)||"—";$("limit").textContent=lim;
+ const d=$("decision"),t=$("decisionText"),r=$("reason");
+ if(price>lim){t.textContent="🛑 LASCIA";r.textContent="Hai superato il limite Brain.";d.className="decision stop"}
+ else if(price>=lim*.9){t.textContent="⚠️ ULTIMO RILANCIO";r.textContent="Ancora uno al massimo, poi fermati.";d.className="decision warn"}
+ else if(price<=lim*.7){t.textContent="💰 AFFARE";r.textContent="Prezzo molto interessante.";d.className="decision good"}
+ else if(sc>=82){t.textContent="🟢 PRENDI";r.textContent="Obiettivo forte entro il limite.";d.className="decision good"}
+ else{t.textContent="🔨 RIALZA";r.textContent="Rilancia ma non superare il limite.";d.className="decision warn"}
+ const info=[
+  selected.team?"Squadra: "+selected.team:"",
+  selected.role?"Ruolo: "+selected.role:"",
+  selected.apps!=null?"Presenze: "+selected.apps:"",
+  selected.starts!=null?"Titolare: "+selected.starts:"",
+  selected.goals!=null?"Gol: "+selected.goals:"",
+  selected.assists!=null?"Assist: "+selected.assists:"",
+  selected.media!=null?"MV: "+selected.media:"",
+  selected.fantamedia!=null?"FM: "+selected.fantamedia:""
+ ].filter(Boolean);
+ $("playerInfo").textContent=info.join(" · ")||"Statistiche disponibili limitate.";
+ $("liveAdvice").textContent=`${selected.name}: Score ${sc}/100 · FVM ${num(selected.fvm)||"—"} · limite ${lim}. ${strategyAdvice()}`;
+}
+function strategyAdvice(){
+ const others=state.participants.filter(x=>x!==state.myName);
+ if(!others.length)return"Configura i partecipanti.";
+ const stats=others.map(n=>{const p=state.purchases.filter(x=>x.owner===n);return{name:n,spent:p.reduce((a,x)=>a+x.price,0),count:p.length}}).sort((a,b)=>b.spent-a.spent);
+ if(!stats.length||stats.every(x=>x.spent===0))return"Sto aspettando i primi acquisti per leggere le strategie.";
+ const aggressive=stats.filter(x=>x.spent>=state.initial*.15).map(x=>x.name);
+ const quiet=stats.filter(x=>x.count===0).map(x=>x.name);
+ if(aggressive.length)return`Attenzione a ${aggressive.join(", ")}: sta spendendo forte. Non entrare nelle guerre di prezzo senza motivo.`;
+ if(quiet.length)return`${quiet.join(", ")} non ha ancora speso: potrebbe avere molto budget per i prossimi obiettivi.`;
+ return"Brain sta confrontando spesa, numero di acquisti e budget residuo degli avversari.";
+}
+function assignButtons(){
+ $("assignList").innerHTML=state.participants.map((n,i)=>`<button class="participant ${n===state.myName?"mine":""}" data-i="${i}">${n}</button>`).join("");
+ $("assignBox").classList.remove("hidden");
+ $("assignList").querySelectorAll("button").forEach(b=>b.onclick=()=>assign(num(b.dataset.i)));
+}
+function assign(i){
+ if(!selected)return;
+ const price=num($("price").value);if(price<=0)return;
+ const owner=state.participants[i];
+ if(owner===state.myName && price>state.credits){alert("Non hai abbastanza crediti.");return}
+ if(owner===state.myName)state.credits-=price;
+ state.purchases.push({name:selected.name,price,owner});
+ selected=null;$("player").value="";$("price").value=1;$("assignBox").classList.add("hidden");save();render();
+}
+function renderRosters(){
+ const out=state.participants.map(n=>{
+  const p=state.purchases.filter(x=>x.owner===n),spent=p.reduce((a,x)=>a+x.price,0),budget=state.initial-spent;
+  return `<div class="roster"><div class="rosterHead"><b>${n}</b><span>${budget} cr</span></div><p>${p.length?p.map(x=>x.name+" ("+x.price+")").join(" · "):"Nessun acquisto"}</p></div>`;
+ }).join("");
+ $("rosterList").innerHTML=out||'<div class="muted">Nessun partecipante.</div>';
+}
+function renderBrainSummary(){
+ const total=state.purchases.length,spent=state.purchases.reduce((a,x)=>a+x.price,0);
+ $("strategy").textContent=strategyAdvice();
+ $("brainSummary").textContent=total?`${total} acquisti registrati · ${spent} crediti spesi complessivamente. Brain sta usando questi movimenti per leggere le strategie.`:"Nessun movimento ancora.";
 }
 function render(){
- $("budget").textContent=st.budget;
- $("history").textContent=st.history.slice(-3).map(x=>x.name+" "+x.price).join(" · ")||"—";
- brain();
+ $("myBudget").textContent=state.credits+" cr";
+ brain();renderRosters();renderBrainSummary();
 }
-$("start").onclick=()=>show("auction");
-$("openBrain").onclick=()=>show("brain");
-document.querySelectorAll(".back").forEach(b=>b.onclick=()=>show("home"));
-$("player").oninput=render;$("price").oninput=render;
-$("raise").onclick=()=>{$("price").value=N($("price").value)+1;render()};
-$("pass").onclick=()=>{$("price").value=0;render()};
-$("bought").onclick=()=>{
- let p=find(),pr=N($("price").value);if(!p||!pr)return;
- st.budget=Math.max(0,st.budget-pr);st.history.push({name:p.name,price:pr});W("ryh66_state",st);
- $("player").value="";$("price").value=1;render();
-};
-$("reset").onclick=()=>{if(confirm("Reset completo?")){localStorage.removeItem("ryh66_state");location.reload()}};
-render();
+$("count").addEventListener("input",buildNameInputs);
+$("myName").addEventListener("input",()=>{const first=document.querySelector('.pname[data-i="0"]');if(first)first.value=$("myName").value});
+$("start").onclick=configure;
+document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>show(b.dataset.go));
+$("player").addEventListener("input",function(){
+ selected=null;const arr=matches(this.value),box=$("suggestions");
+ if(!arr.length){box.classList.add("hidden");brain();return}
+ box.innerHTML=arr.map((p,i)=>`<button class="suggestion" data-i="${i}"><b>${p.name||"—"}</b><small>${p.team||""} ${p.role?"· "+p.role:""}</small></button>`).join("");
+ box.classList.remove("hidden");
+ box.querySelectorAll("button").forEach((b,i)=>b.onclick=()=>selectPlayer(arr[i]));
+ brain();
+});
+$("price").oninput=brain;
+$("raise").onclick=()=>{$("price").value=num($("price").value)+1;brain()};
+$("pass").onclick=()=>{$("price").value=0;brain()};
+$("assign").onclick=assignButtons;
+$("reset").onclick=()=>{if(confirm("Vuoi cancellare configurazione, rose e asta?")){localStorage.removeItem("ryh_clean_v1");location.reload()}};
+load();
+if(state.configured){$("credits").value=state.initial;$("count").value=state.participants.length;$("myName").value=state.myName}
+buildNameInputs();render();
 })();
 </script>
-
-<script>
-(()=>{
- const R=(k,f)=>{try{return JSON.parse(localStorage.getItem(k))??f}catch(e){return f}};
- const W=(k,v)=>localStorage.setItem(k,JSON.stringify(v)),N=x=>Number(x)||0,$=id=>document.getElementById(id);
- let st=R("ryh67_state",{budget:500,participants:[],history:[]});
- let selected=null;
-
- function players(){
-   return R("ryh_players",R("players",[]));
- }
- function matches(q){
-   q=q.trim().toLowerCase(); if(!q)return [];
-   return players().filter(p=>String(p.name||"").toLowerCase().includes(q)).slice(0,7);
- }
- function findSelected(){
-   if(selected)return selected;
-   let q=$("player").value.trim().toLowerCase();
-   return players().find(p=>String(p.name||"").toLowerCase()===q)||null;
- }
- function score(p){
-   return Math.max(0,Math.min(100,Math.round(N(p.score,70)*.68+N(p.goals)*2.5+N(p.assists)*1.7+(N(p.apps)?7:3)+(N(p.starts)?7:4))));
- }
- function maxPrice(p){
-   let sc=score(p),f=N(p.fvm),q=N(p.quote);
-   return Math.max(q||1,Math.round((f?f/10:Math.max(q+5,sc*.8))*(1+(sc-70)/220)));
- }
- function renderSuggestions(){
-   let box=$("suggestions"), arr=matches($("player").value);
-   if(!arr.length){box.classList.add("hidden");return}
-   box.innerHTML=arr.map((p,i)=>`<button class="suggestion" data-i="${i}"><span><b>${p.name||"—"}</b><small>${p.team||""} · ${p.role||""}</small></span><span>${N(p.fvm)?`FVM ${p.fvm}`:""}</span></button>`).join("");
-   box.classList.remove("hidden");
-   [...box.querySelectorAll(".suggestion")].forEach((b,i)=>b.onclick=()=>select(arr[i]));
- }
- function select(p){
-   selected=p;$("player").value=p.name||"";
-   $("suggestions").classList.add("hidden");
-   update();
- }
- function update(){
-   const p=findSelected(),pr=N($("price").value);
-   if(!p){
-     ["score","fvm","max"].forEach(x=>$(x).textContent="—");
-     $("playerInfo").classList.add("hidden");
-     $("decisionText").textContent="Inserisci il giocatore";
-     $("reason").textContent="Brain ti mostrerà subito analisi e limite.";
-     $("decision").className="decision";
-     $("brainAdvice").textContent="Inizia a scrivere il nome: scegli il giocatore dai suggerimenti.";
-     return;
-   }
-   $("playerInfo").classList.remove("hidden");
-   $("infoName").textContent=p.name||"—";
-   $("infoTeam").textContent=(p.team||"")+(p.role?` · ${p.role}`:"");
-   const extras=[
-     p.apps!=null?`Presenze ${p.apps}`:"",
-     p.starts!=null?`Titolare ${p.starts}`:"",
-     p.goals!=null?`Gol ${p.goals}`:"",
-     p.assists!=null?`Assist ${p.assists}`:"",
-     p.yellow!=null?`Gialli ${p.yellow}`:"",
-     p.red!=null?`Rossi ${p.red}`:"",
-     p.media!=null?`MV ${p.media}`:"",
-     p.fantamedia!=null?`FM ${p.fantamedia}`:""
-   ].filter(Boolean);
-   $("infoStats").textContent=extras.join(" · ")||"Statistiche disponibili limitate.";
-   const sc=score(p),max=maxPrice(p);
-   $("score").textContent=sc;$("fvm").textContent=N(p.fvm)||"—";$("max").textContent=max;
-   const d=$("decision"),t=$("decisionText"),r=$("reason");
-   if(pr>max){t.textContent="🛑 LASCIA";r.textContent=`Prezzo ${pr}: oltre il limite di ${max}.`;d.className="decision stop"}
-   else if(pr>max*.9){t.textContent="⚠️ ULTIMO RILANCIO";r.textContent=`Puoi arrivare a ${max}, poi fermati.`;d.className="decision warn"}
-   else if(pr<=max*.72){t.textContent="💰 AFFARE";r.textContent=`Prezzo basso: puoi attaccare. Limite ${max}.`;d.className="decision good"}
-   else if(sc>=82){t.textContent="🟢 PRENDI";r.textContent=`Obiettivo forte. Limite Brain ${max}.`;d.className="decision good"}
-   else if(sc>=74){t.textContent="🔨 RIALZA";r.textContent=`Rilancia senza superare ${max}.`;d.className="decision good"}
-   else{t.textContent="👀 ASPETTA";r.textContent=`Non inseguire il prezzo. Limite ${max}.`;d.className="decision warn"}
-   $("brainAdvice").textContent=`${p.name}: Score ${sc}/100 · FVM ${N(p.fvm)||"—"} · limite ${max}. ${pr>max?"Passa: conserva i crediti.":`Se il prezzo sale oltre ${max}, passa.`}`;
- }
- function renderHistory(){
-   $("budget").textContent=st.budget;
-   $("history").textContent=st.history.slice(-4).reverse().map(x=>`${x.name} ${x.price} → ${x.owner}`).join(" · ")||"—";
- }
- function assignBox(){
-   const box=$("assignBox"),list=$("participantList");
-   box.classList.remove("hidden");
-   if(!st.participants.length){
-     const n=Math.max(2,N(prompt("Quanti partecipanti?")||10));
-     st.participants=Array.from({length:n},(_,i)=>`Partecipante ${i+1}`);
-     W("ryh67_state",st);
-   }
-   list.innerHTML=st.participants.map((x,i)=>`<button class="participant" data-p="${i}">${x}</button>`).join("");
-   [...list.querySelectorAll(".participant")].forEach(b=>b.onclick=()=>assign(Number(b.dataset.p)));
- }
- function assign(i){
-   const p=findSelected(),pr=N($("price").value);if(!p||pr<=0)return;
-   st.budget=Math.max(0,st.budget-pr);
-   st.history.push({name:p.name,price:pr,owner:st.participants[i]});
-   W("ryh67_state",st);
-   selected=null;$("player").value="";$("price").value=1;$("assignBox").classList.add("hidden");
-   renderHistory();update();
- }
- document.addEventListener("DOMContentLoaded",()=>{
-   // Replace the setup flow: start goes straight to auction.
-   $("start").onclick=()=>{if(!st.participants.length){const n=Math.max(2,N(prompt("Numero partecipanti?")||10));st.participants=Array.from({length:n},(_,i)=>`Partecipante ${i+1}`);W("ryh67_state",st)};show("auction")};
-   $("openBrain").onclick=()=>show("brain");
-   document.querySelectorAll(".back").forEach(b=>b.onclick=()=>show("home"));
-   $("player").oninput=()=>{selected=null;renderSuggestions();update()};
-   $("price").oninput=update;
-   $("raise").onclick=()=>{$("price").value=N($("price").value)+1;update()};
-   $("pass").onclick=()=>{$("price").value=0;update()};
-   $("bought").onclick=assignBox;
-   $("reset").onclick=()=>{if(confirm("Reset completo di asta e partecipanti?")){localStorage.removeItem("ryh67_state");location.reload()}};
-   renderHistory();update();
- });
-})();
-</script>
-
-<script>
-(()=>{
- const R=(k,f)=>{try{return JSON.parse(localStorage.getItem(k))??f}catch(e){return f}};
- const W=(k,v)=>localStorage.setItem(k,JSON.stringify(v)),N=x=>Number(x)||0,$=id=>document.getElementById(id);
- let st=R("ryh68_state",{configured:false,budget:500,initial:500,myName:"La mia squadra",participants:[],history:[]});
- let selected=null;
-
- function players(){return R("ryh_players",R("players",[]))}
- function pFind(){let q=$("player").value.trim().toLowerCase();if(!q)return null;return players().find(p=>String(p.name||"").toLowerCase()===q)||players().find(p=>String(p.name||"").toLowerCase().includes(q))}
- function score(p){return Math.max(0,Math.min(100,Math.round(N(p.score,70)*.68+N(p.goals)*2.5+N(p.assists)*1.7+(N(p.apps)?7:3)+(N(p.starts)?7:4))))}
- function maxP(p){let sc=score(p),f=N(p.fvm),q=N(p.quote);return Math.max(q||1,Math.round((f?f/10:Math.max(q+5,sc*.8))*(1+(sc-70)/220)))}
-
- function renderRosters(){
-   const box=$("rosterList"); if(!box)return;
-   const all=[{name:st.myName,budget:st.budget,players:st.history.filter(x=>x.owner===st.myName)}].concat(
-     st.participants.filter(x=>x!==st.myName).map(name=>({name,budget:st.initial-st.history.filter(x=>x.owner===name).reduce((a,x)=>a+x.price,0),players:st.history.filter(x=>x.owner===name)}))
-   );
-   box.innerHTML=all.map(x=>{
-     const total=x.players.reduce((a,p)=>a+p.price,0);
-     const names=x.players.map(p=>`${p.name} (${p.price})`).join(", ")||"Nessun acquisto";
-     return `<div class="rosterRow"><div class="rosterTop"><span class="rosterName">${x.name}</span><span class="rosterBudget">${x.budget} cr</span></div><div class="rosterMeta">${x.players.length} giocatori · spesi ${total}</div><div class="rosterPlayers">${names}</div></div>`;
-   }).join("");
-   strategy();
- }
- function strategy(){
-   const recent=st.history.slice(-12);
-   const mine=st.history.filter(x=>x.owner===st.myName);
-   const others=st.participants.filter(x=>x!==st.myName);
-   const active=others.map(name=>{
-     const buys=st.history.filter(x=>x.owner===name),spent=buys.reduce((a,x)=>a+x.price,0);
-     return {name,buys,spent,budget:st.initial-spent};
-   });
-   const aggressive=active.filter(x=>x.buys.some(b=>b.price>=Math.max(20,st.initial*.12))).map(x=>x.name);
-   const quiet=active.filter(x=>x.buys.length<=1).map(x=>x.name);
-   let advice="Brain sta osservando i comportamenti.";
-   if(aggressive.length) advice=`Attenzione: ${aggressive.join(", ")} sta spendendo forte. Non seguirli nelle guerre di prezzo; conserva crediti per gli obiettivi prioritari.`;
-   else if(quiet.length) advice=`${quiet.join(", ")} è ancora prudente: potrebbe avere molto budget per colpire più avanti.`;
-   if(recent.length>=3) advice+=` Negli ultimi acquisti Brain ha registrato ${recent.length} movimenti e sta aggiornando la lettura delle strategie.`;
-   if($("strategyStrip"))$("strategyStrip").textContent="🧠 "+advice;
-   if($("brainStrategy"))$("brainStrategy").textContent=advice+` La tua rosa: ${mine.length} giocatori, ${mine.reduce((a,x)=>a+x.price,0)} crediti spesi.`;
- }
- function render(){
-   $("budget").textContent=st.budget;
-   $("history").textContent=st.history.slice(-4).reverse().map(x=>`${x.name} ${x.price} → ${x.owner}`).join(" · ")||"—";
-   const p=selected||pFind(),pr=N($("price").value);
-   if(!p){$("decisionText").textContent="Inserisci il giocatore";$("reason").textContent="Brain analizzerà giocatore, prezzo e stato delle rose.";["score","fvm","max"].forEach(x=>$(x).textContent="—");return}
-   const sc=score(p),max=maxP(p);$("score").textContent=sc;$("fvm").textContent=N(p.fvm)||"—";$("max").textContent=max;
-   let d=$("decision"),t=$("decisionText"),r=$("reason");
-   if(pr>max){t.textContent="🛑 LASCIA";r.textContent=`Oltre ${max}. Non farti trascinare dagli avversari.`;d.className="decision stop"}
-   else if(pr>max*.9){t.textContent="⚠️ ULTIMO RILANCIO";r.textContent=`Massimo ${max}. Poi passa.`;d.className="decision warn"}
-   else if(pr<=max*.72){t.textContent="💰 AFFARE";r.textContent=`Prezzo basso. Puoi attaccare.`;d.className="decision good"}
-   else if(sc>=82){t.textContent="🟢 PRENDI";r.textContent=`Obiettivo forte. Limite ${max}.`;d.className="decision good"}
-   else if(sc>=74){t.textContent="🔨 RIALZA";r.textContent=`Rilancia fino a ${max}.`;d.className="decision good"}
-   else{t.textContent="👀 ASPETTA";r.textContent=`Non inseguire. Limite ${max}.`;d.className="decision warn"}
-   $("brainAdvice").textContent=`Brain: ${p.name}. Score ${sc}/100 · FVM ${N(p.fvm)||"—"} · massimo ${max}. ${strategyText(p)}`;
-   renderRosters();
- }
- function strategyText(p){
-   const others=st.participants.filter(x=>x!==st.myName);
-   if(!others.length)return"Configura i partecipanti per analizzare le strategie.";
-   return"Rose e budget degli avversari vengono aggiornati dopo ogni assegnazione.";
- }
- function buildNames(){
-   const n=Math.max(2,N($("cfgParticipants").value)||10),my=$("cfgMyName").value.trim()||"La mia squadra";
-   $("cfgNames").innerHTML='<small>Nomi partecipanti (opzionali)</small>'+Array.from({length:n},(_,i)=>`<input class="cfgP" data-i="${i}" value="${i===0?my:`Partecipante ${i+1}`}" placeholder="Partecipante ${i+1}">`).join("");
- }
- function setup(){
-   const b=N($("cfgBudget").value)||500,n=Math.max(2,N($("cfgParticipants").value)||10),my=$("cfgMyName").value.trim()||"La mia squadra";
-   const names=[...document.querySelectorAll(".cfgP")].slice(0,n).map((x,i)=>x.value.trim()||`Partecipante ${i+1}`);
-   names[0]=my;
-   st={configured:true,budget:b,initial:b,myName:my,participants:names,history:[]};
-   W("ryh68_state",st);show("auction");render();
- }
- function assignBox(){
-   const list=$("participantList");$("assignBox").classList.remove("hidden");
-   list.innerHTML=st.participants.map((x,i)=>`<button class="participant" data-p="${i}">${x}</button>`).join("");
-   [...list.querySelectorAll(".participant")].forEach(b=>b.onclick=()=>{
-     const p=selected||pFind(),pr=N($("price").value);if(!p||!pr)return;
-     const owner=st.participants[Number(b.dataset.p)];
-     if(owner===st.myName) st.budget=Math.max(0,st.budget-pr);
-     st.history.push({name:p.name,price:pr,owner});
-     W("ryh68_state",st);selected=null;$("player").value="";$("price").value=1;$("assignBox").classList.add("hidden");render();
-   });
- }
- function xBudgetAfter(cur,my,b){ return cur; }
- document.addEventListener("DOMContentLoaded",()=>{
-   $("start").onclick=setup;
-   $("cfgParticipants").oninput=buildNames;
-   $("cfgMyName").oninput=()=>{const first=document.querySelector(".cfgP[data-i="0"]");if(first)first.value=$("cfgMyName").value};
-   buildNames();
-   $("openBrain").onclick=()=>show("brain");
-   document.querySelectorAll(".back").forEach(b=>b.onclick=()=>show("home"));
-   $("player").oninput=()=>{selected=null;renderSuggestionsV68();render()};
-   $("price").oninput=render;
-   $("raise").onclick=()=>{$("price").value=N($("price").value)+1;render()};
-   $("pass").onclick=()=>{$("price").value=0;render()};
-   $("bought").onclick=assignBox;
-   $("reset").onclick=()=>{if(confirm("Reset completo di configurazione, rose e asta?")){localStorage.removeItem("ryh68_state");location.reload()}};
-   if(st.configured){$("cfgBudget").value=st.initial;$("cfgParticipants").value=st.participants.length;$("cfgMyName").value=st.myName}
-   renderRosters();render();
- });
- function renderSuggestionsV68(){
-   const box=$("suggestions"),q=$("player").value.trim().toLowerCase();
-   if(!q){box.classList.add("hidden");return}
-   const arr=players().filter(p=>String(p.name||"").toLowerCase().includes(q)).slice(0,7);
-   if(!arr.length){box.classList.add("hidden");return}
-   box.innerHTML=arr.map((p,i)=>`<button class="suggestion" data-i="${i}"><span><b>${p.name||"—"}</b><small>${p.team||""} · ${p.role||""}</small></span><span>${N(p.fvm)?`FVM ${p.fvm}`:""}</span></button>`).join("");
-   box.classList.remove("hidden");
-   [...box.querySelectorAll(".suggestion")].forEach((b,i)=>b.onclick=()=>{selected=arr[i];$("player").value=arr[i].name;$("suggestions").classList.add("hidden");render()});
- }
-})();
-</script>
-</body>
-
-</html>
+</body></html>
