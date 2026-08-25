@@ -118,203 +118,110 @@
 .ryh64-float{position:fixed;right:12px;bottom:12px;z-index:9998;border:0;border-radius:50%;width:54px;height:54px;background:#c49e4c;color:#111;font-size:9px;font-weight:1000;box-shadow:0 5px 20px #0008}
 </style>
 </head>
+
 <body>
-<div id="ryh65App">
-  <header class="ryh65-header">
-    <div>
-      <div class="ryh65-brand">🔨 RAISE YOUR HAMMER</div>
-      <div class="ryh65-sub">ASTA · BRAIN</div>
+<div id="ryh66">
+<header>
+  <div><strong>🔨 RAISE YOUR HAMMER</strong><small>ASTA + BRAIN</small></div>
+  <button id="reset">↻</button>
+</header>
+
+<main>
+  <section id="home">
+    <button class="mainBtn" id="start">🔨 AVVIA ASTA</button>
+    <button class="brainBtn" id="openBrain">🧠 BRAIN</button>
+  </section>
+
+  <section id="auction" class="hidden">
+    <div class="topline"><button class="back">←</button><b>ASTA</b><span id="budget">500</span></div>
+    <input id="player" class="bigInput" placeholder="Giocatore chiamato">
+    <input id="price" type="number" min="0" value="1" class="priceInput">
+
+    <div id="decision" class="decision"><b id="decisionText">Inserisci un giocatore</b><small id="reason">Brain analizzerà la chiamata.</small></div>
+
+    <div class="grid">
+      <div><small>SCORE</small><b id="score">—</b></div>
+      <div><small>FVM</small><b id="fvm">—</b></div>
+      <div><small>MAX</small><b id="max">—</b></div>
     </div>
-    <button id="ryh65Reset" class="ryh65-icon">↻</button>
-  </header>
 
-  <main class="ryh65-main">
-    <section class="ryh65-setup" id="ryh65Setup">
-      <h2>Imposta l'asta</h2>
-      <label>Crediti iniziali
-        <input id="ryh65Budget" type="number" min="1" value="500">
-      </label>
-      <label>Partecipanti
-        <input id="ryh65Participants" type="number" min="2" value="10">
-      </label>
-      <button id="ryh65Start" class="ryh65-primary">AVVIA ASTA</button>
-    </section>
+    <div class="actions">
+      <button id="raise">🔨 RIALZA +1</button>
+      <button id="pass">PASSA</button>
+    </div>
+    <button id="bought" class="bought">✓ ACQUISTATO</button>
+    <div class="mini">Ultimi acquisti: <span id="history">—</span></div>
+  </section>
 
-    <section id="ryh65Auction" class="ryh65-hidden">
-      <div class="ryh65-playerbox">
-        <div class="ryh65-label">GIOCATORE CHIAMATO</div>
-        <input id="ryh65Player" class="ryh65-player" placeholder="Scrivi il giocatore">
-        <input id="ryh65Team" class="ryh65-team" placeholder="Squadra (opzionale)">
-      </div>
-
-      <div class="ryh65-pricebox">
-        <div>
-          <span class="ryh65-label">PREZZO ATTUALE</span>
-          <input id="ryh65Price" type="number" min="0" value="1">
-        </div>
-        <div class="ryh65-max">
-          <span class="ryh65-label">MASSIMO BRAIN</span>
-          <b id="ryh65Max">—</b>
-        </div>
-      </div>
-
-      <div id="ryh65Decision" class="ryh65-decision neutral">
-        <span id="ryh65DecisionText">Inserisci il giocatore</span>
-        <small id="ryh65Reason">Brain analizzerà la situazione dell'asta.</small>
-      </div>
-
-      <div class="ryh65-kpis">
-        <div><span>SCORE</span><b id="ryh65Score">—</b></div>
-        <div><span>FVM</span><b id="ryh65Fvm">—</b></div>
-        <div><span>BUDGET</span><b id="ryh65BudgetLive">500</b></div>
-        <div><span>RILANCI</span><b id="ryh65Bids">0</b></div>
-      </div>
-
-      <div class="ryh65-actions">
-        <button id="ryh65Raise" class="ryh65-primary">🔨 RIALZA +1</button>
-        <button id="ryh65Pass" class="ryh65-danger">PASSA</button>
-      </div>
-
-      <button id="ryh65Buy" class="ryh65-buy">✓ ACQUISTATO</button>
-
-      <section class="ryh65-brain">
-        <div class="ryh65-brain-title">🧠 SUGGERIMENTO BRAIN</div>
-        <div id="ryh65BrainAdvice">Inserisci il giocatore e il prezzo.</div>
-      </section>
-
-      <section class="ryh65-history">
-        <div class="ryh65-section-title">ULTIMI ACQUISTI</div>
-        <div id="ryh65History">Nessun acquisto registrato.</div>
-      </section>
-    </section>
-  </main>
+  <section id="brain" class="hidden">
+    <div class="topline"><button class="back">←</button><b>🧠 BRAIN</b><span>LIVE</span></div>
+    <div class="brainCard">
+      <h2>Il cervello dell'asta</h2>
+      <p>Brain studia il giocatore, il prezzo e ciò che è successo nell'asta per dirti rapidamente se conviene rilanciare o lasciare.</p>
+      <div class="brainRule">🟢 PRENDI · 🔨 RIALZA · ⚠️ FERMATI · 🛑 LASCIA</div>
+    </div>
+  </section>
+</main>
 </div>
 
 <style>
-#ryh65App{min-height:100vh;background:#0b1117;color:#e8edf0;font-family:system-ui,-apple-system,sans-serif}
-.ryh65-header{position:sticky;top:0;z-index:5;display:flex;justify-content:space-between;align-items:center;padding:12px 14px;background:#101820;border-bottom:1px solid #263540}
-.ryh65-brand{font-size:12px;font-weight:1000;color:#e3c16a}.ryh65-sub{font-size:5px;color:#82909c;margin-top:2px}
-.ryh65-icon{border:0;background:#1c2933;color:#d6dde2;border-radius:9px;padding:8px 10px;font-size:15px}
-.ryh65-main{max-width:560px;margin:auto;padding:12px}.ryh65-hidden{display:none}
-.ryh65-setup{padding:16px;border:1px solid #293b49;border-radius:14px;background:#101820}.ryh65-setup h2{font-size:16px;margin:0 0 12px}
-.ryh65-setup label{display:block;font-size:7px;color:#9daab4;margin:10px 0}.ryh65-setup input,.ryh65-player,.ryh65-team{box-sizing:border-box;width:100%;margin-top:4px;border:1px solid #304451;background:#0c141b;color:#eef2f4;border-radius:9px;padding:11px;font-size:11px}
-.ryh65-primary,.ryh65-danger,.ryh65-buy{border:0;border-radius:10px;padding:13px;font-size:8px;font-weight:1000}.ryh65-primary{background:#c39d4c;color:#101010}.ryh65-danger{background:#492525;color:#ffd0d0}.ryh65-buy{width:100%;margin-top:7px;background:#1d3a2a;color:#9be2b2}
-.ryh65-setup .ryh65-primary{width:100%;margin-top:8px}
-.ryh65-label{display:block;font-size:5px;color:#84929d}.ryh65-player{font-size:17px;font-weight:900}.ryh65-team{font-size:7px}
-.ryh65-pricebox{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px;padding:9px;border-radius:11px;background:#111c24}.ryh65-pricebox input{width:100%;box-sizing:border-box;margin-top:4px;background:#0b1319;color:#fff;border:1px solid #304451;border-radius:8px;padding:10px;font-size:16px;font-weight:900}
-.ryh65-max{padding:2px 5px}.ryh65-max b{display:block;font-size:22px;color:#e5c36a;margin-top:4px}
-.ryh65-decision{margin-top:8px;padding:13px;border-radius:12px;text-align:center;border:1px solid #304451;background:#15212a}.ryh65-decision span{display:block;font-size:15px;font-weight:1000}.ryh65-decision small{display:block;margin-top:4px;font-size:6px;color:#aeb9c2}.ryh65-decision.good{background:#16271e;border-color:#31583f}.ryh65-decision.warn{background:#292415;border-color:#64572e}.ryh65-decision.stop{background:#2b1818;border-color:#643636}
-.ryh65-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:7px}.ryh65-kpis div{padding:7px;text-align:center;background:#111b23;border-radius:8px}.ryh65-kpis span{display:block;font-size:4px;color:#82909c}.ryh65-kpis b{font-size:10px}
-.ryh65-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}.ryh65-actions button{min-height:44px}
-.ryh65-brain{margin-top:8px;padding:10px;border:1px solid #6d582c;border-radius:11px;background:#1c1912}.ryh65-brain-title{font-size:7px;font-weight:1000;color:#e3c16a}.ryh65-brain #ryh65BrainAdvice{font-size:7px;line-height:1.45;color:#c8c1b3;margin-top:5px}
-.ryh65-history{margin-top:9px;padding:9px;border-radius:10px;background:#101820}.ryh65-section-title{font-size:6px;color:#82909c;margin-bottom:5px}.ryh65-history div:last-child{font-size:6px;color:#adb8c1;line-height:1.5}
+*{box-sizing:border-box}body{margin:0;background:#080d12;color:#edf1f3;font-family:system-ui,-apple-system,sans-serif}
+#ryh66{min-height:100vh;background:#0b1117}header{height:58px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;background:#101820;border-bottom:1px solid #293845}
+header strong{display:block;font-size:12px;color:#e4c36d}header small{display:block;font-size:5px;color:#82909b;margin-top:2px}header button{border:0;background:#1b2832;color:#ddd;border-radius:9px;padding:8px 11px;font-size:15px}
+main{max-width:520px;margin:auto;padding:14px}.hidden{display:none}.mainBtn,.brainBtn{width:100%;border:0;border-radius:13px;padding:17px;margin-bottom:8px;font-size:10px;font-weight:1000}.mainBtn{background:#c49e4c;color:#101010}.brainBtn{background:#16232d;color:#e6c66e;border:1px solid #4b5b65}
+.topline{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;font-size:10px}.topline button{border:0;background:#1b2832;color:#ddd;border-radius:8px;padding:7px 10px}.topline span{color:#e4c36d}
+.bigInput,.priceInput{width:100%;border:1px solid #30434f;background:#0d151c;color:white;border-radius:10px;padding:13px;margin-bottom:7px}.bigInput{font-size:17px;font-weight:900}.priceInput{font-size:18px;font-weight:900}
+.decision{padding:14px;border-radius:12px;text-align:center;background:#17232c;border:1px solid #30434f}.decision b{display:block;font-size:17px}.decision small{display:block;margin-top:4px;font-size:6px;color:#aeb9c2}.decision.good{background:#16271e;border-color:#31583f}.decision.warn{background:#292415;border-color:#64572e}.decision.stop{background:#2b1818;border-color:#643636}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:7px 0}.grid div{background:#111b23;border-radius:8px;text-align:center;padding:8px}.grid small{display:block;font-size:4px;color:#82909c}.grid b{font-size:11px}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:7px}.actions button,.bought{border:0;border-radius:10px;padding:14px;font-size:8px;font-weight:1000}.actions button:first-child{background:#c49e4c;color:#111}.actions button:last-child{background:#492525;color:#ffd0d0}.bought{width:100%;margin-top:7px;background:#1d3a2a;color:#9be2b2}.mini{font-size:5px;color:#7f8d98;margin-top:9px}.brainCard{padding:15px;border:1px solid #6d582c;border-radius:13px;background:#1a1812}.brainCard h2{margin:0;color:#e4c36d;font-size:16px}.brainCard p{font-size:7px;line-height:1.5;color:#bcb6a8}.brainRule{font-size:7px;color:#e4c36d}
 </style>
 
 <script>
-(function(){
- const R=(k,f)=>{try{return JSON.parse(localStorage.getItem(k))??f}catch(e){return f}};
- const W=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
- const N=x=>Number(x)||0;
- let state=R('ryh65_state',{started:false,budget:500,initial:500,bids:0,history:[]});
-
- function players(){return R('ryh_players',R('players',[]))}
- function findPlayer(){
-   const q=document.getElementById('ryh65Player').value.trim().toLowerCase();
-   if(!q)return null;
-   return players().find(p=>String(p.name||'').toLowerCase()===q)
-       ||players().find(p=>String(p.name||'').toLowerCase().includes(q));
- }
- function brain(){
-   const p=findPlayer(), price=N(document.getElementById('ryh65Price').value);
-   const d=document.getElementById('ryh65Decision'),t=document.getElementById('ryh65DecisionText'),r=document.getElementById('ryh65Reason');
-   if(!p){
-     document.getElementById('ryh65Max').textContent='—';
-     document.getElementById('ryh65Score').textContent='—';
-     document.getElementById('ryh65Fvm').textContent='—';
-     t.textContent='Inserisci il giocatore';
-     r.textContent='Brain analizzerà la situazione dell’asta.';
-     d.className='ryh65-decision neutral';
-     document.getElementById('ryh65BrainAdvice').textContent='Inserisci il giocatore e il prezzo.';
-     return;
-   }
-   const score=N(p.score,70),fvm=N(p.fvm),quote=N(p.quote),goals=N(p.goals),assists=N(p.assists);
-   const sc=Math.max(0,Math.min(100,Math.round(score*.68+goals*2.5+assists*1.7+(N(p.apps)?7:3)+(N(p.starts)?7:4))));
-   const max=Math.max(quote||1,Math.round((fvm?fvm/10:Math.max(quote+5,sc*.8))*(1+(sc-70)/220)));
-   document.getElementById('ryh65Max').textContent=max;
-   document.getElementById('ryh65Score').textContent=sc;
-   document.getElementById('ryh65Fvm').textContent=fvm||'—';
-
-   if(price>max){
-     t.textContent='🛑 LASCIA';r.textContent=`Prezzo oltre il limite Brain (${max}). Non inseguire.`;
-     d.className='ryh65-decision stop';
-   }else if(price>max*.9){
-     t.textContent='⚠️ ULTIMO RILANCIO';r.textContent=`Puoi arrivare a ${max}, poi fermati.`;
-     d.className='ryh65-decision warn';
-   }else if(price>0&&price<=max*.72){
-     t.textContent='💰 AFFARE';r.textContent=`Prezzo molto sotto il limite. Puoi attaccare.`;
-     d.className='ryh65-decision good';
-   }else if(sc>=82){
-     t.textContent='🟢 DA PRENDERE';r.textContent=`Giocatore prioritario. Limite Brain: ${max}.`;
-     d.className='ryh65-decision good';
-   }else if(sc>=74){
-     t.textContent='🔨 RIALZA';r.textContent=`Rilancia mantenendo il tetto di ${max}.`;
-     d.className='ryh65-decision good';
-   }else{
-     t.textContent='👀 ASPETTA';r.textContent='Profilo interessante, ma non inseguire il prezzo.';
-     d.className='ryh65-decision warn';
-   }
-   document.getElementById('ryh65BrainAdvice').textContent=
-     `Score ${sc}/100 · FVM ${fvm||'—'} · massimo ${max}. `+
-     (price>max?'Passa e conserva i crediti per il prossimo obiettivo.':`Se il prezzo supera ${max}, passa immediatamente.`);
- }
- function render(){
-   document.getElementById('ryh65BudgetLive').textContent=Math.max(0,state.budget);
-   document.getElementById('ryh65Bids').textContent=state.bids;
-   const h=document.getElementById('ryh65History');
-   h.innerHTML=state.history.length
-     ?state.history.slice(-5).reverse().map(x=>`<div>✓ ${x.name} · ${x.price} crediti</div>`).join('')
-     :'Nessun acquisto registrato.';
-   brain();
- }
- function start(){
-   const b=N(document.getElementById('ryh65Budget').value)||500;
-   state={started:true,budget:b,initial:b,bids:0,history:[]};
-   W('ryh65_state',state);
-   document.getElementById('ryh65Setup').classList.add('ryh65-hidden');
-   document.getElementById('ryh65Auction').classList.remove('ryh65-hidden');
-   render();
- }
- document.addEventListener('DOMContentLoaded',()=>{
-   if(state.started){
-     document.getElementById('ryh65Setup').classList.add('ryh65-hidden');
-     document.getElementById('ryh65Auction').classList.remove('ryh65-hidden');
-   }
-   document.getElementById('ryh65Start').onclick=start;
-   document.getElementById('ryh65Price').oninput=render;
-   document.getElementById('ryh65Player').oninput=render;
-   document.getElementById('ryh65Raise').onclick=()=>{
-     const e=document.getElementById('ryh65Price');
-     e.value=N(e.value)+1;state.bids++;W('ryh65_state',state);render();
-   };
-   document.getElementById('ryh65Pass').onclick=()=>{
-     document.getElementById('ryh65Price').value=0;render();
-   };
-   document.getElementById('ryh65Buy').onclick=()=>{
-     const p=findPlayer(),price=N(document.getElementById('ryh65Price').value);
-     if(!p||price<=0)return;
-     state.budget=Math.max(0,state.budget-price);
-     state.history.push({name:p.name,price});state.bids=0;
-     W('ryh65_state',state);
-     document.getElementById('ryh65Player').value='';
-     document.getElementById('ryh65Price').value=1;
-     render();
-   };
-   document.getElementById('ryh65Reset').onclick=()=>{
-     if(confirm('Reset completo dell’asta?')){localStorage.removeItem('ryh65_state');location.reload();}
-   };
-   render();
- });
+(()=>{
+const R=(k,f)=>{try{return JSON.parse(localStorage.getItem(k))??f}catch(e){return f}};
+const W=(k,v)=>localStorage.setItem(k,JSON.stringify(v)),N=x=>Number(x)||0;
+let st=R("ryh66_state",{budget:500,history:[]});
+const $=id=>document.getElementById(id);
+function show(id){["home","auction","brain"].forEach(x=>$(x).classList.toggle("hidden",x!==id))}
+function players(){return R("ryh_players",R("players",[]))}
+function find(){
+ let q=$("player").value.trim().toLowerCase(); if(!q)return null;
+ return players().find(p=>String(p.name||"").toLowerCase()===q)||players().find(p=>String(p.name||"").toLowerCase().includes(q));
+}
+function brain(){
+ let p=find(),pr=N($("price").value);
+ if(!p){$("decisionText").textContent="Inserisci un giocatore";$("reason").textContent="Brain analizzerà la chiamata.";["score","fvm","max"].forEach(x=>$(x).textContent="—");$("decision").className="decision";return}
+ let sc=Math.max(0,Math.min(100,Math.round(N(p.score,70)*.68+N(p.goals)*2.5+N(p.assists)*1.7+(N(p.apps)?7:3)+(N(p.starts)?7:4))));
+ let max=Math.max(N(p.quote)||1,Math.round((N(p.fvm)?N(p.fvm)/10:Math.max(N(p.quote)+5,sc*.8))*(1+(sc-70)/220)));
+ $("score").textContent=sc;$("fvm").textContent=N(p.fvm)||"—";$("max").textContent=max;
+ let d=$("decision"),t=$("decisionText"),r=$("reason");
+ if(pr>max){t.textContent="🛑 LASCIA";r.textContent=`Hai superato il limite di ${max}.`;d.className="decision stop"}
+ else if(pr>max*.9){t.textContent="⚠️ ULTIMO RILANCIO";r.textContent=`Puoi arrivare a ${max}, poi fermati.`;d.className="decision warn"}
+ else if(pr<=max*.72){t.textContent="💰 AFFARE";r.textContent=`Se ti serve, attacca. Limite ${max}.`;d.className="decision good"}
+ else if(sc>=82){t.textContent="🟢 PRENDI";r.textContent=`Obiettivo forte. Limite ${max}.`;d.className="decision good"}
+ else if(sc>=74){t.textContent="🔨 RIALZA";r.textContent=`Rilancia senza superare ${max}.`;d.className="decision good"}
+ else{t.textContent="👀 ASPETTA";r.textContent="Non inseguire il prezzo.";d.className="decision warn"}
+}
+function render(){
+ $("budget").textContent=st.budget;
+ $("history").textContent=st.history.slice(-3).map(x=>x.name+" "+x.price).join(" · ")||"—";
+ brain();
+}
+$("start").onclick=()=>show("auction");
+$("openBrain").onclick=()=>show("brain");
+document.querySelectorAll(".back").forEach(b=>b.onclick=()=>show("home"));
+$("player").oninput=render;$("price").oninput=render;
+$("raise").onclick=()=>{$("price").value=N($("price").value)+1;render()};
+$("pass").onclick=()=>{$("price").value=0;render()};
+$("bought").onclick=()=>{
+ let p=find(),pr=N($("price").value);if(!p||!pr)return;
+ st.budget=Math.max(0,st.budget-pr);st.history.push({name:p.name,price:pr});W("ryh66_state",st);
+ $("player").value="";$("price").value=1;render();
+};
+$("reset").onclick=()=>{if(confirm("Reset completo?")){localStorage.removeItem("ryh66_state");location.reload()}};
+render();
 })();
 </script>
 </body>
+
 </html>
