@@ -67,7 +67,7 @@ input{width:100%;background:#0b141b;border:1px solid #304451;color:#fff;border-r
 <div id="strategyPlan" style="margin-top:7px;font-size:7px;line-height:1.5"></div>
 </div><div class="card"><div class="top"><b>👥 ROSE LIVE</b><span class="budget" id="livePurchaseCount">0 acquisti</span></div><div id="liveRosters"></div></div>
 <div class="card"><div class="top"><b>🎯 PROFILO AVVERSARI</b><span class="budget" id="opponentCount">0 profili</span></div><div id="opponentIntel"></div></div>
-<div class="card"><div class="top"><b>🎯 ROSA TARGET</b><span class="budget" id="targetProgress">0/11</span></div><div id="targetRoster" class="targetGrid"></div><div id="targetNote" class="muted" style="margin-top:7px">Gli obiettivi si aggiornano dopo ogni acquisto.</div></div><div class="card"><div class="top"><b>VALUTAZIONE TUA ROSA</b><span id="teamGrade" class="grade">—</span></div><div id="teamEval" class="muted">Ancora nessun acquisto.</div></div>
+<div class="card"><div class="top"><b>🎯 ROSA OBIETTIVO COMPLETA</b><span class="budget" id="targetProgress">0/25</span></div><div id="targetRoster" class="targetGrid"></div><div id="targetBudget" class="muted" style="margin-top:6px"></div><div id="targetNote" class="muted" style="margin-top:7px">Brain costruisce una rosa-obiettivo completa usando esclusivamente i giocatori presenti nel listone.</div></div><div class="card"><div class="top"><b>VALUTAZIONE TUA ROSA</b><span id="teamGrade" class="grade">—</span></div><div id="teamEval" class="muted">Ancora nessun acquisto.</div></div>
 </section>
 
 <section id="brain" class="screen">
@@ -173,62 +173,47 @@ function grade(){
 }
 function rosters(){$("rosterList").innerHTML=S.participants.map(n=>{let p=S.purchases.filter(x=>x.owner===n),sp=p.reduce((a,x)=>a+x.price,0);return `<div class="roster"><div class="rosterHead"><b>${n}</b><span>${S.initial-sp} cr</span></div><p>${p.length?p.map(x=>x.name+" ("+x.price+")").join(" · "):"Nessun acquisto"}</p></div>`}).join("")}
 function targetRoster(){
- const slots=[
-  {r:"P",n:1},{r:"D",n:3},{r:"C",n:4},{r:"A",n:3}
- ];
- const bought=mine();
- const used=new Set(bought.map(x=>String(x.name).toLowerCase()));
- const picks={P:[],D:[],C:[],A:[]};
- bought.forEach(x=>{const p=db().find(y=>String(y.name).toLowerCase()===String(x.name).toLowerCase());if(p&&picks[p.role])picks[p.role].push(p)});
+ const need={P:3,D:8,C:8,A:6};
+ const labels={P:"PORTIERI",D:"DIFENSORI",C:"CENTROCAMPISTI",A:"ATTACCANTI"};
+ const mineP=mine();
+ const dbPlayers=db();
+ const owned=new Set(mineP.map(x=>String(x.name).toLowerCase()));
+ const roleMap={};
+ Object.keys(need).forEach(r=>{
+   roleMap[r]=dbPlayers.filter(p=>String(p.role||"").toUpperCase()===r)
+     .sort((a,b)=>score(b)-score(a));
+ });
  const html=[];
- slots.forEach(slot=>{
-   for(let i=0;i<slot.n;i++){
-     const done=picks[slot.r][i];
-     let target=done;
+ let done=0,total=0;
+ Object.keys(need).forEach(r=>{
+   const ownedRole=mineP.map(x=>dbPlayers.find(y=>String(y.name).toLowerCase()===String(x.name).toLowerCase()))
+     .filter(Boolean).filter(p=>String(p.role||"").toUpperCase()===r);
+   const used=new Set(ownedRole.map(p=>String(p.name).toLowerCase()));
+   for(let i=0;i<need[r];i++){
+     total++;
+     const got=ownedRole[i];
+     if(got) done++;
+     let target=got;
      if(!target){
-       target=db().filter(p=>String(p.role||"").toUpperCase()===slot.r&&!used.has(String(p.name).toLowerCase()))
-         .sort((a,b)=>score(b)-score(a))[0];
+       target=roleMap[r].find(p=>!owned.has(String(p.name).toLowerCase())&&!used.has(String(p.name).toLowerCase()));
+       if(target) used.add(String(target.name).toLowerCase());
      }
-     const roleName={P:"PORTIERE",D:"DIFENSORE",C:"CENTROCAMPISTA",A:"ATTACCANTE"}[slot.r];
-     html.push(`<div class="targetSlot ${done?"done":""}">
-       <b>${roleName} ${i+1}</b>
-       <small>${done?"✓ ACQUISTATO":"OBIETTIVO"}</small>
-       <div class="pick">${target?target.name:"Da scegliere"}</div>
-       ${target?`<small>${target.team||""} · Q ${num(target.quote)||"—"} · FVM ${num(target.fvm)||"—"} · limite ${lim(target)}</small>`:""}
+     const tag=got?"✓ GIÀ IN ROSA":"OBIETTIVO";
+     html.push(`<div class="targetSlot ${got?"done":""}">
+       <b>${labels[r]} ${i+1}</b>
+       <small>${tag}</small>
+       <div class="pick">${target?target.name:"Nessun profilo disponibile nel listone"}</div>
+       ${target?`<small>${target.team||""} · Q ${num(target.quote)||"—"} · FVM ${num(target.fvm)||"—"} · limite Brain ${lim(target)}</small>`:""}
      </div>`);
    }
  });
- const total=Object.values(picks).reduce((a,v)=>a+v.length,0);
  $("targetRoster").innerHTML=html.join("");
- $("targetProgress").textContent=`${total}/11 titolari`;
- $("targetNote").textContent=total<11?"La rosa target si aggiorna automaticamente dopo ogni acquisto: i giocatori comprati escono dagli obiettivi.":"Undici titolari target completati. Ora Brain può suggerire le alternative e le riserve.";
+ $("targetProgress").textContent=`${done}/${total}`;
+ $("targetBudget").textContent=`Budget residuo: ${S.credits} cr · Brain aggiorna gli obiettivi in base agli acquisti.`;
+ $("targetNote").textContent=done<total
+   ?"La rosa obiettivo viene ricalcolata dopo ogni acquisto e sostituisce automaticamente i giocatori già presi."
+   :"Rosa obiettivo completa coperta: ora Brain può cercare alternative e valore.";
 }
-
-function renderConfig(){
- const n=Math.max(2,Math.min(20,num($("cfgCount").value)||10)),old=S.participants||[];
- $("cfgNames").innerHTML=Array.from({length:n},(_,i)=>`<input class="cfgName" data-cfg="${i}" value="${String(old[i]||`Partecipante ${i+1}`).replace(/"/g,"&quot;")}" placeholder="Partecipante ${i+1}">`).join("");
-}
-function saveConfig(){
- const n=Math.max(2,Math.min(20,num($("cfgCount").value)||10)),credits=Math.max(1,num($("cfgCredits").value)||500),myName=$("cfgMyName").value.trim()||"La mia squadra";
- const names=[...document.querySelectorAll("[data-cfg]")].slice(0,n).map((x,i)=>x.value.trim()||`Partecipante ${i+1}`);names[0]=myName;
- const changed=S.configured&&(S.initial!==credits||S.participants.length!==n||S.participants.some((x,i)=>x!==names[i]));
- if(changed&&S.purchases.length&&!confirm("Cambiare la configurazione azzererà gli acquisti. Continuare?"))return;
- const purchases=changed?[]:(S.purchases||[]);
- S={configured:true,credits,initial:credits,myName,participants:names,purchases};
- S.credits=Math.max(0,S.initial-S.purchases.filter(x=>x.owner===S.myName).reduce((a,x)=>a+x.price,0));
- save();render();$("auctionConfig").classList.add("hidden");
-}
-function editAuction(){ $("cfgCount").value=S.participants.length||10;$("cfgCredits").value=S.initial||500;$("cfgMyName").value=S.myName||"La mia squadra";renderConfig();$("auctionConfig").classList.remove("hidden");window.scrollTo(0,0); }
-function liveRosters(){
- const ps=S.participants||[];$("livePurchaseCount").textContent=`${S.purchases.length} acquisti`;
- $("liveRosters").innerHTML=ps.map(n=>{const a=S.purchases.filter(x=>x.owner===n),sp=a.reduce((t,x)=>t+x.price,0);return `<div class="liveRoster ${n===S.myName?"me":""}"><div class="liveRosterHead"><b>${n}</b><span>${Math.max(0,S.initial-sp)} cr · ${a.length} gioc.</span></div><div class="liveRosterPlayers">${a.length?a.map(x=>`${x.name} (${x.price})`).join(" · "):"Nessun acquisto"}</div></div>`}).join("");
-}
-function targetRoster(){
- const need={P:1,D:3,C:4,A:3},labels={P:"PORTIERE",D:"DIFENSORE",C:"CENTROCAMPISTA",A:"ATTACCANTE"},mp=mine(),used=new Set(mp.map(x=>x.name.toLowerCase()));let html="",done=0;
- for(const r of Object.keys(need)){const own=mp.map(x=>db().find(y=>y.name.toLowerCase()===x.name.toLowerCase())).filter(Boolean).filter(p=>String(p.role).toUpperCase()===r);for(let i=0;i<need[r];i++){const got=own[i];if(got)done++;const target=got||db().filter(p=>String(p.role).toUpperCase()===r&&!used.has(p.name.toLowerCase())).sort((a,b)=>score(b)-score(a))[0];html+=`<div class="targetSlot ${got?"done":""}"><b>${labels[r]} ${i+1}</b><small>${got?"✓ ACQUISTATO":"OBIETTIVO"}</small><div class="pick">${target?target.name:"Da scegliere"}</div>${target?`<small>${target.team||""} · Q ${num(target.quote)||"—"} · FVM ${num(target.fvm)||"—"} · limite ${lim(target)}</small>`:""}</div>`;}}
- $("targetRoster").innerHTML=html;$("targetProgress").textContent=`${done}/11`;$("targetNote").textContent=done<11?"Gli obiettivi si aggiornano automaticamente dopo ogni acquisto.":"Titolari coperti: Brain cerca alternative.";
-}
-
 function dynamicStrategy(){
   const opponents=(S.participants||[]).filter(n=>n!==S.myName);
   const mineP=mine();
