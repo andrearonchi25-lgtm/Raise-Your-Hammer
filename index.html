@@ -73,8 +73,6 @@ input{width:100%;background:#0b141b;border:1px solid #304451;color:#fff;border-r
 <div id="strategyMode" style="font-size:12px;font-weight:1000;color:#e3c36c;margin-top:7px">EQUILIBRIO</div>
 <div id="strategyReason" class="muted" style="margin-top:4px"></div>
 <div id="strategyPlan" style="margin-top:7px;font-size:7px;line-height:1.5"></div>
-<div id="marketReal" class="muted" style="margin-top:7px"></div>
-<div id="marketDecision" style="margin-top:5px;font-size:8px;font-weight:900"></div>
 </div>
 <div class="card"><div class="top"><b>👥 PROFILI AVVERSARI</b><span id="rivalCount" class="budget">0</span></div><div id="rivalProfiles"></div></div>
 <div class="card"><h2>Situazione</h2><div id="brainSummary" class="muted">Nessun movimento ancora.</div></div>
@@ -108,57 +106,49 @@ function find(q){q=q.toLowerCase().trim();return q?db().filter(p=>String(p.name|
 function score(p){return Math.max(0,Math.min(100,num(p.score)||num(p.fantasyScore)||70))}
 function lim(p){let q=num(p.quote),f=num(p.fvm),sc=score(p);return Math.max(q||1,Math.round((f?f/10:Math.max(q+5,sc*.8))*(1+(sc-70)/220)))}
 function mine(){return S.purchases.filter(x=>x.owner===S.myName)}
+function marketRef(p){
+ const market={"MALEN Donyell":141.20,"MARTINEZ Lautaro":132.29,"HOJLUND Rasmus":125.13,"RAMOS Goncalo Matias":104.96,"THURAM Marcus":101.75,"KOLO MUANI Randal":94,"KEAN Moise":93,"PAZ Nico":95,"PULISIC Christian":73,"CALHANOGLU Hakan":73,"MCTOMINAY Scott":69,"DIMARCO Federico":64,"ORSOLINI Riccardo":65,"YILDIZ Kenan":102};
+ const k=Object.keys(market).find(x=>x.toLowerCase()===String(p.name).toLowerCase());
+ return k?market[k]:null;
+}
 function brain(){
- const name=String($("player").value||"").trim();
- const p=selected || db().find(x=>String(x.name).toLowerCase()===name.toLowerCase()) || find(name)[0];
- if(!p){
-   if($("strategy"))$("strategy").textContent="Cerca il giocatore chiamato.";
-   if($("marketReal"))$("marketReal").textContent="";
-   if($("marketDecision"))$("marketDecision").textContent="";
+ const action=$("decisionText"), reason=$("reason"), d=$("decision");
+ const typed=String($("player").value||"").trim();
+ if(!selected && typed){
+   const a=find(typed); const exact=a.find(p=>String(p.name).toLowerCase()===typed.toLowerCase());
+   if(exact) selected=exact;
+ }
+ if(!selected){
+   if(action) action.textContent=typed?"SELEZIONA IL GIOCATORE":"CERCA UN GIOCATORE";
+   if(reason) reason.textContent=typed?"Scegli il nome dal listone per attivare il consiglio completo.":"Scrivi il nome del giocatore chiamato.";
+   if(d)d.className="decision";
+   if($("brainAction"))$("brainAction").textContent="—";
+   if($("brainDetail"))$("brainDetail").textContent="Brain si attiva appena il giocatore viene riconosciuto.";
    return;
  }
- const price=Math.max(0,num($("price").value));
- const base=lim(p);
- const market={
-  "MALEN Donyell":141.20,"MARTINEZ Lautaro":132.29,"HOJLUND Rasmus":125.13,
-  "RAMOS Goncalo Matias":104.96,"THURAM Marcus":101.75,
-  "KOLO MUANI Randal":94,"KEAN Moise":93,"PAZ Nico":95,
-  "PULISIC Christian":73,"CALHANOGLU Hakan":73,"MCTOMINAY Scott":69,
-  "DIMARCO Federico":64,"ORSOLINI Riccardo":65,"YILDIZ Kenan":102
- };
- const key=Object.keys(market).find(k=>k.toLowerCase()===String(p.name).toLowerCase());
- const marketPrice=key?market[key]:null;
- const purchases=S.purchases||[];
- const role=String(p.role||"").toUpperCase();
- const rolePurchases=purchases.filter(x=>{
-   const q=db().find(y=>String(y.name).toLowerCase()===String(x.name).toLowerCase());
-   return String(q?.role||x.role||"").toUpperCase()===role && num(x.price)>0;
- });
- const actualAvg=rolePurchases.length?rolePurchases.reduce((a,x)=>a+num(x.price),0)/rolePurchases.length:null;
- let reference=marketPrice;
- if(reference!==null && actualAvg!==null) reference=reference*.75+actualAvg*.25;
- if(reference===null) reference=base;
- const marketFactor=reference>0?reference/base:1;
- let strategic=Math.round(base*(0.55+0.45*Math.min(1.8,marketFactor)));
- if(marketPrice!==null) strategic=Math.round((strategic+reference)/2);
- const mineP=mine();
- const credits=Math.max(0,S.initial-mineP.reduce((a,x)=>a+num(x.price),0));
- const slotsLeft=Math.max(1,25-mineP.length);
- const reserve=Math.max(25,Math.ceil(credits/slotsLeft));
- const hard=Math.max(1,credits-reserve*(slotsLeft-1));
- strategic=Math.min(strategic,hard);
- let decision="OSSERVA";
- if(price>0){
-   if(price<=strategic*.70) decision="🔥 AFFARE";
-   else if(price<=strategic*.90) decision="🟢 RIALZA";
-   else if(price<=strategic) decision="🟡 ULTIMO RILANCIO";
-   else decision="🔴 LASCIA";
+ const pr=Math.max(0,num($("price").value));
+ const sc=score(selected), q=num(selected.quote)||0, fvm=num(selected.fvm)||0;
+ let limit=lim(selected); const mr=marketRef(selected);
+ if(mr!==null){
+   // Use the real 2026/27 market as the primary anchor when available, then constrain by the current budget.
+   limit=Math.round((limit+mr)/2);
  }
- if($("strategy"))$("strategy").textContent=`🧠 ${decision} · limite strategico ${strategic} cr`;
- if($("marketReal"))$("marketReal").textContent=marketPrice!==null
-   ?`Mercato reale 2026/27 (10×500): ~${marketPrice} cr · riferimento dinamico: ${Math.round(reference)} cr${actualAvg!==null?` · tua asta/reparto: ${Math.round(actualAvg)} cr`:""}`
-   :"Mercato reale 2026/27: dati insufficienti · uso listone/FVM e andamento della tua asta.";
- if($("marketDecision"))$("marketDecision").textContent=`Budget tuo: ${credits} cr · riserva stimata: ${reserve} cr · massimo operativo: ${strategic} cr`;
+ const mySpent=mine().reduce((a,x)=>a+num(x.price),0);
+ const credits=Math.max(0,S.initial-mySpent), slots=Math.max(1,25-mine().length);
+ const reserve=Math.max(25,Math.ceil(credits/slots));
+ limit=Math.max(1,Math.min(limit,Math.max(1,credits-reserve*(slots-1))));
+ $("score").textContent=sc; $("fvm").textContent=fvm||"—"; $("limit").textContent=limit;
+ let label,why,cls;
+ if(pr<=0){label="👀 OSSERVA";why=`Limite strategico ${limit}. Inserisci il prezzo attuale.`;cls="decision";}
+ else if(pr>limit){label="🛑 LASCIA";why=`${pr} cr supera il limite strategico di ${limit}.`;cls="decision stop";}
+ else if(pr>=Math.ceil(limit*.9)){label="⚠️ ULTIMO RILANCIO";why=`${pr}/${limit}: sei vicino al tetto.`;cls="decision warn";}
+ else if(pr<=Math.floor(limit*.7)){label="🟢 AFFARE / RILANCIA";why=`${pr}/${limit}: prezzo molto interessante.`;cls="decision good";}
+ else{label="🔨 RIALZA";why=`${pr}/${limit}: prezzo ancora sostenibile.`;cls="decision warn";}
+ if(action)action.textContent=label;if(reason)reason.textContent=why;if(d)d.className=cls;
+ $("liveAdvice").textContent=`${selected.name}: ${label}`;
+ if($("brainAction"))$("brainAction").textContent=label;
+ if($("brainDetail"))$("brainDetail").textContent=`Prezzo ${pr} · Limite ${limit} · Margine ${Math.max(0,limit-pr)} · Budget ${credits} cr · ${strategy()}`;
+ $("playerInfo").textContent=[selected.team?"Squadra: "+selected.team:"",selected.role?"Ruolo: "+selected.role:"",selected.quote!=null?"Quotazione: "+selected.quote:"",selected.fvm!=null?"FVM: "+selected.fvm:""].filter(Boolean).join(" · ")||"Dati listone disponibili.";
 }
 function strategy(){
  let av=S.participants.filter(x=>x!==S.myName).map(n=>{let p=S.purchases.filter(x=>x.owner===n),sp=p.reduce((a,x)=>a+x.price,0);return{name:n,spent:sp,budget:S.initial-sp,count:p.length}});if(!S.purchases.length)return"Brain sta raccogliendo i primi segnali.";
@@ -273,9 +263,11 @@ function selectPlayer(p){
 }
 $("player").addEventListener("input",function(){
  const q=this.value.toLowerCase().trim(),box=$("suggestions");
- selected=null;
- if(!q){box.classList.add("hidden");render();return}
  const a=find(q);
+ const exact=a.find(p=>String(p.name).toLowerCase()===q);
+ // Activate Brain immediately: exact match first, otherwise the first relevant listone result.
+ selected=exact || (a.length===1?a[0]:null);
+ if(!q){selected=null;box.classList.add("hidden");brain();return}
  box.innerHTML=a.map((p,i)=>{
    const m=lim(p),pr=Math.max(0,num($("price").value));
    const status=pr<=0?"INSERISCI PREZZO":pr>m?"LASCIA":pr>=m*.9?"ULTIMO RILANCIO":pr<=m*.7?"AFFARE":"RIALZA";
