@@ -146,27 +146,12 @@ function strategy(){
  let q=av.find(x=>x.count===0);if(q)return`${q.name} non ha ancora speso: potrebbe attaccare un top player più avanti.`;
  let r=av.sort((a,b)=>b.budget-a.budget)[0];return`${r.name} ha più budget residuo (${r.budget} cr): Brain lo considera un avversario da tenere d'occhio.`;
 }
-function targets(){
- let bought=new Set(S.purchases.map(x=>String(x.name).toLowerCase())), have=mine(), counts={P:0,D:0,C:0,A:0};
- have.forEach(x=>{let p=db().find(y=>String(y.name).toLowerCase()===String(x.name).toLowerCase());if(p){let r=String(p.role||"").toUpperCase();if(counts[r]!=null)counts[r]++}});
- let need=["P","D","C","A"].filter(r=>counts[r]<({P:1,D:3,C:4,A:3}[r]||0)), arr=[];
- need.forEach(r=>db().filter(p=>String(p.role||"").toUpperCase()===r&&!bought.has(String(p.name).toLowerCase())).sort((a,b)=>score(b)-score(a)).slice(0,3).forEach((p,i)=>arr.push(`<div class="target"><div class="targetTop"><b>${p.name}</b><span class="grade">${i?"MEDIA":"ALTA"}</span></div><div class="targetMeta">${p.team||""} · ${r} · Score ${score(p)} · limite ${lim(p)}</div><div class="targetReason">Ancora disponibile e utile per completare la rosa.</div></div>`)));
- $("targetList").innerHTML=arr.slice(0,12).join("")||'<div class="muted">Nessun target disponibile.</div>';
-}
 function grade(){
  let m=mine(),q=0,sp=0,c={P:0,D:0,C:0,A:0};m.forEach(x=>{let p=db().find(y=>String(y.name).toLowerCase()===String(x.name).toLowerCase());if(p){q+=score(p);let r=String(p.role||"").toUpperCase();if(c[r]!=null)c[r]++}sp+=x.price});
  let avg=m.length?q/m.length:0,g=m.length?Math.min(10,Math.max(1,avg/10+Math.min(c.P,1)*.3+Math.min(c.D,3)*.25+Math.min(c.C,4)*.2+Math.min(c.A,3)*.25)).toFixed(1):"—";
  $("teamGrade").textContent=m.length?g+"/10":"—";$("teamEval").textContent=m.length?`Qualità media ${avg.toFixed(1)}/100 · ${m.length} giocatori · ${sp} crediti spesi.`:"Ancora nessun acquisto.";
 }
 function rosters(){$("rosterList").innerHTML=S.participants.map(n=>{let p=S.purchases.filter(x=>x.owner===n),sp=p.reduce((a,x)=>a+x.price,0);return `<div class="roster"><div class="rosterHead"><b>${n}</b><span>${S.initial-sp} cr</span></div><p>${p.length?p.map(x=>x.name+" ("+x.price+")").join(" · "):"Nessun acquisto"}</p></div>`}).join("")}
-let listRole="";
-function renderList(){
- const q=($("listSearch").value||"").toLowerCase().trim();
- const rows=db().filter(p=>(!listRole||String(p.role||"").toUpperCase()===listRole)&&(!q||String(p.name||"").toLowerCase().includes(q)||String(p.team||"").toLowerCase().includes(q))).sort((a,b)=>score(b)-score(a));
- $("listCount").textContent=rows.length+" giocatori trovati";
- $("listResults").innerHTML=rows.map((p,i)=>`<div class="listRow"><div class="listMain"><b>${p.name}</b><small>${p.team||"—"} · ${p.role||"—"} · Score ${score(p)}</small></div><div class="listVals">Q ${num(p.quote)||"—"}<small>FVM ${num(p.fvm)||"—"}</small><button class="listOpen" data-i="${i}">USA IN BRAIN</button></div></div>`).join("")||'<div class="muted">Nessun giocatore trovato.</div>';
- $("listResults").querySelectorAll(".listOpen").forEach((b,i)=>b.onclick=()=>{selected=rows[i];show("auction");$("player").value=rows[i].name;render()});
-}
 function targetRoster(){
  const slots=[
   {r:"P",n:1},{r:"D",n:3},{r:"C",n:4},{r:"A",n:3}
@@ -198,34 +183,16 @@ function targetRoster(){
  $("targetProgress").textContent=`${total}/11 titolari`;
  $("targetNote").textContent=total<11?"La rosa target si aggiorna automaticamente dopo ogni acquisto: i giocatori comprati escono dagli obiettivi.":"Undici titolari target completati. Ora Brain può suggerire le alternative e le riserve.";
 }
-function render(){ targetRoster(); $("myBudget").textContent=S.credits+" cr";brain();targets();grade();rosters();$("strategy").textContent=strategy();$("brainSummary").textContent=S.purchases.length?`${S.purchases.length} acquisti · ${strategy()}`:"Nessun movimento ancora."}
+function render(){ targetRoster(); $("myBudget").textContent=S.credits+" cr"; brain(); grade(); rosters(); if($("strategy")) $("strategy").textContent=strategy(); if($("brainSummary")) $("brainSummary").textContent=S.purchases.length?`${S.purchases.length} acquisti · ${strategy()}`:"Nessun movimento ancora."; }
 function assignBox(){$("assignList").innerHTML=S.participants.map((n,i)=>`<button class="participant ${n===S.myName?"mine":""}" data-i="${i}">${n}</button>`).join("");$("assignBox").classList.remove("hidden");$("assignList").querySelectorAll("button").forEach(b=>b.onclick=()=>assign(num(b.dataset.i)))}
 function assign(i){if(!selected)return;let pr=num($("price").value),owner=S.participants[i];if(!pr)return;if(owner===S.myName&&pr>S.credits){alert("Crediti insufficienti.");return}if(owner===S.myName)S.credits-=pr;S.purchases.push({name:selected.name,price:pr,owner});selected=null;$("player").value="";$("price").value=1;$("assignBox").classList.add("hidden");save();render()}
-$("count").oninput=names;$("myName").oninput=()=>{let x=document.querySelector(".pname");if(x)x.value=$("myName").value};$("start").onclick=configure;
+$("count").oninput=names;
+$("myName").oninput=()=>{let x=document.querySelector(".pname");if(x)x.value=$("myName").value};
+$("start").onclick=configure;
 document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>show(b.dataset.go));
-$("player").oninput=function(){
- selected=null;
- const a=find(this.value),b=$("suggestions");
- if(!a.length){b.classList.add("hidden");brain();return}
- const pr=num($("price").value);
- b.innerHTML=a.map((p,i)=>{
-   const m=lim(p), status=pr<=0?"INSERISCI PREZZO":pr>m?"LASCIA":pr>=m*.9?"ULTIMO RILANCIO":pr<=m*.7?"AFFARE":"RIALZA";
-   return `<button class="suggestion" data-i="${i}">
-     <div><b>${p.name}</b><small>${p.team||""} · ${p.role||""}</small></div>
-     <span class="miniBrain">🧠 ${status}<em>limite ${m}</em></span>
-   </button>`
- }).join("");
- b.classList.remove("hidden");
- b.querySelectorAll("button").forEach((x,i)=>x.onclick=()=>{
-   selected=a[i];
-   $("player").value=a[i].name;
-   b.classList.add("hidden");
-   render();
- });
- brain();
-};
-$("listSearch").oninput=renderList;$("syncListone").onclick=syncListone;$("listResults").onclick=e=>{};document.querySelectorAll("[data-role]").forEach(b=>b.onclick=()=>{listRole=b.dataset.role;renderList()});$("price").addEventListener("input",()=>{brain();});$("price").addEventListener("change",()=>{brain();});$("raise").onclick=()=>{$("price").value=num($("price").value)+1;brain()};$("pass").onclick=()=>{$("price").value=0;brain()};$("assign").onclick=assignBox;
-$("reset").onclick=()=>{if(confirm("Reset completo?")){localStorage.removeItem("ryh_v2");location.reload()}};
+function selectPlayer(p){selected=p;$("player").value=p.name;$("suggestions").classList.add("hidden");render();$("price").focus();}
+$("player").addEventListener("input",function(){const q=this.value.toLowerCase().trim();selected=null;const box=$("suggestions");if(!q){box.classList.add("hidden");brain();return}const a=find(q);if(a.length===1||a.some(p=>String(p.name||"").toLowerCase()===q)){selectPlayer(a.find(p=>String(p.name||"").toLowerCase()===q)||a[0]);return}box.innerHTML=a.map((p,i)=>{const m=lim(p),pr=Math.max(0,num($("price").value));const status=pr<=0?"INSERISCI PREZZO":pr>m?"LASCIA":pr>=m*.9?"ULTIMO RILANCIO":pr<=m*.7?"AFFARE":"RIALZA";return `<button type="button" class="suggestion" data-i="${i}"><div><b>${p.name}</b><small>${p.team||""} · ${p.role||""} · Q ${num(p.quote)||"—"} · FVM ${num(p.fvm)||"—"}</small></div><span class="miniBrain">🧠 ${status}<em>limite ${m}</em></span></button>`}).join("");box.classList.toggle("hidden",!a.length);box.querySelectorAll("button").forEach((b,i)=>b.onclick=()=>selectPlayer(a[i]));brain();});
+$("price").addEventListener("input",()=>brain());$("price").addEventListener("change",()=>brain());$("raise").onclick=()=>{$("price").value=num($("price").value)+1;brain()};$("pass").onclick=()=>{$("price").value=0;brain()};$("assign").onclick=assignBox;$("reset").onclick=()=>{if(confirm("Reset completo?")){localStorage.removeItem("ryh_v2");location.reload()}};
 load();if(S.configured){$("credits").value=S.initial;$("count").value=S.participants.length;$("myName").value=S.myName}names();render();
 })();
 </script></body></html>
