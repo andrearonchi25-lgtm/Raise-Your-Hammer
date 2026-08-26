@@ -27,7 +27,7 @@ input{width:100%;background:#0b141b;border:1px solid #304451;color:#fff;border-r
 .roster{padding:9px;border-bottom:1px solid #293844}.roster:last-child{border-bottom:0}.rosterHead{display:flex;justify-content:space-between}.rosterHead b{font-size:8px}.rosterHead span{font-size:6px;color:#e3c36c}.roster p{font-size:5px;color:#9aa7b0;margin:4px 0 0;line-height:1.5}
 .brain{border-color:#66552d;background:#18160f}.brain h3{margin:0;color:#e3c36c;font-size:10px}.brain p{font-size:7px;color:#bbb5a7;line-height:1.5}
 .muted{font-size:6px;color:#83919b}.hidden{display:none!important}
-.target{padding:10px;border:1px solid #304451;border-radius:10px;background:#111c24;margin-top:7px}.targetTop{display:flex;justify-content:space-between}.targetTop b{font-size:8px}.targetMeta{font-size:5px;color:#8d9aa3;margin-top:4px}.targetReason{font-size:6px;color:#b9c3ca;margin-top:4px}.grade{font-size:14px;color:#e3c36c}.roleBar{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:7px}.roleBox{background:#111c24;border-radius:7px;padding:7px;text-align:center}.roleBox small{display:block;font-size:4px;color:#82909c}.roleBox b{font-size:9px}.listRow{padding:10px;border-bottom:1px solid #293844;display:flex;justify-content:space-between;gap:8px;align-items:center}.listRow:last-child{border-bottom:0}.listMain b{font-size:8px}.listMain small{display:block;font-size:5px;color:#8997a1;margin-top:3px}.listVals{text-align:right;font-size:6px;color:#e3c36c;white-space:nowrap}.listVals small{display:block;color:#8997a1;font-size:4px}.listOpen{margin-top:5px;border:0;border-radius:7px;padding:5px 7px;background:#172630;color:#e3c36c;font-size:5px}.miniBrain{font-size:6px;color:#e3c36c;display:flex;flex-direction:column;align-items:flex-end;gap:2px}.miniBrain em{font-size:4px;color:#8e9ba4;font-style:normal}.suggestion{display:flex;justify-content:space-between;align-items:center;gap:8px;width:100%}.suggestion small{display:block;font-size:5px;color:#8997a1;margin-top:2px}</style>
+.target{padding:10px;border:1px solid #304451;border-radius:10px;background:#111c24;margin-top:7px}.targetTop{display:flex;justify-content:space-between}.targetTop b{font-size:8px}.targetMeta{font-size:5px;color:#8d9aa3;margin-top:4px}.targetReason{font-size:6px;color:#b9c3ca;margin-top:4px}.grade{font-size:14px;color:#e3c36c}.roleBar{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:7px}.roleBox{background:#111c24;border-radius:7px;padding:7px;text-align:center}.roleBox small{display:block;font-size:4px;color:#82909c}.roleBox b{font-size:9px}.listRow{padding:10px;border-bottom:1px solid #293844;display:flex;justify-content:space-between;gap:8px;align-items:center}.listRow:last-child{border-bottom:0}.listMain b{font-size:8px}.listMain small{display:block;font-size:5px;color:#8997a1;margin-top:3px}.listVals{text-align:right;font-size:6px;color:#e3c36c;white-space:nowrap}.listVals small{display:block;color:#8997a1;font-size:4px}.listOpen{margin-top:5px;border:0;border-radius:7px;padding:5px 7px;background:#172630;color:#e3c36c;font-size:5px}.miniBrain{font-size:6px;color:#e3c36c;display:flex;flex-direction:column;align-items:flex-end;gap:2px}.miniBrain em{font-size:4px;color:#8e9ba4;font-style:normal}.suggestion{display:flex;justify-content:space-between;align-items:center;gap:8px;width:100%}.suggestion small{display:block;font-size:5px;color:#8997a1;margin-top:2px}.targetGrid{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:7px}.targetSlot{padding:7px;border-radius:8px;background:#111c24;border:1px solid #293844}.targetSlot.done{border-color:#6f8b61}.targetSlot b{font-size:7px}.targetSlot small{display:block;font-size:5px;color:#8997a1;margin-top:3px}.targetSlot .pick{font-size:6px;color:#e3c36c;margin-top:4px}.miniBrain{font-size:6px;color:#e3c36c;display:flex;flex-direction:column;align-items:flex-end;gap:2px}.miniBrain em{font-size:4px;color:#8e9ba4;font-style:normal}.suggestion{display:flex;justify-content:space-between;align-items:center;gap:8px;width:100%}</style>
 </head>
 <body>
 <div class="app">
@@ -97,16 +97,48 @@ function score(p){return Math.max(0,Math.min(100,num(p.score)||num(p.fantasyScor
 function lim(p){let q=num(p.quote),f=num(p.fvm),sc=score(p);return Math.max(q||1,Math.round((f?f/10:Math.max(q+5,sc*.8))*(1+(sc-70)/220)))}
 function mine(){return S.purchases.filter(x=>x.owner===S.myName)}
 function brain(){
- if(!selected){$("decisionText").textContent="Cerca un giocatore";$("reason").textContent="Scrivi il nome e selezionalo.";return}
- let pr=num($("price").value),sc=score(selected),m=lim(selected);$("score").textContent=sc;$("fvm").textContent=num(selected.fvm)||"—";$("limit").textContent=m;
- let d=$("decision"),t=$("decisionText"),r=$("reason");
- if(pr>m){t.textContent="🛑 LASCIA";r.textContent=`${pr} supera il limite ${m}.`;d.className="decision stop"}
- else if(pr>=m*.9){t.textContent="⚠️ ULTIMO RILANCIO";r.textContent=`Puoi arrivare a ${m}, poi fermati.`;d.className="decision warn"}
- else if(pr<=m*.7){t.textContent="💰 AFFARE";r.textContent="Prezzo molto sotto il limite.";d.className="decision good"}
- else if(sc>=84){t.textContent="🟢 PRENDI";r.textContent=`Obiettivo forte entro ${m}.`;d.className="decision good"}
- else{t.textContent="🔨 RIALZA";r.textContent=`Rilancia senza superare ${m}.`;d.className="decision warn"}
+ const action=$("decisionText"), reason=$("reason"), d=$("decision");
+ if(!selected){
+   if(action) action.textContent="CERCA UN GIOCATORE";
+   if(reason) reason.textContent="Scrivi il nome del giocatore chiamato.";
+   if(d) d.className="decision";
+   if($("brainAction")) $("brainAction").textContent="—";
+   if($("brainDetail")) $("brainDetail").textContent="Seleziona un giocatore e inserisci il prezzo corrente.";
+   return;
+ }
+ const pr=Math.max(0,num($("price").value));
+ const sc=score(selected);
+ const baseQuote=num(selected.quote)||0, fvm=num(selected.fvm)||0;
+ // Limit: uses the uploaded listone FVM when available, quote as floor,
+ // and scales by player score. This makes every price input actionable.
+ let limit=lim(selected);
+ if(!limit || !isFinite(limit)) limit=Math.max(1,Math.round(baseQuote||fvm/10||sc*.8));
+ limit=Math.max(1,Math.round(limit));
+ $("score").textContent=sc;
+ $("fvm").textContent=fvm||"—";
+ $("limit").textContent=limit;
+
+ let label, why, cls;
+ if(pr<=0){label="👀 OSSERVA";why=`Limite strategico ${limit}. Inserisci il prezzo attuale per decidere.`;cls="decision";}
+ else if(pr>limit){label="🛑 LASCIA";why=`Prezzo ${pr}: supera il tuo limite di ${limit}. Non inseguire il giocatore.`;cls="decision stop";}
+ else if(pr===limit){label="⚠️ ULTIMO RILANCIO";why=`Se lo vuoi, questo è il tetto: ${limit}. Nessun rilancio oltre.`;cls="decision warn";}
+ else if(pr>=Math.ceil(limit*.9)){label="⚠️ ULTIMO RILANCIO";why=`Sei a ${pr}/${limit}. Hai ancora ${limit-pr} crediti di margine.`;cls="decision warn";}
+ else if(pr<=Math.floor(limit*.7)){label="🟢 RILANCIA";why=`Prezzo molto interessante: ${pr}/${limit}. Margine ${limit-pr}.`;cls="decision good";}
+ else{label="🔨 RIALZA";why=`Prezzo accettabile: ${pr}/${limit}. Margine ${limit-pr}.`;cls="decision warn";}
+ if(action) action.textContent=label;
+ if(reason) reason.textContent=why;
+ if(d) d.className=cls;
  $("liveAdvice").textContent=`${selected.name}: ${strategy()}`;
- $("playerInfo").textContent=[selected.team?"Squadra: "+selected.team:"",selected.role?"Ruolo: "+selected.role:"",selected.goals!=null?"Gol: "+selected.goals:"",selected.assists!=null?"Assist: "+selected.assists:""].filter(Boolean).join(" · ")||"Statistiche disponibili limitate."
+ if($("brainAction")) $("brainAction").textContent=label;
+ if($("brainDetail")) $("brainDetail").textContent=`Prezzo ${pr} · Limite ${limit} · Margine ${Math.max(0,limit-pr)} · Budget tuo ${S.credits} · ${strategy()}`;
+ $("playerInfo").textContent=[
+   selected.team?"Squadra: "+selected.team:"",
+   selected.role?"Ruolo: "+selected.role:"",
+   selected.rm?"Macro-ruolo: "+selected.rm:"",
+   selected.quote!=null?"Quotazione: "+selected.quote:"",
+   selected.fvm!=null?"FVM: "+selected.fvm:"",
+   selected.diff!=null?"Diff.: "+selected.diff:""
+ ].filter(Boolean).join(" · ")||"Dati listone disponibili.";
 }
 function strategy(){
  let av=S.participants.filter(x=>x!==S.myName).map(n=>{let p=S.purchases.filter(x=>x.owner===n),sp=p.reduce((a,x)=>a+x.price,0);return{name:n,spent:sp,budget:S.initial-sp,count:p.length}});if(!S.purchases.length)return"Brain sta raccogliendo i primi segnali.";
@@ -135,7 +167,38 @@ function renderList(){
  $("listResults").innerHTML=rows.map((p,i)=>`<div class="listRow"><div class="listMain"><b>${p.name}</b><small>${p.team||"—"} · ${p.role||"—"} · Score ${score(p)}</small></div><div class="listVals">Q ${num(p.quote)||"—"}<small>FVM ${num(p.fvm)||"—"}</small><button class="listOpen" data-i="${i}">USA IN BRAIN</button></div></div>`).join("")||'<div class="muted">Nessun giocatore trovato.</div>';
  $("listResults").querySelectorAll(".listOpen").forEach((b,i)=>b.onclick=()=>{selected=rows[i];show("auction");$("player").value=rows[i].name;render()});
 }
-function render(){ $("myBudget").textContent=S.credits+" cr";brain();targets();grade();rosters();$("strategy").textContent=strategy();$("brainSummary").textContent=S.purchases.length?`${S.purchases.length} acquisti · ${strategy()}`:"Nessun movimento ancora."}
+function targetRoster(){
+ const slots=[
+  {r:"P",n:1},{r:"D",n:3},{r:"C",n:4},{r:"A",n:3}
+ ];
+ const bought=mine();
+ const used=new Set(bought.map(x=>String(x.name).toLowerCase()));
+ const picks={P:[],D:[],C:[],A:[]};
+ bought.forEach(x=>{const p=db().find(y=>String(y.name).toLowerCase()===String(x.name).toLowerCase());if(p&&picks[p.role])picks[p.role].push(p)});
+ const html=[];
+ slots.forEach(slot=>{
+   for(let i=0;i<slot.n;i++){
+     const done=picks[slot.r][i];
+     let target=done;
+     if(!target){
+       target=db().filter(p=>String(p.role||"").toUpperCase()===slot.r&&!used.has(String(p.name).toLowerCase()))
+         .sort((a,b)=>score(b)-score(a))[0];
+     }
+     const roleName={P:"PORTIERE",D:"DIFENSORE",C:"CENTROCAMPISTA",A:"ATTACCANTE"}[slot.r];
+     html.push(`<div class="targetSlot ${done?"done":""}">
+       <b>${roleName} ${i+1}</b>
+       <small>${done?"✓ ACQUISTATO":"OBIETTIVO"}</small>
+       <div class="pick">${target?target.name:"Da scegliere"}</div>
+       ${target?`<small>${target.team||""} · Q ${num(target.quote)||"—"} · FVM ${num(target.fvm)||"—"} · limite ${lim(target)}</small>`:""}
+     </div>`);
+   }
+ });
+ const total=Object.values(picks).reduce((a,v)=>a+v.length,0);
+ $("targetRoster").innerHTML=html.join("");
+ $("targetProgress").textContent=`${total}/11 titolari`;
+ $("targetNote").textContent=total<11?"La rosa target si aggiorna automaticamente dopo ogni acquisto: i giocatori comprati escono dagli obiettivi.":"Undici titolari target completati. Ora Brain può suggerire le alternative e le riserve.";
+}
+function render(){ targetRoster(); $("myBudget").textContent=S.credits+" cr";brain();targets();grade();rosters();$("strategy").textContent=strategy();$("brainSummary").textContent=S.purchases.length?`${S.purchases.length} acquisti · ${strategy()}`:"Nessun movimento ancora."}
 function assignBox(){$("assignList").innerHTML=S.participants.map((n,i)=>`<button class="participant ${n===S.myName?"mine":""}" data-i="${i}">${n}</button>`).join("");$("assignBox").classList.remove("hidden");$("assignList").querySelectorAll("button").forEach(b=>b.onclick=()=>assign(num(b.dataset.i)))}
 function assign(i){if(!selected)return;let pr=num($("price").value),owner=S.participants[i];if(!pr)return;if(owner===S.myName&&pr>S.credits){alert("Crediti insufficienti.");return}if(owner===S.myName)S.credits-=pr;S.purchases.push({name:selected.name,price:pr,owner});selected=null;$("player").value="";$("price").value=1;$("assignBox").classList.add("hidden");save();render()}
 $("count").oninput=names;$("myName").oninput=()=>{let x=document.querySelector(".pname");if(x)x.value=$("myName").value};$("start").onclick=configure;
@@ -161,7 +224,7 @@ $("player").oninput=function(){
  });
  brain();
 };
-$("listSearch").oninput=renderList;$("syncListone").onclick=syncListone;$("listResults").onclick=e=>{};document.querySelectorAll("[data-role]").forEach(b=>b.onclick=()=>{listRole=b.dataset.role;renderList()});$("price").oninput=()=>{brain(); if($("player").value.trim()) $("player").dispatchEvent(new Event("input"))};$("raise").onclick=()=>{$("price").value=num($("price").value)+1;brain()};$("pass").onclick=()=>{$("price").value=0;brain()};$("assign").onclick=assignBox;
+$("listSearch").oninput=renderList;$("syncListone").onclick=syncListone;$("listResults").onclick=e=>{};document.querySelectorAll("[data-role]").forEach(b=>b.onclick=()=>{listRole=b.dataset.role;renderList()});$("price").addEventListener("input",()=>{brain();});$("price").addEventListener("change",()=>{brain();});$("raise").onclick=()=>{$("price").value=num($("price").value)+1;brain()};$("pass").onclick=()=>{$("price").value=0;brain()};$("assign").onclick=assignBox;
 $("reset").onclick=()=>{if(confirm("Reset completo?")){localStorage.removeItem("ryh_v2");location.reload()}};
 load();if(S.configured){$("credits").value=S.initial;$("count").value=S.participants.length;$("myName").value=S.myName}names();render();
 })();
