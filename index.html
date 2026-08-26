@@ -29,7 +29,7 @@ input{width:100%;background:#0b141b;border:1px solid #304451;color:#fff;border-r
 .muted{font-size:6px;color:#83919b}.hidden{display:none!important}
 .target{padding:10px;border:1px solid #304451;border-radius:10px;background:#111c24;margin-top:7px}.targetTop{display:flex;justify-content:space-between}.targetTop b{font-size:8px}.targetMeta{font-size:5px;color:#8d9aa3;margin-top:4px}.targetReason{font-size:6px;color:#b9c3ca;margin-top:4px}.grade{font-size:14px;color:#e3c36c}.roleBar{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:7px}.roleBox{background:#111c24;border-radius:7px;padding:7px;text-align:center}.roleBox small{display:block;font-size:4px;color:#82909c}.roleBox b{font-size:9px}.listRow{padding:10px;border-bottom:1px solid #293844;display:flex;justify-content:space-between;gap:8px;align-items:center}.listRow:last-child{border-bottom:0}.listMain b{font-size:8px}.listMain small{display:block;font-size:5px;color:#8997a1;margin-top:3px}.listVals{text-align:right;font-size:6px;color:#e3c36c;white-space:nowrap}.listVals small{display:block;color:#8997a1;font-size:4px}.listOpen{margin-top:5px;border:0;border-radius:7px;padding:5px 7px;background:#172630;color:#e3c36c;font-size:5px}.miniBrain{font-size:6px;color:#e3c36c;display:flex;flex-direction:column;align-items:flex-end;gap:2px}.miniBrain em{font-size:4px;color:#8e9ba4;font-style:normal}.suggestion{display:flex;justify-content:space-between;align-items:center;gap:8px;width:100%}.suggestion small{display:block;font-size:5px;color:#8997a1;margin-top:2px}.targetGrid{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:7px}.targetSlot{padding:7px;border-radius:8px;background:#111c24;border:1px solid #293844}.targetSlot.done{border-color:#6f8b61}.targetSlot b{font-size:7px}.targetSlot small{display:block;font-size:5px;color:#8997a1;margin-top:3px}.targetSlot .pick{font-size:6px;color:#e3c36c;margin-top:4px}.miniBrain{font-size:6px;color:#e3c36c;display:flex;flex-direction:column;align-items:flex-end;gap:2px}.miniBrain em{font-size:4px;color:#8e9ba4;font-style:normal}.suggestion{display:flex;justify-content:space-between;align-items:center;gap:8px;width:100%}.cfgGrid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.cfgName{margin:3px 0;font-size:8px}.targetGrid{display:grid;grid-template-columns:1fr 1fr;gap:5px}.targetSlot{padding:7px;border-radius:8px;background:#111c24;border:1px solid #293844}.targetSlot.done{border-color:#6f8b61}.targetSlot b{font-size:7px}.targetSlot small{display:block;font-size:5px;color:#8997a1;margin-top:3px}.targetSlot .pick{font-size:6px;color:#e3c36c;margin-top:4px}.liveRoster{padding:7px 0;border-bottom:1px solid #293844}.liveRoster:last-child{border-bottom:0}.liveRosterHead{display:flex;justify-content:space-between}.liveRosterHead b{font-size:7px}.liveRosterHead span{font-size:6px;color:#e3c36c}.liveRosterPlayers{font-size:5px;color:#9aa7b0;margin-top:3px;line-height:1.5}.liveRoster.me .liveRosterHead b{color:#e3c36c}.strategyLine{padding:5px 0;border-bottom:1px solid #293844}.strategyLine:last-child{border-bottom:0}
 .rivalCard{padding:9px;border:1px solid #293844;border-radius:9px;background:#111c24;margin-top:6px}.rivalHead{display:flex;justify-content:space-between}.rivalHead b{font-size:8px}.rivalHead span{font-size:6px;color:#e3c36c}.rivalMeta{font-size:5px;color:#8997a1;margin-top:3px;line-height:1.5}.rivalNeed{font-size:6px;color:#b9c3ca;margin-top:4px}
-</style>
+.guideLine{padding:5px 0;border-bottom:1px solid #293844}.guideLine:last-child{border-bottom:0}.guideWarn{color:#e3c36c}.guideBad{color:#ff9b9b}</style>
 </head>
 <body>
 <div class="app">
@@ -72,7 +72,7 @@ input{width:100%;background:#0b141b;border:1px solid #304451;color:#fff;border-r
 <p id="strategy">Configura l'asta e assegna gli acquisti: Brain aggiornerà la strategia dopo ogni movimento.</p>
 <div id="strategyMode" style="font-size:12px;font-weight:1000;color:#e3c36c;margin-top:7px">EQUILIBRIO</div>
 <div id="strategyReason" class="muted" style="margin-top:4px"></div>
-<div id="livePriceBrain" style="margin-top:5px;font-size:8px;font-weight:1000"></div><div id="auctionAvgBrain" class="muted" style="margin-top:4px"></div><div id="strategyPlan" style="margin-top:7px;font-size:7px;line-height:1.5"></div>
+<div id="livePriceBrain" style="margin-top:5px;font-size:8px;font-weight:1000"></div><div id="auctionAvgBrain" class="muted" style="margin-top:4px"></div><div id="strategyPlan" style="margin-top:7px;font-size:7px;line-height:1.5"></div><div id="guideBrain" class="info" style="margin-top:7px">📚 Brain usa anche le regole strategiche della guida all'asta.</div>
 </div>
 <div class="card"><div class="top"><b>👥 PROFILI AVVERSARI</b><span id="rivalCount" class="budget">0</span></div><div id="rivalProfiles"></div></div>
 <div class="card"><h2>Situazione</h2><div id="brainSummary" class="muted">Nessun movimento ancora.</div></div>
@@ -169,6 +169,7 @@ function brain(){
  const pr=Math.max(0,num($("price").value));
  const sc=score(selected), q=num(selected.quote), fvm=num(selected.fvm);
  const base=Math.max(2,num(lim(selected))||q||Math.round(fvm/10)||Math.round(sc*.8)||10);
+ const guide=guideContext(selected,pr);
 
  // Prezzo consigliato: punto di partenza tecnico del giocatore,
  // adattato al mercato e alla situazione dell'asta, ma NON mostrato come media d'asta.
@@ -204,6 +205,10 @@ function brain(){
  if(missing>=3)suggested=Math.round(suggested*1.08);
  else if(missing===2)suggested=Math.round(suggested*1.05);
  else if(missing===0)suggested=Math.round(suggested*.97);
+ if(guide.roleSpent>guide.roleTarget*1.10)suggested=Math.round(suggested*.92);
+ else if(guide.roleSpent<guide.roleTarget*.65&&guide.role==='D')suggested=Math.round(suggested*1.04);
+ if(guide.isBomber)suggested=Math.min(suggested,guide.bomberCap);
+ if(guide.sameTeamRole&&pr>0&&pr>suggested*.70)suggested=Math.round(suggested*.94);
 
  // LIVE AUCTION ADJUSTMENT:
  // Every recorded purchase changes the recommendation. Strong inflation in the
@@ -254,6 +259,7 @@ function brain(){
  }else{
   label="🛑 LASCIA";
   why=`${pr} cr supera il prezzo consigliato di ${recommended} cr.`;
+  if(guide.isBomber&&pr>guide.bomberCap)why+=` Limite guida bomber: ${guide.bomberCap} cr.`;
   cls="decision stop";
  }
 
@@ -272,6 +278,43 @@ function brain(){
    selected.quote!=null?"Quotazione: "+selected.quote:"",
    selected.fvm!=null?"FVM: "+selected.fvm:""
  ].filter(Boolean).join(" · ")||"Dati listone disponibili.";
+}
+function guideRoleBudget(role){
+ const pct={P:.07,D:.185,C:.315,A:.425};
+ return pct[String(role||'').toUpperCase()]||.25;
+}
+function guideContext(p,price){
+ const role=String(p?.role||'').toUpperCase(), my=mine();
+ const spent=my.reduce((a,x)=>a+num(x.price),0), roleSpent=my.filter(x=>{const q=db().find(y=>String(y.name).toLowerCase()===String(x.name).toLowerCase());return String(q?.role||x.role||'').toUpperCase()===role}).reduce((a,x)=>a+num(x.price),0);
+ const roleTarget=Math.round(num(S.initial)*guideRoleBudget(role));
+ const bomberCap=Math.floor(num(S.initial)*.30), isBomber=role==='A'&&score(p)>=85;
+ const sameTeamRole=my.some(x=>{const q=db().find(y=>String(y.name).toLowerCase()===String(x.name).toLowerCase());return q&&q.team===p.team&&String(q.role||'').toUpperCase()===role});
+ const fvm=num(p.fvm), valueGap=fvm-price, warnings=[];
+ if(isBomber&&price>bomberCap)warnings.push(`Bomber oltre il 30% del budget (${bomberCap} cr).`);
+ if(roleSpent>roleTarget*1.10)warnings.push(`Reparto ${role} già sopra il budget guida.`);
+ if(sameTeamRole)warnings.push('Hai già un giocatore dello stesso club nel reparto: diversifica salvo affare.');
+ if(price>0&&fvm>0&&price>fvm*1.15)warnings.push('Prezzo oltre il FVM: evita la guerra di prezzo.');
+ return {role,roleSpent,roleTarget,bomberCap,isBomber,sameTeamRole,fvm,valueGap,warnings};
+}
+function renderDynamicBrain(){
+ const box=$('strategyPlan'); if(!box||!S.configured)return;
+ const q=String($('player')?.value||'').trim().toLowerCase();
+ const p=selected||db().find(x=>String(x.name).toLowerCase()===q); const price=Math.max(0,num($('price')?.value));
+ if(!p){
+  box.innerHTML=`<div class="guideLine">📚 <b>Guida integrata:</b> equilibrio della rosa + adattamento all'asta reale.</div><div class="guideLine">💰 Budget guida: P 6–8% · D 17–20% · C 30–33% · A 40–45%.</div><div class="guideLine">🔥 Singolo bomber: massimo 30% del budget.</div><div class="guideLine">🛡️ Se la difesa viene sottovalutata, Brain segnala l'opportunità.</div>`;
+  if($('guideBrain'))$('guideBrain').innerHTML='📚 <b>Regole attive:</b> equilibrio · valore/FVM · diversificazione · controllo bomber · crediti avversari.';
+  return;
+ }
+ const c=guideContext(p,price), rolePct=Math.round(guideRoleBudget(c.role)*100);
+ const rivals=S.participants.filter(x=>x!==S.myName).map(n=>{const a=S.purchases.filter(x=>x.owner===n),sp=a.reduce((t,x)=>t+num(x.price),0);return{name:n,budget:S.initial-sp}}).sort((a,b)=>b.budget-a.budget);
+ const lines=[`🎯 <b>${p.name}</b>: budget guida ${c.role} ${rolePct}% ≈ ${Math.round(S.initial*guideRoleBudget(c.role))} cr.`,`💰 ${c.role}: già spesi ${c.roleSpent} cr · target reparto ${c.roleTarget} cr.`];
+ if(c.isBomber)lines.push(`🔥 Bomber: tetto individuale ${c.bomberCap} cr.`);
+ if(c.sameTeamRole)lines.push('🧩 Diversificazione: stesso club/reparto già presente → Brain abbassa la priorità salvo affare.');
+ if(c.fvm)lines.push(`${c.valueGap>=0?'🟢 Valore favorevole':'🟡 Sopra FVM'}: FVM ${c.fvm} · prezzo ${price||'—'}.`);
+ if(rivals[0])lines.push(`👁️ Avversario con più margine: ${rivals[0].name} · ${rivals[0].budget} cr residui.`);
+ lines.push('⏱️ Tattica guida: osserva i rilanci, entra vicino al tuo limite e non inseguire oltre soglia.');
+ box.innerHTML=lines.map(x=>`<div class="guideLine">${x}</div>`).join('');
+ if($('guideBrain'))$('guideBrain').innerHTML=c.warnings.length?`⚠️ <b>Brain segnala:</b> ${c.warnings.join(' ')}`:'📚 <b>Guida applicata:</b> equilibrio di reparto, valore/FVM, diversificazione e disciplina sul prezzo.';
 }
 function strategy(){
  let av=S.participants.filter(x=>x!==S.myName).map(n=>{let p=S.purchases.filter(x=>x.owner===n),sp=p.reduce((a,x)=>a+x.price,0);return{name:n,spent:sp,budget:S.initial-sp,count:p.length}});if(!S.purchases.length)return"Brain sta raccogliendo i primi segnali.";
@@ -401,8 +444,8 @@ $("player").addEventListener("input",function(){
  box.querySelectorAll("[data-i]").forEach(b=>b.addEventListener("click",()=>selectPlayer(a[Number(b.dataset.i)])));
  brain();
 });
-$("price").addEventListener("input",brain);
-$("price").addEventListener("change",brain);
+$("price").addEventListener("input",()=>{brain();renderDynamicBrain();});
+$("price").addEventListener("change",()=>{brain();renderDynamicBrain();});
 $("price").addEventListener("input",updateBrainLivePrice);
 $("price").addEventListener("change",updateBrainLivePrice);
 $("price").addEventListener("keyup",updateBrainLivePrice);
