@@ -156,44 +156,71 @@ function brain(){
  if(!selected){
   if(action)action.textContent=typed?"SELEZIONA IL GIOCATORE":"CERCA UN GIOCATORE";
   if(reason)reason.textContent=typed?"Scegli il nome dal listone per attivare il consiglio completo.":"Scrivi il nome del giocatore chiamato.";
-  if(d)d.className="decision"; if($("brainAction"))$("brainAction").textContent="—";
-  if($("brainDetail"))$("brainDetail").textContent="Brain si attiva appena il giocatore viene riconosciuto."; if($("auctionAvgBrain"))$("auctionAvgBrain").textContent=""; return;
+  if(d)d.className="decision";
+  if($("brainAction"))$("brainAction").textContent="—";
+  if($("brainDetail"))$("brainDetail").textContent="Brain si attiva appena il giocatore viene riconosciuto.";
+  if($("auctionAvgBrain"))$("auctionAvgBrain").textContent="";
+  return;
  }
- const pr=Math.max(0,num($("price").value)),sc=score(selected),q=num(selected.quote),fvm=num(selected.fvm);
- const auctionAvg=auctionAverageForPlayer(selected);
+ const pr=Math.max(0,num($("price").value)), sc=score(selected), q=num(selected.quote), fvm=num(selected.fvm);
  const base=Math.max(2,num(lim(selected))||q||Math.round(fvm/10)||Math.round(sc*.8)||10);
- const mr=marketRef(selected);
- let market=mr!==null?num(mr):base;
- const role=String(selected.role||"").toUpperCase(), mineNow=mine();
- const sameRole=(S.purchases||[]).filter(x=>{const p=db().find(y=>String(y.name).toLowerCase()===String(x.name).toLowerCase());return String(p?.role||x.role||"").toUpperCase()===role&&num(x.price)>0});
- if(mr!==null&&sameRole.length){const avg=sameRole.reduce((a,x)=>a+num(x.price),0)/sameRole.length;market=Math.round(mr*.75+avg*.25)}
+ const auctionAvg=auctionAverageForPlayer(selected);
+
+ const mineNow=mine();
  const mySpent=mineNow.reduce((a,x)=>a+num(x.price),0);
- const credits=Math.max(0,num(S.initial||S.credits)-mySpent),slots=Math.max(1,25-mineNow.length);
- const minPerSlot=Math.max(3,Math.ceil(num(S.initial||500)*.01));
- const reserve=Math.min(credits,Math.max(0,slots-1)*minPerSlot);
- const spendable=Math.max(2,credits-reserve);
- let limit=Math.round(base*.35+market*.65);
- const target={P:3,D:8,C:8,A:6};
- const roleOwned=mineNow.filter(x=>{const p=db().find(y=>String(y.name).toLowerCase()===String(x.name).toLowerCase());return String(p?.role||x.role||"").toUpperCase()===role}).length;
- const missing=Math.max(0,(target[role]||0)-roleOwned);
- if(missing>=3)limit=Math.round(limit*1.10); else if(missing===2)limit=Math.round(limit*1.06); else if(missing===1)limit=Math.round(limit*1.03);
- if(sameRole.length>=2){const avg=sameRole.reduce((a,x)=>a+num(x.price),0)/sameRole.length;if(avg>market*1.08)limit=Math.round(limit*1.08);else if(avg<market*.85)limit=Math.round(limit*.95)}
- limit=Math.max(2,Math.min(Math.round(limit),Math.round(spendable)));
- $("score").textContent=sc;$("fvm").textContent=fvm||"—";$("limit").textContent=limit;
+ const credits=Math.max(0,num(S.initial||S.credits)-mySpent);
+
+ // The strategic limit is EXACTLY the real auction average for the selected format.
+ // No technical-value or budget fallback is presented as an auction average.
+ const limit=(auctionAvg&&Number.isFinite(num(auctionAvg.value))&&num(auctionAvg.value)>0)
+   ?Math.round(num(auctionAvg.value)):null;
+
+ $("score").textContent=sc;
+ $("fvm").textContent=fvm||"—";
+ $("limit").textContent=limit===null?"—":limit;
+
  let label,why,cls;
- if(pr<=0){label="👀 OSSERVA";why=`Limite strategico ${limit}. Inserisci il prezzo attuale.`;cls="decision"}
- else if(pr>limit){label="🛑 LASCIA";why=`${pr} cr supera il limite strategico di ${limit}.`;cls="decision stop"}
- else if(pr>=Math.ceil(limit*.9)){label="⚠️ ULTIMO RILANCIO";why=`${pr}/${limit}: sei vicino al tetto.`;cls="decision warn"}
- else if(pr<=Math.floor(limit*.7)){label="🟢 AFFARE / RILANCIA";why=`${pr}/${limit}: prezzo molto interessante.`;cls="decision good"}
- else{label="🔨 RIALZA";why=`${pr}/${limit}: prezzo ancora sostenibile.`;cls="decision warn"}
- if(action)action.textContent=label;if(reason)reason.textContent=why;if(d)d.className=cls;
- $("liveAdvice").textContent=`${selected.name}: ${label}`;
+ if(limit===null){
+   label="⚪ MEDIA NON DISPONIBILE";
+   why="Non ci sono dati 2026/27 sufficienti per calcolare un prezzo medio d'asta affidabile.";
+   cls="decision";
+ }else if(pr<=0){
+   label="👀 OSSERVA";
+   why=`Prezzo medio aste: ${limit} cr. Inserisci il prezzo attuale.`;
+   cls="decision";
+ }else if(pr>limit){
+   label="🛑 LASCIA";
+   why=`${pr} cr supera il prezzo medio delle aste di ${limit} cr.`;
+   cls="decision stop";
+ }else if(pr>=Math.ceil(limit*.9)){
+   label="⚠️ ULTIMO RILANCIO";
+   why=`${pr}/${limit}: sei molto vicino al prezzo medio d'asta.`;
+   cls="decision warn";
+ }else if(pr<=Math.floor(limit*.7)){
+   label="🟢 AFFARE / RILANCIA";
+   why=`${pr}/${limit}: sei ben sotto il prezzo medio d'asta.`;
+   cls="decision good";
+ }else{
+   label="🔨 RIALZA";
+   why=`${pr}/${limit}: sei ancora sotto il prezzo medio d'asta.`;
+   cls="decision warn";
+ }
+
+ if(action)action.textContent=label;
+ if(reason)reason.textContent=why;
+ if(d)d.className=cls;
+ if($("liveAdvice"))$("liveAdvice").textContent=`${selected.name}: ${label}`;
  if($("brainAction"))$("brainAction").textContent=label;
- if($("brainDetail"))$("brainDetail").textContent=`Prezzo ${pr} · Limite ${limit} · Mercato ${Math.round(market)} · Budget ${credits} · Riserva ${reserve}`;
+ if($("brainDetail"))$("brainDetail").textContent=`Prezzo ${pr} · Media aste ${limit===null?"—":limit} · Budget ${credits}`;
  if($("auctionAvgBrain"))$("auctionAvgBrain").textContent=auctionAvg
-   ?`📊 Prezzo medio nelle aste: ${Math.round(auctionAvg.value)} cr (${auctionAvg.label}) · 8×350 ${Math.round(auctionAvg.values[0])} · 10×350 ${Math.round(auctionAvg.values[1])} · 8×500 ${Math.round(auctionAvg.values[2])} · 10×500 ${Math.round(auctionAvg.values[3])}`
+   ?`📊 Prezzo medio nelle aste: ${Math.round(auctionAvg.value)} cr (${auctionAvg.label})`
    :"📊 Prezzo medio nelle aste: dati 2026/27 non ancora sufficienti per questo giocatore.";
- $("playerInfo").textContent=[selected.team?"Squadra: "+selected.team:"",selected.role?"Ruolo: "+selected.role:"",selected.quote!=null?"Quotazione: "+selected.quote:"",selected.fvm!=null?"FVM: "+selected.fvm:""].filter(Boolean).join(" · ")||"Dati listone disponibili.";
+ if($("playerInfo"))$("playerInfo").textContent=[
+   selected.team?"Squadra: "+selected.team:"",
+   selected.role?"Ruolo: "+selected.role:"",
+   selected.quote!=null?"Quotazione: "+selected.quote:"",
+   selected.fvm!=null?"FVM: "+selected.fvm:""
+ ].filter(Boolean).join(" · ")||"Dati listone disponibili.";
 }
 function strategy(){
  let av=S.participants.filter(x=>x!==S.myName).map(n=>{let p=S.purchases.filter(x=>x.owner===n),sp=p.reduce((a,x)=>a+x.price,0);return{name:n,spent:sp,budget:S.initial-sp,count:p.length}});if(!S.purchases.length)return"Brain sta raccogliendo i primi segnali.";
