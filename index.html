@@ -72,7 +72,7 @@ input{width:100%;background:#0b141b;border:1px solid #304451;color:#fff;border-r
 <p id="strategy">Configura l'asta e assegna gli acquisti: Brain aggiornerà la strategia dopo ogni movimento.</p>
 <div id="strategyMode" style="font-size:12px;font-weight:1000;color:#e3c36c;margin-top:7px">EQUILIBRIO</div>
 <div id="strategyReason" class="muted" style="margin-top:4px"></div>
-<div id="strategyPlan" style="margin-top:7px;font-size:7px;line-height:1.5"></div>
+<div id="livePriceBrain" style="margin-top:5px;font-size:8px;font-weight:1000"></div><div id="strategyPlan" style="margin-top:7px;font-size:7px;line-height:1.5"></div>
 </div>
 <div class="card"><div class="top"><b>👥 PROFILI AVVERSARI</b><span id="rivalCount" class="budget">0</span></div><div id="rivalProfiles"></div></div>
 <div class="card"><h2>Situazione</h2><div id="brainSummary" class="muted">Nessun movimento ancora.</div></div>
@@ -111,43 +111,57 @@ function marketRef(p){
  const k=Object.keys(market).find(x=>x.toLowerCase()===String(p.name).toLowerCase());
  return k?market[k]:null;
 }
+function updateBrainLivePrice(){
+ const el=$("livePriceBrain");
+ if(!el)return;
+ const name=String($("player")?.value||"").trim();
+ const p=selected||db().find(x=>String(x.name).toLowerCase()===name.toLowerCase())||find(name)[0];
+ const price=Math.max(0,num($("price")?.value));
+ if(!p||price<=0){el.textContent="";return}
+ const limit=lim(p), pct=limit?price/limit:0;
+ const msg=pct<=.70?"🔥 AFFARE":pct<=.90?"🟢 RIALZA":pct<=1?"🟡 ULTIMO RILANCIO":"🔴 LASCIA";
+ el.textContent=`PREZZO LIVE: ${price} cr → ${msg} · limite attuale ${limit} cr`;
+}
 function brain(){
  const action=$("decisionText"), reason=$("reason"), d=$("decision");
  const typed=String($("player").value||"").trim();
- if(!selected && typed){
-   const a=find(typed); const exact=a.find(p=>String(p.name).toLowerCase()===typed.toLowerCase());
-   if(exact) selected=exact;
- }
+ if(!selected&&typed){const a=find(typed),exact=a.find(p=>String(p.name).toLowerCase()===typed.toLowerCase());if(exact)selected=exact}
  if(!selected){
-   if(action) action.textContent=typed?"SELEZIONA IL GIOCATORE":"CERCA UN GIOCATORE";
-   if(reason) reason.textContent=typed?"Scegli il nome dal listone per attivare il consiglio completo.":"Scrivi il nome del giocatore chiamato.";
-   if(d)d.className="decision";
-   if($("brainAction"))$("brainAction").textContent="—";
-   if($("brainDetail"))$("brainDetail").textContent="Brain si attiva appena il giocatore viene riconosciuto.";
-   return;
+  if(action)action.textContent=typed?"SELEZIONA IL GIOCATORE":"CERCA UN GIOCATORE";
+  if(reason)reason.textContent=typed?"Scegli il nome dal listone per attivare il consiglio completo.":"Scrivi il nome del giocatore chiamato.";
+  if(d)d.className="decision"; if($("brainAction"))$("brainAction").textContent="—";
+  if($("brainDetail"))$("brainDetail").textContent="Brain si attiva appena il giocatore viene riconosciuto."; return;
  }
- const pr=Math.max(0,num($("price").value));
- const sc=score(selected), q=num(selected.quote)||0, fvm=num(selected.fvm)||0;
- let limit=lim(selected); const mr=marketRef(selected);
- if(mr!==null){
-   // Use the real 2026/27 market as the primary anchor when available, then constrain by the current budget.
-   limit=Math.round((limit+mr)/2);
- }
- const mySpent=mine().reduce((a,x)=>a+num(x.price),0);
- const credits=Math.max(0,S.initial-mySpent), slots=Math.max(1,25-mine().length);
- const reserve=Math.max(25,Math.ceil(credits/slots));
- limit=Math.max(1,Math.min(limit,Math.max(1,credits-reserve*(slots-1))));
- $("score").textContent=sc; $("fvm").textContent=fvm||"—"; $("limit").textContent=limit;
+ const pr=Math.max(0,num($("price").value)),sc=score(selected),q=num(selected.quote),fvm=num(selected.fvm);
+ const base=Math.max(2,num(lim(selected))||q||Math.round(fvm/10)||Math.round(sc*.8)||10);
+ const mr=marketRef(selected);
+ let market=mr!==null?num(mr):base;
+ const role=String(selected.role||"").toUpperCase(), mineNow=mine();
+ const sameRole=(S.purchases||[]).filter(x=>{const p=db().find(y=>String(y.name).toLowerCase()===String(x.name).toLowerCase());return String(p?.role||x.role||"").toUpperCase()===role&&num(x.price)>0});
+ if(mr!==null&&sameRole.length){const avg=sameRole.reduce((a,x)=>a+num(x.price),0)/sameRole.length;market=Math.round(mr*.75+avg*.25)}
+ const mySpent=mineNow.reduce((a,x)=>a+num(x.price),0);
+ const credits=Math.max(0,num(S.initial||S.credits)-mySpent),slots=Math.max(1,25-mineNow.length);
+ const minPerSlot=Math.max(3,Math.ceil(num(S.initial||500)*.01));
+ const reserve=Math.min(credits,Math.max(0,slots-1)*minPerSlot);
+ const spendable=Math.max(2,credits-reserve);
+ let limit=Math.round(base*.35+market*.65);
+ const target={P:3,D:8,C:8,A:6};
+ const roleOwned=mineNow.filter(x=>{const p=db().find(y=>String(y.name).toLowerCase()===String(x.name).toLowerCase());return String(p?.role||x.role||"").toUpperCase()===role}).length;
+ const missing=Math.max(0,(target[role]||0)-roleOwned);
+ if(missing>=3)limit=Math.round(limit*1.10); else if(missing===2)limit=Math.round(limit*1.06); else if(missing===1)limit=Math.round(limit*1.03);
+ if(sameRole.length>=2){const avg=sameRole.reduce((a,x)=>a+num(x.price),0)/sameRole.length;if(avg>market*1.08)limit=Math.round(limit*1.08);else if(avg<market*.85)limit=Math.round(limit*.95)}
+ limit=Math.max(2,Math.min(Math.round(limit),Math.round(spendable)));
+ $("score").textContent=sc;$("fvm").textContent=fvm||"—";$("limit").textContent=limit;
  let label,why,cls;
- if(pr<=0){label="👀 OSSERVA";why=`Limite strategico ${limit}. Inserisci il prezzo attuale.`;cls="decision";}
- else if(pr>limit){label="🛑 LASCIA";why=`${pr} cr supera il limite strategico di ${limit}.`;cls="decision stop";}
- else if(pr>=Math.ceil(limit*.9)){label="⚠️ ULTIMO RILANCIO";why=`${pr}/${limit}: sei vicino al tetto.`;cls="decision warn";}
- else if(pr<=Math.floor(limit*.7)){label="🟢 AFFARE / RILANCIA";why=`${pr}/${limit}: prezzo molto interessante.`;cls="decision good";}
- else{label="🔨 RIALZA";why=`${pr}/${limit}: prezzo ancora sostenibile.`;cls="decision warn";}
+ if(pr<=0){label="👀 OSSERVA";why=`Limite strategico ${limit}. Inserisci il prezzo attuale.`;cls="decision"}
+ else if(pr>limit){label="🛑 LASCIA";why=`${pr} cr supera il limite strategico di ${limit}.`;cls="decision stop"}
+ else if(pr>=Math.ceil(limit*.9)){label="⚠️ ULTIMO RILANCIO";why=`${pr}/${limit}: sei vicino al tetto.`;cls="decision warn"}
+ else if(pr<=Math.floor(limit*.7)){label="🟢 AFFARE / RILANCIA";why=`${pr}/${limit}: prezzo molto interessante.`;cls="decision good"}
+ else{label="🔨 RIALZA";why=`${pr}/${limit}: prezzo ancora sostenibile.`;cls="decision warn"}
  if(action)action.textContent=label;if(reason)reason.textContent=why;if(d)d.className=cls;
  $("liveAdvice").textContent=`${selected.name}: ${label}`;
  if($("brainAction"))$("brainAction").textContent=label;
- if($("brainDetail"))$("brainDetail").textContent=`Prezzo ${pr} · Limite ${limit} · Margine ${Math.max(0,limit-pr)} · Budget ${credits} cr · ${strategy()}`;
+ if($("brainDetail"))$("brainDetail").textContent=`Prezzo ${pr} · Limite ${limit} · Mercato ${Math.round(market)} · Budget ${credits} · Riserva ${reserve}`;
  $("playerInfo").textContent=[selected.team?"Squadra: "+selected.team:"",selected.role?"Ruolo: "+selected.role:"",selected.quote!=null?"Quotazione: "+selected.quote:"",selected.fvm!=null?"FVM: "+selected.fvm:""].filter(Boolean).join(" · ")||"Dati listone disponibili.";
 }
 function strategy(){
@@ -259,6 +273,7 @@ function selectPlayer(p){
  $("player").value=p.name;
  $("suggestions").classList.add("hidden");
  render();
+ updateBrainLivePrice();
  $("price").focus();
 }
 $("player").addEventListener("input",function(){
@@ -279,6 +294,9 @@ $("player").addEventListener("input",function(){
 });
 $("price").addEventListener("input",brain);
 $("price").addEventListener("change",brain);
+$("price").addEventListener("input",updateBrainLivePrice);
+$("price").addEventListener("change",updateBrainLivePrice);
+$("price").addEventListener("keyup",updateBrainLivePrice);
 $("raise").addEventListener("click",()=>{$("price").value=Math.max(0,num($("price").value))+1;brain()});
 $("pass").addEventListener("click",()=>{$("price").value=0;brain()});
 $("assign").addEventListener("click",assignBox);
