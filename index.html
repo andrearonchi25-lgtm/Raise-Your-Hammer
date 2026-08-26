@@ -54,10 +54,14 @@ input{width:100%;background:#0b141b;border:1px solid #304451;color:#fff;border-r
 <div class="nav"><button data-go="auction">🔨 ASTA</button><button data-go="brain">🧠 BRAIN</button><button data-go="listone" class="active">📋 LISTONE</button><button data-go="rosters">👥 ROSE</button></div>
 <div class="card">
 <h2>📋 Listone 2026/27</h2>
-<div class="muted">Ricerca reale per nome, squadra o ruolo. I dati sono usati direttamente da Brain.</div>
+<div class="muted">Database 2026/27 collegato a Brain. Sincronizza per caricare tutti i calciatori disponibili.</div>
 <input id="listSearch" placeholder="Cerca giocatore..." style="margin-top:8px">
 <div class="roleBar" style="margin-top:7px">
 <button class="secondary" data-role="">TUTTI</button><button class="secondary" data-role="P">P</button><button class="secondary" data-role="D">D</button><button class="secondary" data-role="C">C</button><button class="secondary" data-role="A">A</button>
+</div>
+<div style="display:flex;gap:6px;align-items:center;margin-top:8px">
+<button id="syncListone" class="primary">↻ SINCRONIZZA 26/27</button>
+<span id="syncStatus" class="muted">Database locale</span>
 </div>
 <div id="listCount" class="muted" style="margin-top:8px"></div>
 <div id="listResults" style="margin-top:6px"></div>
@@ -104,8 +108,35 @@ const demo=[
 ["Calhanoglu","Inter","C",89,35],["Barella","Inter","C",86,30],["Zaccagni","Lazio","C",82,27],["Nico Paz","Como","C",85,28],
 ["Dimarco","Inter","D",84,25],["Theo Hernandez","Milan","D",83,27],["Bremer","Juventus","D",82,22],["Bastoni","Inter","D",80,20],
 ["Sommer","Inter","P",78,12],["Di Gregorio","Juventus","P",79,14]];
-const OFFICIAL_SEED=[{"name": "Martinez L.", "team": "Inter", "role": "A", "quote": 35, "fvm": 370, "score": 99}, {"name": "Malen", "team": "Roma", "role": "A", "quote": 34, "fvm": 365, "score": 99}, {"name": "Dimarco", "team": "Inter", "role": "D", "quote": 32, "fvm": 265, "score": 99}, {"name": "Paz N.", "team": "Como", "role": "C", "quote": 30, "fvm": 250, "score": 99}, {"name": "Thuram", "team": "Inter", "role": "A", "quote": 29, "fvm": 280, "score": 99}, {"name": "Hojlund", "team": "Napoli", "role": "A", "quote": 28, "fvm": 271, "score": 99}, {"name": "McTominay", "team": "Napoli", "role": "C", "quote": 28, "fvm": 240, "score": 99}, {"name": "Calhanoglu", "team": "Inter", "role": "C", "quote": 27, "fvm": 230, "score": 99}, {"name": "Ramos G.", "team": "Milan", "role": "A", "quote": 27, "fvm": 240, "score": 99}, {"name": "Kolo Muani", "team": "Juventus", "role": "A", "quote": 26, "fvm": 225, "score": 99}, {"name": "Orsolini", "team": "Bologna", "role": "C", "quote": 26, "fvm": 200, "score": 95}, {"name": "Kean", "team": "Fiorentina", "role": "A", "quote": 25, "fvm": 212, "score": 98}, {"name": "Pulisic", "team": "Milan", "role": "C", "quote": 25, "fvm": 180, "score": 90}, {"name": "Yildiz", "team": "Juventus", "role": "A", "quote": 23, "fvm": 200, "score": 95}, {"name": "Rabiot", "team": "Milan", "role": "C", "quote": 22, "fvm": 128, "score": 77}, {"name": "Douvikas", "team": "Como", "role": "A", "quote": 20, "fvm": 157, "score": 84}, {"name": "Baturina", "team": "Como", "role": "C", "quote": 19, "fvm": 102, "score": 71}, {"name": "Davis K.", "team": "Udinese", "role": "A", "quote": 19, "fvm": 121, "score": 75}, {"name": "Scamacca", "team": "Atalanta", "role": "A", "quote": 19, "fvm": 128, "score": 77}, {"name": "Berardi", "team": "Sassuolo", "role": "A", "quote": 18, "fvm": 115, "score": 74}, {"name": "Da Cunha", "team": "Como", "role": "C", "quote": 18, "fvm": 90, "score": 67}, {"name": "Krstovic", "team": "Atalanta", "role": "A", "quote": 18, "fvm": 100, "score": 70}, {"name": "Leao", "team": "Milan", "role": "A", "quote": 18, "fvm": 120, "score": 75}, {"name": "Svilar", "team": "Roma", "role": "P", "quote": 18, "fvm": 65, "score": 61}, {"name": "Carnesecchi", "team": "Atalanta", "role": "P", "quote": 16, "fvm": 52, "score": 58}, {"name": "Zappacosta", "team": "Atalanta", "role": "D", "quote": 8, "fvm": 24, "score": 51}, {"name": "Bellanova", "team": "Atalanta", "role": "D", "quote": 6, "fvm": 15, "score": 49}, {"name": "Scalvini", "team": "Atalanta", "role": "D", "quote": 10, "fvm": 28, "score": 52}, {"name": "Ederson D.S.", "team": "Atalanta", "role": "C", "quote": 12, "fvm": 45, "score": 56}, {"name": "De Ketelaere", "team": "Atalanta", "role": "A", "quote": 17, "fvm": 106, "score": 71}, {"name": "Krstovic", "team": "Atalanta", "role": "A", "quote": 18, "fvm": 100, "score": 70}, {"name": "Theo Hernandez", "team": "Milan", "role": "D", "quote": 27, "fvm": 120, "score": 75}, {"name": "Bastoni", "team": "Inter", "role": "D", "quote": 20, "fvm": 80, "score": 65}, {"name": "Barella", "team": "Inter", "role": "C", "quote": 30, "fvm": 140, "score": 80}, {"name": "Zaccagni", "team": "Lazio", "role": "C", "quote": 27, "fvm": 125, "score": 76}, {"name": "Nico Paz", "team": "Como", "role": "C", "quote": 30, "fvm": 250, "score": 99}];
-function db(){try{let x=JSON.parse(localStorage.getItem("ryh_players")||"null");if(Array.isArray(x)&&x.length)return x}catch(e){}return OFFICIAL_SEED}
+const OFFICIAL_SEED = [];
+let PLAYERS = (()=>{try{const x=JSON.parse(localStorage.getItem("ryh_players")||"null");return Array.isArray(x)?x:[]}catch(e){return []}})();
+if(!PLAYERS.length && typeof demo!=="undefined") PLAYERS=demo.map(x=>({name:x[0],team:x[1],role:x[2],score:x[3],fvm:x[4]}));
+function db(){return PLAYERS}
+async function syncListone(){
+ const status=$("syncStatus");
+ status.textContent="Sincronizzazione…";
+ try{
+   const url="https://r.jina.ai/https://www.piccioleague.it/listone/";
+   const r=await fetch(url,{cache:"no-store"});
+   if(!r.ok) throw new Error("HTTP "+r.status);
+   const text=await r.text();
+   const rows=[];
+   const re=/\|\s*([^|]+?)\s*\|\s*([PDCA])\s*\|\s*([^|]+?)\s*\|\s*(\d+)\s*\|\s*(\d+)\s*$/gm;
+   let m;
+   while((m=re.exec(text))){
+     const name=m[1].trim(),role=m[2].trim(),team=m[3].trim(),quote=Number(m[4]),fvm=Number(m[5]);
+     if(name && !rows.some(x=>x.name===name&&x.team===team)) rows.push({name,role,team,quote,fvm,score:Math.min(99,Math.max(40,Math.round(45+fvm/5)))});
+   }
+   if(rows.length<450) throw new Error("Listone incompleto: "+rows.length);
+   PLAYERS=rows;
+   localStorage.setItem("ryh_players",JSON.stringify(PLAYERS));
+   status.textContent="✓ "+rows.length+" giocatori 26/27";
+   render();
+ }catch(e){
+   status.textContent="⚠ Sincronizzazione non riuscita";
+   alert("Non riesco a sincronizzare il listone completo in questo momento. Se hai il file XLSX/CSV 26/27 puoi importarlo nella prossima versione.");
+ }
+}
 function save(){localStorage.setItem("ryh_v2",JSON.stringify(S))}
 function load(){try{let x=JSON.parse(localStorage.getItem("ryh_v2"));if(x)S=x}catch(e){}}
 function names(){let n=Math.max(2,Math.min(20,num($("count").value)||10));$("names").innerHTML='<label class="label">Nomi partecipanti</label>'+Array.from({length:n},(_,i)=>`<input class="pname" value="${i?`Partecipante ${i+1}`:$("myName").value||"La mia squadra"}" style="margin:3px 0">`).join("")}
@@ -159,7 +190,7 @@ function assign(i){if(!selected)return;let pr=num($("price").value),owner=S.part
 $("count").oninput=names;$("myName").oninput=()=>{let x=document.querySelector(".pname");if(x)x.value=$("myName").value};$("start").onclick=configure;
 document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>show(b.dataset.go));
 $("player").oninput=function(){selected=null;let a=find(this.value),b=$("suggestions");if(!a.length){b.classList.add("hidden");brain();return}b.innerHTML=a.map((p,i)=>`<button class="suggestion" data-i="${i}"><b>${p.name}</b><small>${p.team||""} · ${p.role||""}</small></button>`).join("");b.classList.remove("hidden");b.querySelectorAll("button").forEach((x,i)=>x.onclick=()=>{selected=a[i];$("player").value=a[i].name;b.classList.add("hidden");render()});brain()};
-$("listSearch").oninput=renderList;$("listResults").onclick=e=>{};document.querySelectorAll("[data-role]").forEach(b=>b.onclick=()=>{listRole=b.dataset.role;renderList()});$("price").oninput=brain;$("raise").onclick=()=>{$("price").value=num($("price").value)+1;brain()};$("pass").onclick=()=>{$("price").value=0;brain()};$("assign").onclick=assignBox;
+$("listSearch").oninput=renderList;$("syncListone").onclick=syncListone;$("listResults").onclick=e=>{};document.querySelectorAll("[data-role]").forEach(b=>b.onclick=()=>{listRole=b.dataset.role;renderList()});$("price").oninput=brain;$("raise").onclick=()=>{$("price").value=num($("price").value)+1;brain()};$("pass").onclick=()=>{$("price").value=0;brain()};$("assign").onclick=assignBox;
 $("reset").onclick=()=>{if(confirm("Reset completo?")){localStorage.removeItem("ryh_v2");location.reload()}};
 load();if(S.configured){$("credits").value=S.initial;$("count").value=S.participants.length;$("myName").value=S.myName}names();render();
 })();
