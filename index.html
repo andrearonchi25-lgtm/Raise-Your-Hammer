@@ -31,7 +31,7 @@ input{width:100%;background:#0b141b;border:1px solid #304451;color:#fff;border-r
 </head>
 <body>
 <div class="app">
-<header class="header"><div class="brand">🔨 RAISE YOUR HAMMER<small>ASTA · BRAIN</small></div><div><button class="reset" id="editAuction" type="button">⚙️</button> <button class="reset" id="reset" type="button">↻</button></div></header>
+<header class="header"><div class="brand">🔨 RAISE YOUR HAMMER<small>ASTA · BRAIN</small></div><div><button class="reset" id="editAuction" type="button" type="button">⚙️</button> <button class="reset" id="reset" type="button" type="button">↻</button></div></header>
 <main>
 
 <section id="setup" class="screen active">
@@ -41,12 +41,12 @@ input{width:100%;background:#0b141b;border:1px solid #304451;color:#fff;border-r
 <label class="label">Numero partecipanti</label><input id="count" type="number" min="2" max="20" value="10">
 <label class="label">Nome della tua squadra</label><input id="myName" value="La mia squadra">
 <div id="names"></div>
-<button class="primary" id="start" style="margin-top:10px">🔨 INIZIA ASTA</button>
+<button class="primary" id="start" type="button" style="margin-top:10px">🔨 INIZIA ASTA</button>
 </div>
 </section>
 
 <section id="auction" class="screen">
-<div class="card" id="auctionConfig"><div class="top"><b>⚙️ CONFIGURA ASTA</b><span class="budget" id="cfgSummary">10 · 500 cr</span></div><div class="cfgGrid"><label class="label">PARTECIPANTI<input id="cfgCount" type="number" min="2" max="20" value="10"></label><label class="label">CREDITI<input id="cfgCredits" type="number" min="1" value="500"></label></div><label class="label">LA TUA SQUADRA<input id="cfgMyName" value="La mia squadra"></label><div id="cfgNames"></div><button class="primary" id="saveConfig" type="button">SALVA CONFIGURAZIONE</button></div><div class="nav"><button data-go="auction" class="active">🔨 ASTA</button><button data-go="brain">🧠 BRAIN</button><button data-go="rosters">👥 ROSE</button></div>
+<div class="card" id="auctionConfig"><div class="top"><b>⚙️ CONFIGURA ASTA</b><span class="budget" id="cfgSummary">10 · 500 cr</span></div><div class="cfgGrid"><label class="label">PARTECIPANTI<input id="cfgCount" type="number" min="2" max="20" value="10"></label><label class="label">CREDITI<input id="cfgCredits" type="number" min="1" value="500"></label></div><label class="label">LA TUA SQUADRA<input id="cfgMyName" value="La mia squadra"></label><div id="cfgNames"></div><button class="primary" id="saveConfig" type="button" type="button">SALVA CONFIGURAZIONE</button></div><div class="nav"><button data-go="auction" class="active">🔨 ASTA</button><button data-go="brain">🧠 BRAIN</button><button data-go="rosters">👥 ROSE</button></div>
 <div class="card">
 <div class="top"><b>ASTA LIVE</b><span class="budget" id="myBudget">500 cr</span></div>
 <label class="label">Giocatore chiamato</label>
@@ -55,8 +55,8 @@ input{width:100%;background:#0b141b;border:1px solid #304451;color:#fff;border-r
 <div id="decision" class="decision"><b id="decisionText">Cerca un giocatore</b><small id="reason">Brain si attiverà appena selezioni un giocatore.</small></div>
 <div class="stats"><div class="stat"><small>SCORE</small><b id="score">—</b></div><div class="stat"><small>FVM</small><b id="fvm">—</b></div><div class="stat"><small>LIMITE</small><b id="limit">—</b></div></div>
 <div id="playerInfo" class="info">Nessun giocatore selezionato.</div>
-<div class="actions"><button class="raise" id="raise">🔨 RIALZA +1</button><button class="pass" id="pass">PASSA</button></div>
-<button class="success" id="assign" style="margin-top:7px">✓ ASSEGNA ACQUISTO</button>
+<div class="actions"><button class="raise" id="raise" type="button">🔨 RIALZA +1</button><button class="pass" id="pass" type="button">PASSA</button></div>
+<button class="success" id="assign" type="button" style="margin-top:7px">✓ ASSEGNA ACQUISTO</button>
 <div id="assignBox" class="card hidden" style="margin-top:7px;margin-bottom:0"><div class="muted">Chi ha acquistato il giocatore?</div><div id="assignList" class="participants" style="margin-top:7px"></div></div>
 </div>
 <div class="brain card"><h3>🧠 BRAIN</h3><p id="liveAdvice">Seleziona un giocatore per ricevere il consiglio.</p><div id="brainAction" style="font-size:12px;font-weight:1000;color:#e3c36c;margin-top:7px">—</div><div id="brainDetail" class="muted">Il consiglio apparirà qui.</div><div id="strategyHint" class="muted" style="margin-top:5px"></div></div>
@@ -290,7 +290,18 @@ function renderDynamicStrategy(){
   $("strategyReason").textContent=d.reason;
   $("strategyPlan").innerHTML=d.plan.map(x=>`<div class="strategyLine">• ${x}</div>`).join("");
 }
-function render(){ targetRoster(); liveRosters(); $("myBudget").textContent=S.credits+" cr"; brain(); grade(); rosters(); if($("strategy"))$("strategy").textContent=strategy(); if($("brainSummary"))$("brainSummary").textContent=S.purchases.length?`${S.purchases.length} acquisti · ${strategy()}`:"Nessun movimento ancora."; }
+function render(){
+ try{targetRoster()}catch(e){console.error("targetRoster",e)}
+ try{liveRosters()}catch(e){console.error("liveRosters",e)}
+ if($("myBudget"))$("myBudget").textContent=S.credits+" cr";
+ try{brain()}catch(e){console.error("brain",e)}
+ try{grade()}catch(e){console.error("grade",e)}
+ try{rosters()}catch(e){console.error("rosters",e)}
+ try{if($("strategy"))$("strategy").textContent=strategy()}catch(e){console.error("strategy",e)}
+ if($("brainSummary"))$("brainSummary").textContent=S.purchases.length?`${S.purchases.length} acquisti · ${strategy()}`:"Nessun movimento ancora.";
+ try{renderDynamicStrategy()}catch(e){console.error("dynamicStrategy",e)}
+ try{if($("strategyHint"))updateStrategyHint()}catch(e){console.error("strategyHint",e)}
+}
 function assignBox(){$("assignList").innerHTML=S.participants.map((n,i)=>`<button class="participant ${n===S.myName?"mine":""}" data-i="${i}">${n}</button>`).join("");$("assignBox").classList.remove("hidden");$("assignList").querySelectorAll("button").forEach(b=>b.onclick=()=>assign(num(b.dataset.i)))}
 function assign(i){
  if(!selected)return;
@@ -301,15 +312,14 @@ function assign(i){
  if(pr>S.initial-spent){alert(`${owner} ha solo ${S.initial-spent} crediti disponibili.`);return}
  S.purchases.push({name:selected.name,price:pr,owner,role:selected.role||"",team:selected.team||"",quote:num(selected.quote),fvm:num(selected.fvm),at:Date.now()});
  S.credits=Math.max(0,S.initial-S.purchases.filter(x=>x.owner===S.myName).reduce((t,x)=>t+x.price,0));
- selected=null;$("player").value="";$("price").value=1;$("assignBox").classList.add("hidden");save();render();
- renderDynamicStrategy(); updateStrategyHint();}
+ selected=null;$("player").value="";$("price").value=1;$("assignBox").classList.add("hidden");save();render();}
 $("count").oninput=names;
 $("myName").oninput=()=>{const x=document.querySelector(".pname");if(x)x.value=$("myName").value};
 $("start").onclick=configure;
 $("editAuction").onclick=editAuction;
 $("cfgCount").oninput=renderConfig;
 $("saveConfig").onclick=saveConfig;
-document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>show(b.dataset.go));
+document.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>show(b.dataset.go)));
 function selectPlayer(p){selected=p;$("player").value=p.name;$("suggestions").classList.add("hidden");brain();render();$("price").focus();}
 $("player").addEventListener("input",function(){
  const q=this.value.toLowerCase().trim(),box=$("suggestions");selected=null;
@@ -331,7 +341,7 @@ if(S.configured){$("auctionConfig").classList.add("hidden");show("auction");}ren
 $("count").oninput=names;
 $("myName").oninput=()=>{let x=document.querySelector(".pname");if(x)x.value=$("myName").value};
 $("start").onclick=configure;
-document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>show(b.dataset.go));
+document.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>show(b.dataset.go)));
 function selectPlayer(p){selected=p;$("player").value=p.name;$("suggestions").classList.add("hidden");render();$("price").focus();}
 $("player").addEventListener("input",function(){const q=this.value.toLowerCase().trim();selected=null;const box=$("suggestions");if(!q){box.classList.add("hidden");brain();return}const a=find(q);if(a.length===1||a.some(p=>String(p.name||"").toLowerCase()===q)){selectPlayer(a.find(p=>String(p.name||"").toLowerCase()===q)||a[0]);return}box.innerHTML=a.map((p,i)=>{const m=lim(p),pr=Math.max(0,num($("price").value));const status=pr<=0?"INSERISCI PREZZO":pr>m?"LASCIA":pr>=m*.9?"ULTIMO RILANCIO":pr<=m*.7?"AFFARE":"RIALZA";return `<button type="button" class="suggestion" data-i="${i}"><div><b>${p.name}</b><small>${p.team||""} · ${p.role||""} · Q ${num(p.quote)||"—"} · FVM ${num(p.fvm)||"—"}</small></div><span class="miniBrain">🧠 ${status}<em>limite ${m}</em></span></button>`}).join("");box.classList.toggle("hidden",!a.length);box.querySelectorAll("button").forEach((b,i)=>b.onclick=()=>selectPlayer(a[i]));brain();});
 $("price").addEventListener("input",()=>brain());$("price").addEventListener("change",()=>brain());$("raise").onclick=()=>{$("price").value=num($("price").value)+1;brain()};$("pass").onclick=()=>{$("price").value=0;brain()};$("assign").onclick=assignBox;$("reset").onclick=()=>{if(confirm("Reset completo?")){localStorage.removeItem("ryh_v2");location.reload()}};
