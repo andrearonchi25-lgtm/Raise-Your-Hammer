@@ -29,7 +29,7 @@ input{width:100%;background:#0b141b;border:1px solid #304451;color:#fff;border-r
 .muted{font-size:6px;color:#83919b}.hidden{display:none!important}
 .target{padding:10px;border:1px solid #304451;border-radius:10px;background:#111c24;margin-top:7px}.targetTop{display:flex;justify-content:space-between}.targetTop b{font-size:8px}.targetMeta{font-size:5px;color:#8d9aa3;margin-top:4px}.targetReason{font-size:6px;color:#b9c3ca;margin-top:4px}.grade{font-size:14px;color:#e3c36c}.roleBar{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:7px}.roleBox{background:#111c24;border-radius:7px;padding:7px;text-align:center}.roleBox small{display:block;font-size:4px;color:#82909c}.roleBox b{font-size:9px}.listRow{padding:10px;border-bottom:1px solid #293844;display:flex;justify-content:space-between;gap:8px;align-items:center}.listRow:last-child{border-bottom:0}.listMain b{font-size:8px}.listMain small{display:block;font-size:5px;color:#8997a1;margin-top:3px}.listVals{text-align:right;font-size:6px;color:#e3c36c;white-space:nowrap}.listVals small{display:block;color:#8997a1;font-size:4px}.listOpen{margin-top:5px;border:0;border-radius:7px;padding:5px 7px;background:#172630;color:#e3c36c;font-size:5px}.miniBrain{font-size:6px;color:#e3c36c;display:flex;flex-direction:column;align-items:flex-end;gap:2px}.miniBrain em{font-size:4px;color:#8e9ba4;font-style:normal}.suggestion{display:flex;justify-content:space-between;align-items:center;gap:8px;width:100%}.suggestion small{display:block;font-size:5px;color:#8997a1;margin-top:2px}.targetGrid{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:7px}.targetSlot{padding:7px;border-radius:8px;background:#111c24;border:1px solid #293844}.targetSlot.done{border-color:#6f8b61}.targetSlot b{font-size:7px}.targetSlot small{display:block;font-size:5px;color:#8997a1;margin-top:3px}.targetSlot .pick{font-size:6px;color:#e3c36c;margin-top:4px}.miniBrain{font-size:6px;color:#e3c36c;display:flex;flex-direction:column;align-items:flex-end;gap:2px}.miniBrain em{font-size:4px;color:#8e9ba4;font-style:normal}.suggestion{display:flex;justify-content:space-between;align-items:center;gap:8px;width:100%}.cfgGrid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.cfgName{margin:3px 0;font-size:8px}.targetGrid{display:grid;grid-template-columns:1fr 1fr;gap:5px}.targetSlot{padding:7px;border-radius:8px;background:#111c24;border:1px solid #293844}.targetSlot.done{border-color:#6f8b61}.targetSlot b{font-size:7px}.targetSlot small{display:block;font-size:5px;color:#8997a1;margin-top:3px}.targetSlot .pick{font-size:6px;color:#e3c36c;margin-top:4px}.liveRoster{padding:7px 0;border-bottom:1px solid #293844}.liveRoster:last-child{border-bottom:0}.liveRosterHead{display:flex;justify-content:space-between}.liveRosterHead b{font-size:7px}.liveRosterHead span{font-size:6px;color:#e3c36c}.liveRosterPlayers{font-size:5px;color:#9aa7b0;margin-top:3px;line-height:1.5}.liveRoster.me .liveRosterHead b{color:#e3c36c}.strategyLine{padding:5px 0;border-bottom:1px solid #293844}.strategyLine:last-child{border-bottom:0}
 .rivalCard{padding:9px;border:1px solid #293844;border-radius:9px;background:#111c24;margin-top:6px}.rivalHead{display:flex;justify-content:space-between}.rivalHead b{font-size:8px}.rivalHead span{font-size:6px;color:#e3c36c}.rivalMeta{font-size:5px;color:#8997a1;margin-top:3px;line-height:1.5}.rivalNeed{font-size:6px;color:#b9c3ca;margin-top:4px}
-</style>
+.brain-opponent-comment{margin-top:8px;padding:8px 10px;border:1px solid rgba(120,120,120,.28);border-radius:10px;font-size:12px;line-height:1.35;background:rgba(120,120,120,.06)}</style>
 </head>
 <body>
 <div class="app">
@@ -85,6 +85,31 @@ input{width:100%;background:#0b141b;border:1px solid #304451;color:#fff;border-r
 
 </main></div>
 
+
+function brainOpponentAnalysis(participant){
+ const all=(S.purchases||[]).filter(x=>String(x.owner||x.participant||x.team||"").toLowerCase()===String(participant||"").toLowerCase());
+ const spent=all.reduce((a,x)=>a+num(x.price),0), initial=num(S.initial)||500, credits=Math.max(0,initial-spent);
+ const avg=all.length?spent/all.length:0, roles={P:0,D:0,C:0,A:0};
+ all.forEach(x=>{const p=db().find(y=>String(y.name).toLowerCase()===String(x.name||"").toLowerCase());const r=String(p?.role||x.role||"").toUpperCase();if(roles[r]!=null)roles[r]++});
+ const target={P:3,D:8,C:8,A:6}, need=Object.keys(target).filter(r=>roles[r]<target[r]);
+ const aggression=all.length?Math.min(100,Math.round((avg/Math.max(1,initial))*220)):0;
+ const style=all.length<3?"Attendista / in osservazione":aggression>=28?"Aggressivo":aggression>=18?"Equilibrato":"Conservativo";
+ const last=all.slice(-3).map(x=>num(x.price)).filter(Boolean); let trend="stabile";
+ if(last.length>=2){if(last.at(-1)>last[0]*1.2)trend="in crescita";else if(last.at(-1)<last[0]*.8)trend="in calo";}
+ const map={P:"portieri",D:"difensori",C:"centrocampisti",A:"attaccanti"};
+ const needs=need.length?need.map(r=>map[r]).join(", "):"rosa ben coperta";
+ const pressure=credits<=initial*.25?"budget sotto pressione":credits<=initial*.45?"budget da gestire":"buon margine di manovra";
+ return `🧠 <strong>Brain:</strong> ${style}. Spesi ${spent} cr · Restano ${credits} cr · Media ${Math.round(avg)} cr. Andamento ${trend}; ${pressure}. Priorità: ${needs}.`;
+}
+function refreshBrainOpponentComments(){
+ const names=[...new Set((S.purchases||[]).map(x=>String(x.owner||x.participant||x.team||"").trim()).filter(Boolean))];
+ const candidates=[...document.querySelectorAll('[data-participant],[data-owner],.participant,.team-card,.roster-card,.participant-card')];
+ candidates.forEach(el=>{
+  if(el.querySelector(".brain-opponent-comment"))return;
+  const txt=(el.innerText||"").toLowerCase(), name=names.find(n=>txt.includes(n.toLowerCase()));
+  if(name)el.insertAdjacentHTML("beforeend",`<div class="brain-opponent-comment">${brainOpponentAnalysis(name)}</div>`);
+ });
+}
 <script>
 (()=>{"use strict";
 const $=id=>document.getElementById(id), num=x=>Number(x)||0;
@@ -355,6 +380,8 @@ function render(){
  try{rosters()}catch(e){console.error("rosters",e)}
  try{renderDynamicBrain()}catch(e){console.error("dynamicBrain",e)}
  if($("brainSummary"))$("brainSummary").textContent=S.purchases.length?`${S.purchases.length} acquisti · ${strategy()}`:"Nessun movimento ancora.";
+
+ refreshBrainOpponentComments();
 }
 function assignBox(){$("assignList").innerHTML=S.participants.map((n,i)=>`<button class="participant ${n===S.myName?"mine":""}" data-i="${i}">${n}</button>`).join("");$("assignBox").classList.remove("hidden");$("assignList").querySelectorAll("button").forEach(b=>b.onclick=()=>assign(num(b.dataset.i)))}
 function assign(i){
@@ -428,4 +455,6 @@ if(S.configured){
 }
 render();
 })();
+
+setTimeout(refreshBrainOpponentComments,100);
 </script></body></html>
