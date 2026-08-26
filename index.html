@@ -72,7 +72,7 @@ input{width:100%;background:#0b141b;border:1px solid #304451;color:#fff;border-r
 <p id="strategy">Configura l'asta e assegna gli acquisti: Brain aggiornerà la strategia dopo ogni movimento.</p>
 <div id="strategyMode" style="font-size:12px;font-weight:1000;color:#e3c36c;margin-top:7px">EQUILIBRIO</div>
 <div id="strategyReason" class="muted" style="margin-top:4px"></div>
-<div id="livePriceBrain" style="margin-top:5px;font-size:8px;font-weight:1000"></div><div id="strategyPlan" style="margin-top:7px;font-size:7px;line-height:1.5"></div>
+<div id="livePriceBrain" style="margin-top:5px;font-size:8px;font-weight:1000"></div><div id="auctionAvgBrain" class="muted" style="margin-top:4px"></div><div id="strategyPlan" style="margin-top:7px;font-size:7px;line-height:1.5"></div>
 </div>
 <div class="card"><div class="top"><b>👥 PROFILI AVVERSARI</b><span id="rivalCount" class="budget">0</span></div><div id="rivalProfiles"></div></div>
 <div class="card"><h2>Situazione</h2><div id="brainSummary" class="muted">Nessun movimento ancora.</div></div>
@@ -122,6 +122,33 @@ function updateBrainLivePrice(){
  const msg=pct<=.70?"🔥 AFFARE":pct<=.90?"🟢 RIALZA":pct<=1?"🟡 ULTIMO RILANCIO":"🔴 LASCIA";
  el.textContent=`PREZZO LIVE: ${price} cr → ${msg} · limite attuale ${limit} cr`;
 }
+
+function auctionAverageForPlayer(p){
+ const n=String(p?.name||"").toLowerCase();
+ const averages={
+  "malen donyell":[102.91,119.37,141.74,141.20],
+  "martinez lautaro":[113.67,139.46,139.50,132.29],
+  "hojlund rasmus":[85.28,119.51,111.71,125.13],
+  "ramos goncalo matias":[104.87,108.13,114.59,104.96],
+  "thuram marcus":[104.28,116.65,102.52,101.75],
+  "kolo muani":[78,91,88,94],
+  "kean moise":[62,74,79,93],
+  "paz nico":[58,72,76,95],
+  "pulisic christian":[54,65,69,73],
+  "calhanoglu hakan":[55,66,70,73],
+  "mctominay scott":[47,57,62,69],
+  "dimarco federico":[50,59,61,64],
+  "orsolini riccardo":[48,57,62,65],
+  "yildiz kenan":[70,84,91,102]
+ };
+ const a=averages[n];
+ if(!a)return null;
+ const count=Math.max(1,num(S.participants?.length)||10);
+ const budget=Math.max(1,num(S.initial)||500);
+ const ci=count<=8?0:1;
+ const bi=budget<=400?0:2;
+ return {value:a[ci+bi], values:a, label:`${count<=8?8:10}×${budget<=400?350:500}`};
+}
 function brain(){
  const action=$("decisionText"), reason=$("reason"), d=$("decision");
  const typed=String($("player").value||"").trim();
@@ -130,9 +157,10 @@ function brain(){
   if(action)action.textContent=typed?"SELEZIONA IL GIOCATORE":"CERCA UN GIOCATORE";
   if(reason)reason.textContent=typed?"Scegli il nome dal listone per attivare il consiglio completo.":"Scrivi il nome del giocatore chiamato.";
   if(d)d.className="decision"; if($("brainAction"))$("brainAction").textContent="—";
-  if($("brainDetail"))$("brainDetail").textContent="Brain si attiva appena il giocatore viene riconosciuto."; return;
+  if($("brainDetail"))$("brainDetail").textContent="Brain si attiva appena il giocatore viene riconosciuto."; if($("auctionAvgBrain"))$("auctionAvgBrain").textContent=""; return;
  }
  const pr=Math.max(0,num($("price").value)),sc=score(selected),q=num(selected.quote),fvm=num(selected.fvm);
+ const auctionAvg=auctionAverageForPlayer(selected);
  const base=Math.max(2,num(lim(selected))||q||Math.round(fvm/10)||Math.round(sc*.8)||10);
  const mr=marketRef(selected);
  let market=mr!==null?num(mr):base;
@@ -162,6 +190,9 @@ function brain(){
  $("liveAdvice").textContent=`${selected.name}: ${label}`;
  if($("brainAction"))$("brainAction").textContent=label;
  if($("brainDetail"))$("brainDetail").textContent=`Prezzo ${pr} · Limite ${limit} · Mercato ${Math.round(market)} · Budget ${credits} · Riserva ${reserve}`;
+ if($("auctionAvgBrain"))$("auctionAvgBrain").textContent=auctionAvg
+   ?`📊 Prezzo medio nelle aste: ${Math.round(auctionAvg.value)} cr (${auctionAvg.label}) · 8×350 ${Math.round(auctionAvg.values[0])} · 10×350 ${Math.round(auctionAvg.values[1])} · 8×500 ${Math.round(auctionAvg.values[2])} · 10×500 ${Math.round(auctionAvg.values[3])}`
+   :"📊 Prezzo medio nelle aste: dati 2026/27 non ancora sufficienti per questo giocatore.";
  $("playerInfo").textContent=[selected.team?"Squadra: "+selected.team:"",selected.role?"Ruolo: "+selected.role:"",selected.quote!=null?"Quotazione: "+selected.quote:"",selected.fvm!=null?"FVM: "+selected.fvm:""].filter(Boolean).join(" · ")||"Dati listone disponibili.";
 }
 function strategy(){
