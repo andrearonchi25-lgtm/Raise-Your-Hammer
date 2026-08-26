@@ -186,6 +186,9 @@ function brain(){
   return String(p?.role||x.role||"").toUpperCase()===role&&num(x.price)>0;
  });
  const roleAvg=sameRole.length?sameRole.reduce((a,x)=>a+num(x.price),0)/sameRole.length:null;
+ const totalPurchases=(S.purchases||[]).filter(x=>num(x.price)>0);
+ const overallAvg=totalPurchases.length
+   ?totalPurchases.reduce((a,x)=>a+num(x.price),0)/totalPurchases.length:null;
 
  let suggested=base;
  if(roleAvg!==null){
@@ -202,7 +205,30 @@ function brain(){
  else if(missing===2)suggested=Math.round(suggested*1.05);
  else if(missing===0)suggested=Math.round(suggested*.97);
 
- const recommended=Math.max(2,Math.min(Math.round(suggested),Math.max(2,spendable)));
+ // LIVE AUCTION ADJUSTMENT:
+ // Every recorded purchase changes the recommendation. Strong inflation in the
+ // same role raises the recommendation; bargains lower it. The current bid is
+ // never included as a completed purchase.
+ let liveSuggested=suggested;
+ if(roleAvg!==null && base>0){
+   const rolePressure=roleAvg/base;
+   if(rolePressure>=1.25) liveSuggested=Math.round(liveSuggested*1.10);
+   else if(rolePressure>=1.10) liveSuggested=Math.round(liveSuggested*1.06);
+   else if(rolePressure<=0.75) liveSuggested=Math.round(liveSuggested*.94);
+   else if(rolePressure<=0.90) liveSuggested=Math.round(liveSuggested*.97);
+ }
+ if(overallAvg!==null && base>0){
+   const overallPressure=overallAvg/base;
+   if(overallPressure>=1.30) liveSuggested=Math.round(liveSuggested*1.04);
+   else if(overallPressure<=0.70) liveSuggested=Math.round(liveSuggested*.97);
+ }
+ // If the current bid is already above the original recommendation, Brain
+ // should not blindly keep the old number: it updates the suggested ceiling
+ // only when the live auction evidence supports it, with a controlled cap.
+ if(pr>suggested && roleAvg!==null && roleAvg>base){
+   liveSuggested=Math.max(liveSuggested,Math.round(roleAvg));
+ }
+ const recommended=Math.max(2,Math.min(Math.round(liveSuggested),Math.max(2,spendable)));
 
  $("score").textContent=sc;
  $("fvm").textContent=fvm||"—";
@@ -236,10 +262,10 @@ function brain(){
  if(d)d.className=cls;
  if($("liveAdvice"))$("liveAdvice").textContent=`${selected.name}: ${label}`;
  if($("brainAction"))$("brainAction").textContent=label;
- if($("brainDetail"))$("brainDetail").textContent=`Prezzo ${pr} · Prezzo consigliato ${recommended} · Budget ${credits}`;
+ if($("brainDetail"))$("brainDetail").textContent=`LIVE ASTA · Prezzo ${pr} · Consigliato ${recommended} · Budget ${credits} · Acquisti registrati ${totalPurchases.length}`;
  if($("auctionAvgBrain"))$("auctionAvgBrain").textContent=roleAvg!==null
-   ?`📊 Andamento asta ${role}: media acquisti ${Math.round(roleAvg)} cr · riferimento secondario`
-   :"🧠 Prezzo consigliato calcolato dal valore del giocatore e dalla situazione dell'asta.";
+   ?`📡 LIVE ASTA · ${role}: media acquisti ${Math.round(roleAvg)} cr · Brain ha aggiornato il consiglio`
+   :"🧠 LIVE ASTA · Prezzo consigliato basato sui dati disponibili e sugli acquisti registrati.";
  if($("playerInfo"))$("playerInfo").textContent=[
    selected.team?"Squadra: "+selected.team:"",
    selected.role?"Ruolo: "+selected.role:"",
