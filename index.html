@@ -27,7 +27,7 @@ input{width:100%;background:#0b141b;border:1px solid #304451;color:#fff;border-r
 .roster{padding:9px;border-bottom:1px solid #293844}.roster:last-child{border-bottom:0}.rosterHead{display:flex;justify-content:space-between}.rosterHead b{font-size:8px}.rosterHead span{font-size:6px;color:#e3c36c}.roster p{font-size:5px;color:#9aa7b0;margin:4px 0 0;line-height:1.5}
 .brain{border-color:#66552d;background:#18160f}.brain h3{margin:0;color:#e3c36c;font-size:10px}.brain p{font-size:7px;color:#bbb5a7;line-height:1.5}
 .muted{font-size:6px;color:#83919b}.hidden{display:none!important}
-</style>
+.target{padding:10px;border:1px solid #304451;border-radius:10px;background:#111c24;margin-top:7px}.targetTop{display:flex;justify-content:space-between}.targetTop b{font-size:8px}.targetMeta{font-size:5px;color:#8d9aa3;margin-top:4px}.targetReason{font-size:6px;color:#b9c3ca;margin-top:4px}.grade{font-size:14px;color:#e3c36c}.roleBar{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:7px}.roleBox{background:#111c24;border-radius:7px;padding:7px;text-align:center}.roleBox small{display:block;font-size:4px;color:#82909c}.roleBox b{font-size:9px}</style>
 </head>
 <body>
 <div class="app">
@@ -45,8 +45,13 @@ input{width:100%;background:#0b141b;border:1px solid #304451;color:#fff;border-r
 </div>
 </section>
 
+<section id="targets" class="screen">
+<div class="nav"><button data-go="auction">🔨 ASTA</button><button data-go="brain">🧠 BRAIN</button><button data-go="targets" class="active">🎯 TARGET</button><button data-go="rosters">👥 ROSE</button></div>
+<div class="card"><h2>🎯 Target rosa</h2><div class="muted">Brain aggiorna automaticamente gli obiettivi rimasti disponibili in base alla tua rosa.</div><div id="targetList"></div></div>
+</section>
+
 <section id="auction" class="screen">
-<div class="nav"><button data-go="auction" class="active">🔨 ASTA</button><button data-go="brain">🧠 BRAIN</button><button data-go="rosters">👥 ROSE</button></div>
+<div class="nav"><button data-go="auction" class="active">🔨 ASTA</button><button data-go="brain">🧠 BRAIN</button><button data-go="targets">🎯 TARGET</button><button data-go="rosters">👥 ROSE</button></div>
 <div class="card">
 <div class="top"><b>ASTA LIVE</b><span class="budget" id="myBudget">500 cr</span></div>
 <label class="label">Giocatore chiamato</label>
@@ -59,7 +64,7 @@ input{width:100%;background:#0b141b;border:1px solid #304451;color:#fff;border-r
 <button class="success" id="assign" style="margin-top:7px">✓ ASSEGNA ACQUISTO</button>
 <div id="assignBox" class="card hidden" style="margin-top:7px;margin-bottom:0"><div class="muted">Chi ha acquistato il giocatore?</div><div id="assignList" class="participants" style="margin-top:7px"></div></div>
 </div>
-<div class="brain card"><h3>🧠 BRAIN</h3><p id="liveAdvice">Seleziona un giocatore per ricevere il consiglio.</p></div>
+<div class="brain card"><h3>🧠 BRAIN</h3><p id="liveAdvice">Seleziona un giocatore per ricevere il consiglio.</p></div><div class="card"><div class="top"><b>VALUTAZIONE TUA ROSA</b><span id="teamGrade" class="grade">—</span></div><div id="teamEval" class="muted">Ancora nessun acquisto.</div></div>
 </section>
 
 <section id="brain" class="screen">
@@ -76,126 +81,63 @@ input{width:100%;background:#0b141b;border:1px solid #304451;color:#fff;border-r
 </main></div>
 
 <script>
-(function(){
-"use strict";
-const $=id=>document.getElementById(id);
-const show=id=>document.querySelectorAll(".screen").forEach(s=>s.classList.toggle("active",s.id===id));
-const num=x=>Number(x)||0;
-let state={configured:false,credits:500,initial:500,myName:"La mia squadra",participants:[],purchases:[]};
-let selected=null;
-
-function save(){localStorage.setItem("ryh_clean_v1",JSON.stringify(state))}
-function load(){try{const x=JSON.parse(localStorage.getItem("ryh_clean_v1"));if(x)state=x}catch(e){}}
-function playerData(){
- try{return JSON.parse(localStorage.getItem("ryh_players")||localStorage.getItem("players")||"[]")}catch(e){return[]}
-}
-function buildNameInputs(){
- const n=Math.max(2,Math.min(20,num($("count").value)||10));
- let h='<label class="label">Nomi partecipanti (opzionali)</label>';
- for(let i=0;i<n;i++) h+=`<input class="pname" data-i="${i}" value="${i===0?($("myName").value||"La mia squadra"):"Partecipante "+(i+1)}" style="margin:3px 0">`;
- $("names").innerHTML=h;
-}
-function configure(){
- const n=Math.max(2,Math.min(20,num($("count").value)||10)), c=Math.max(1,num($("credits").value)||500), me=$("myName").value.trim()||"La mia squadra";
- const names=[...document.querySelectorAll(".pname")].slice(0,n).map((x,i)=>x.value.trim()||"Partecipante "+(i+1));
- names[0]=me;
- state={configured:true,credits:c,initial:c,myName:me,participants:names,purchases:[]};
- save(); show("auction"); render();
-}
-function matches(q){
- q=q.trim().toLowerCase(); if(!q)return[];
- return playerData().filter(p=>String(p.name||"").toLowerCase().includes(q)).slice(0,8);
-}
-function selectPlayer(p){selected=p;$("player").value=p.name||"";$("suggestions").classList.add("hidden");render()}
-function calcScore(p){return Math.max(0,Math.min(100,Math.round(num(p.score)||num(p.fantasyScore)||70)))}
-function calcLimit(p){
- const sc=calcScore(p),f=num(p.fvm),q=num(p.quote);
- return Math.max(q||1,Math.round((f?f/10:Math.max(q+5,sc*.8))*(1+(sc-70)/220)));
-}
+(()=>{"use strict";
+const $=id=>document.getElementById(id), num=x=>Number(x)||0;
+const show=id=>document.querySelectorAll(".screen").forEach(x=>x.classList.toggle("active",x.id===id));
+let S={configured:false,credits:500,initial:500,myName:"La mia squadra",participants:[],purchases:[]},selected=null;
+const demo=[
+["Lautaro Martinez","Inter","A",92,50],["Thuram","Inter","A",88,38],["Leao","Milan","A",87,40],["Yildiz","Juventus","A",86,32],
+["Calhanoglu","Inter","C",89,35],["Barella","Inter","C",86,30],["Zaccagni","Lazio","C",82,27],["Nico Paz","Como","C",85,28],
+["Dimarco","Inter","D",84,25],["Theo Hernandez","Milan","D",83,27],["Bremer","Juventus","D",82,22],["Bastoni","Inter","D",80,20],
+["Sommer","Inter","P",78,12],["Di Gregorio","Juventus","P",79,14]];
+function db(){try{let x=JSON.parse(localStorage.getItem("ryh_players")||"null");if(Array.isArray(x)&&x.length)return x}catch(e){}return demo.map(x=>({name:x[0],team:x[1],role:x[2],score:x[3],fvm:x[4]}))}
+function save(){localStorage.setItem("ryh_v2",JSON.stringify(S))}
+function load(){try{let x=JSON.parse(localStorage.getItem("ryh_v2"));if(x)S=x}catch(e){}}
+function names(){let n=Math.max(2,Math.min(20,num($("count").value)||10));$("names").innerHTML='<label class="label">Nomi partecipanti</label>'+Array.from({length:n},(_,i)=>`<input class="pname" value="${i?`Partecipante ${i+1}`:$("myName").value||"La mia squadra"}" style="margin:3px 0">`).join("")}
+function configure(){let n=Math.max(2,Math.min(20,num($("count").value)||10)),c=Math.max(1,num($("credits").value)||500),me=$("myName").value.trim()||"La mia squadra";let ps=[...document.querySelectorAll(".pname")].map((x,i)=>x.value.trim()||`Partecipante ${i+1}`);ps[0]=me;S={configured:true,credits:c,initial:c,myName:me,participants:ps.slice(0,n),purchases:[]};save();show("auction");render()}
+function find(q){q=q.toLowerCase().trim();return q?db().filter(p=>String(p.name||"").toLowerCase().includes(q)).slice(0,8):[]}
+function score(p){return Math.max(0,Math.min(100,num(p.score)||num(p.fantasyScore)||70))}
+function lim(p){let q=num(p.quote),f=num(p.fvm),sc=score(p);return Math.max(q||1,Math.round((f?f/10:Math.max(q+5,sc*.8))*(1+(sc-70)/220)))}
+function mine(){return S.purchases.filter(x=>x.owner===S.myName)}
 function brain(){
- if(!selected){$("decisionText").textContent="Cerca un giocatore";$("reason").textContent="Brain si attiverà appena selezioni un giocatore.";return}
- const price=num($("price").value), sc=calcScore(selected), lim=calcLimit(selected);
- $("score").textContent=sc;$("fvm").textContent=num(selected.fvm)||"—";$("limit").textContent=lim;
- const d=$("decision"),t=$("decisionText"),r=$("reason");
- if(price>lim){t.textContent="🛑 LASCIA";r.textContent="Hai superato il limite Brain.";d.className="decision stop"}
- else if(price>=lim*.9){t.textContent="⚠️ ULTIMO RILANCIO";r.textContent="Ancora uno al massimo, poi fermati.";d.className="decision warn"}
- else if(price<=lim*.7){t.textContent="💰 AFFARE";r.textContent="Prezzo molto interessante.";d.className="decision good"}
- else if(sc>=82){t.textContent="🟢 PRENDI";r.textContent="Obiettivo forte entro il limite.";d.className="decision good"}
- else{t.textContent="🔨 RIALZA";r.textContent="Rilancia ma non superare il limite.";d.className="decision warn"}
- const info=[
-  selected.team?"Squadra: "+selected.team:"",
-  selected.role?"Ruolo: "+selected.role:"",
-  selected.apps!=null?"Presenze: "+selected.apps:"",
-  selected.starts!=null?"Titolare: "+selected.starts:"",
-  selected.goals!=null?"Gol: "+selected.goals:"",
-  selected.assists!=null?"Assist: "+selected.assists:"",
-  selected.media!=null?"MV: "+selected.media:"",
-  selected.fantamedia!=null?"FM: "+selected.fantamedia:""
- ].filter(Boolean);
- $("playerInfo").textContent=info.join(" · ")||"Statistiche disponibili limitate.";
- $("liveAdvice").textContent=`${selected.name}: Score ${sc}/100 · FVM ${num(selected.fvm)||"—"} · limite ${lim}. ${strategyAdvice()}`;
+ if(!selected){$("decisionText").textContent="Cerca un giocatore";$("reason").textContent="Scrivi il nome e selezionalo.";return}
+ let pr=num($("price").value),sc=score(selected),m=lim(selected);$("score").textContent=sc;$("fvm").textContent=num(selected.fvm)||"—";$("limit").textContent=m;
+ let d=$("decision"),t=$("decisionText"),r=$("reason");
+ if(pr>m){t.textContent="🛑 LASCIA";r.textContent=`${pr} supera il limite ${m}.`;d.className="decision stop"}
+ else if(pr>=m*.9){t.textContent="⚠️ ULTIMO RILANCIO";r.textContent=`Puoi arrivare a ${m}, poi fermati.`;d.className="decision warn"}
+ else if(pr<=m*.7){t.textContent="💰 AFFARE";r.textContent="Prezzo molto sotto il limite.";d.className="decision good"}
+ else if(sc>=84){t.textContent="🟢 PRENDI";r.textContent=`Obiettivo forte entro ${m}.`;d.className="decision good"}
+ else{t.textContent="🔨 RIALZA";r.textContent=`Rilancia senza superare ${m}.`;d.className="decision warn"}
+ $("liveAdvice").textContent=`${selected.name}: ${strategy()}`;
+ $("playerInfo").textContent=[selected.team?"Squadra: "+selected.team:"",selected.role?"Ruolo: "+selected.role:"",selected.goals!=null?"Gol: "+selected.goals:"",selected.assists!=null?"Assist: "+selected.assists:""].filter(Boolean).join(" · ")||"Statistiche disponibili limitate."
 }
-function strategyAdvice(){
- const others=state.participants.filter(x=>x!==state.myName);
- if(!others.length)return"Configura i partecipanti.";
- const stats=others.map(n=>{const p=state.purchases.filter(x=>x.owner===n);return{name:n,spent:p.reduce((a,x)=>a+x.price,0),count:p.length}}).sort((a,b)=>b.spent-a.spent);
- if(!stats.length||stats.every(x=>x.spent===0))return"Sto aspettando i primi acquisti per leggere le strategie.";
- const aggressive=stats.filter(x=>x.spent>=state.initial*.15).map(x=>x.name);
- const quiet=stats.filter(x=>x.count===0).map(x=>x.name);
- if(aggressive.length)return`Attenzione a ${aggressive.join(", ")}: sta spendendo forte. Non entrare nelle guerre di prezzo senza motivo.`;
- if(quiet.length)return`${quiet.join(", ")} non ha ancora speso: potrebbe avere molto budget per i prossimi obiettivi.`;
- return"Brain sta confrontando spesa, numero di acquisti e budget residuo degli avversari.";
+function strategy(){
+ let av=S.participants.filter(x=>x!==S.myName).map(n=>{let p=S.purchases.filter(x=>x.owner===n),sp=p.reduce((a,x)=>a+x.price,0);return{name:n,spent:sp,budget:S.initial-sp,count:p.length}});if(!S.purchases.length)return"Brain sta raccogliendo i primi segnali.";
+ let ag=av.filter(x=>x.spent>=S.initial*.15).sort((a,b)=>b.spent-a.spent)[0];if(ag)return`${ag.name} sta spendendo forte (${ag.spent} cr): non seguirlo nelle guerre di prezzo.`;
+ let q=av.find(x=>x.count===0);if(q)return`${q.name} non ha ancora speso: potrebbe attaccare un top player più avanti.`;
+ let r=av.sort((a,b)=>b.budget-a.budget)[0];return`${r.name} ha più budget residuo (${r.budget} cr): Brain lo considera un avversario da tenere d'occhio.`;
 }
-function assignButtons(){
- $("assignList").innerHTML=state.participants.map((n,i)=>`<button class="participant ${n===state.myName?"mine":""}" data-i="${i}">${n}</button>`).join("");
- $("assignBox").classList.remove("hidden");
- $("assignList").querySelectorAll("button").forEach(b=>b.onclick=()=>assign(num(b.dataset.i)));
+function targets(){
+ let bought=new Set(S.purchases.map(x=>String(x.name).toLowerCase())), have=mine(), counts={P:0,D:0,C:0,A:0};
+ have.forEach(x=>{let p=db().find(y=>String(y.name).toLowerCase()===String(x.name).toLowerCase());if(p){let r=String(p.role||"").toUpperCase();if(counts[r]!=null)counts[r]++}});
+ let need=["P","D","C","A"].filter(r=>counts[r]<({P:1,D:3,C:4,A:3}[r]||0)), arr=[];
+ need.forEach(r=>db().filter(p=>String(p.role||"").toUpperCase()===r&&!bought.has(String(p.name).toLowerCase())).sort((a,b)=>score(b)-score(a)).slice(0,3).forEach((p,i)=>arr.push(`<div class="target"><div class="targetTop"><b>${p.name}</b><span class="grade">${i?"MEDIA":"ALTA"}</span></div><div class="targetMeta">${p.team||""} · ${r} · Score ${score(p)} · limite ${lim(p)}</div><div class="targetReason">Ancora disponibile e utile per completare la rosa.</div></div>`)));
+ $("targetList").innerHTML=arr.slice(0,12).join("")||'<div class="muted">Nessun target disponibile.</div>';
 }
-function assign(i){
- if(!selected)return;
- const price=num($("price").value);if(price<=0)return;
- const owner=state.participants[i];
- if(owner===state.myName && price>state.credits){alert("Non hai abbastanza crediti.");return}
- if(owner===state.myName)state.credits-=price;
- state.purchases.push({name:selected.name,price,owner});
- selected=null;$("player").value="";$("price").value=1;$("assignBox").classList.add("hidden");save();render();
+function grade(){
+ let m=mine(),q=0,sp=0,c={P:0,D:0,C:0,A:0};m.forEach(x=>{let p=db().find(y=>String(y.name).toLowerCase()===String(x.name).toLowerCase());if(p){q+=score(p);let r=String(p.role||"").toUpperCase();if(c[r]!=null)c[r]++}sp+=x.price});
+ let avg=m.length?q/m.length:0,g=m.length?Math.min(10,Math.max(1,avg/10+Math.min(c.P,1)*.3+Math.min(c.D,3)*.25+Math.min(c.C,4)*.2+Math.min(c.A,3)*.25)).toFixed(1):"—";
+ $("teamGrade").textContent=m.length?g+"/10":"—";$("teamEval").textContent=m.length?`Qualità media ${avg.toFixed(1)}/100 · ${m.length} giocatori · ${sp} crediti spesi.`:"Ancora nessun acquisto.";
 }
-function renderRosters(){
- const out=state.participants.map(n=>{
-  const p=state.purchases.filter(x=>x.owner===n),spent=p.reduce((a,x)=>a+x.price,0),budget=state.initial-spent;
-  return `<div class="roster"><div class="rosterHead"><b>${n}</b><span>${budget} cr</span></div><p>${p.length?p.map(x=>x.name+" ("+x.price+")").join(" · "):"Nessun acquisto"}</p></div>`;
- }).join("");
- $("rosterList").innerHTML=out||'<div class="muted">Nessun partecipante.</div>';
-}
-function renderBrainSummary(){
- const total=state.purchases.length,spent=state.purchases.reduce((a,x)=>a+x.price,0);
- $("strategy").textContent=strategyAdvice();
- $("brainSummary").textContent=total?`${total} acquisti registrati · ${spent} crediti spesi complessivamente. Brain sta usando questi movimenti per leggere le strategie.`:"Nessun movimento ancora.";
-}
-function render(){
- $("myBudget").textContent=state.credits+" cr";
- brain();renderRosters();renderBrainSummary();
-}
-$("count").addEventListener("input",buildNameInputs);
-$("myName").addEventListener("input",()=>{const first=document.querySelector('.pname[data-i="0"]');if(first)first.value=$("myName").value});
-$("start").onclick=configure;
+function rosters(){$("rosterList").innerHTML=S.participants.map(n=>{let p=S.purchases.filter(x=>x.owner===n),sp=p.reduce((a,x)=>a+x.price,0);return `<div class="roster"><div class="rosterHead"><b>${n}</b><span>${S.initial-sp} cr</span></div><p>${p.length?p.map(x=>x.name+" ("+x.price+")").join(" · "):"Nessun acquisto"}</p></div>`}).join("")}
+function render(){ $("myBudget").textContent=S.credits+" cr";brain();targets();grade();rosters();$("strategy").textContent=strategy();$("brainSummary").textContent=S.purchases.length?`${S.purchases.length} acquisti · ${strategy()}`:"Nessun movimento ancora."}
+function assignBox(){$("assignList").innerHTML=S.participants.map((n,i)=>`<button class="participant ${n===S.myName?"mine":""}" data-i="${i}">${n}</button>`).join("");$("assignBox").classList.remove("hidden");$("assignList").querySelectorAll("button").forEach(b=>b.onclick=()=>assign(num(b.dataset.i)))}
+function assign(i){if(!selected)return;let pr=num($("price").value),owner=S.participants[i];if(!pr)return;if(owner===S.myName&&pr>S.credits){alert("Crediti insufficienti.");return}if(owner===S.myName)S.credits-=pr;S.purchases.push({name:selected.name,price:pr,owner});selected=null;$("player").value="";$("price").value=1;$("assignBox").classList.add("hidden");save();render()}
+$("count").oninput=names;$("myName").oninput=()=>{let x=document.querySelector(".pname");if(x)x.value=$("myName").value};$("start").onclick=configure;
 document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>show(b.dataset.go));
-$("player").addEventListener("input",function(){
- selected=null;const arr=matches(this.value),box=$("suggestions");
- if(!arr.length){box.classList.add("hidden");brain();return}
- box.innerHTML=arr.map((p,i)=>`<button class="suggestion" data-i="${i}"><b>${p.name||"—"}</b><small>${p.team||""} ${p.role?"· "+p.role:""}</small></button>`).join("");
- box.classList.remove("hidden");
- box.querySelectorAll("button").forEach((b,i)=>b.onclick=()=>selectPlayer(arr[i]));
- brain();
-});
-$("price").oninput=brain;
-$("raise").onclick=()=>{$("price").value=num($("price").value)+1;brain()};
-$("pass").onclick=()=>{$("price").value=0;brain()};
-$("assign").onclick=assignButtons;
-$("reset").onclick=()=>{if(confirm("Vuoi cancellare configurazione, rose e asta?")){localStorage.removeItem("ryh_clean_v1");location.reload()}};
-load();
-if(state.configured){$("credits").value=state.initial;$("count").value=state.participants.length;$("myName").value=state.myName}
-buildNameInputs();render();
+$("player").oninput=function(){selected=null;let a=find(this.value),b=$("suggestions");if(!a.length){b.classList.add("hidden");brain();return}b.innerHTML=a.map((p,i)=>`<button class="suggestion" data-i="${i}"><b>${p.name}</b><small>${p.team||""} · ${p.role||""}</small></button>`).join("");b.classList.remove("hidden");b.querySelectorAll("button").forEach((x,i)=>x.onclick=()=>{selected=a[i];$("player").value=a[i].name;b.classList.add("hidden");render()});brain()};
+$("price").oninput=brain;$("raise").onclick=()=>{$("price").value=num($("price").value)+1;brain()};$("pass").onclick=()=>{$("price").value=0;brain()};$("assign").onclick=assignBox;
+$("reset").onclick=()=>{if(confirm("Reset completo?")){localStorage.removeItem("ryh_v2");location.reload()}};
+load();if(S.configured){$("credits").value=S.initial;$("count").value=S.participants.length;$("myName").value=S.myName}names();render();
 })();
-</script>
-</body></html>
+</script></body></html>
