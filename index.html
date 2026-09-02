@@ -136,32 +136,35 @@ function updateBrainLivePrice(){
  el.textContent=`PREZZO LIVE: ${price} cr → ${msg} · limite attuale ${limit} cr`;
 }
 
-function auctionAverageForPlayer(p){
- const n=String(p?.name||"").toLowerCase();
- const averages={
-  "malen donyell":[102.91,119.37,141.74,141.20],
-  "martinez lautaro":[113.67,139.46,139.50,132.29],
-  "hojlund rasmus":[85.28,119.51,111.71,125.13],
-  "ramos goncalo matias":[104.87,108.13,114.59,104.96],
-  "thuram marcus":[104.28,116.65,102.52,101.75],
-  "kolo muani":[78,91,88,94],
-  "kean moise":[62,74,79,93],
-  "paz nico":[58,72,76,95],
-  "pulisic christian":[54,65,69,73],
-  "calhanoglu hakan":[55,66,70,73],
-  "mctominay scott":[47,57,62,69],
-  "dimarco federico":[50,59,61,64],
-  "orsolini riccardo":[48,57,62,65],
-  "yildiz kenan":[70,84,91,102]
- };
- const a=averages[n];
- if(!a)return null;
- const count=Math.max(1,num(S.participants?.length)||10);
- const budget=Math.max(1,num(S.initial)||500);
- const ci=count<=8?0:1;
- const bi=budget<=400?0:2;
- return {value:a[ci+bi], values:a, label:`${count<=8?8:10}×${budget<=400?350:500}`};
+const AUCTION_SOURCE_URL="https://r.jina.ai/http://www.fantacalcio-online.com/it/asta-fantacalcio-stima-prezzi";
+let AUCTION_WEB_DATA=null,AUCTION_WEB_LOADING=null;
+function normAuctionName(n){return String(n||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[.'’`-]/g,"").replace(/\s+/g," ").trim()}
+function parseAuctionWebText(text){
+ const out={},lines=String(text||"").split(/\r?\n/);
+ for(const line of lines){
+  if(!line.includes("|"))continue; const c=line.split("|").map(x=>x.trim()); if(c.length<9)continue;
+  const role=(c[1]||"").replace(/[^A-Z]/gi,"").toUpperCase(); if(!["P","D","C","A"].includes(role))continue;
+  const name=String(c[3]||"").replace(/\s+-\s*Nuovo\s*$/i,"").replace(/\s+-\s*$/i,"").replace(/\s+2025\/2026\s*$/i,"").trim(); if(!name||/nome|calciatore/i.test(name))continue;
+  const vals=c.slice(5,9).map(v=>{const n=parseFloat(String(v).replace(",","."));return Number.isFinite(n)?n:null});
+  if(vals.length===4)out[normAuctionName(name)]={name,role,values:vals,current:vals.some(v=>v!==null)};
+ }
+ return out;
 }
+async function loadAuctionWebData(){
+ if(AUCTION_WEB_DATA)return AUCTION_WEB_DATA; if(AUCTION_WEB_LOADING)return AUCTION_WEB_LOADING;
+ AUCTION_WEB_LOADING=fetch(AUCTION_SOURCE_URL,{cache:"no-store"}).then(r=>{if(!r.ok)throw new Error("HTTP "+r.status);return r.text()}).then(t=>{
+  const d=parseAuctionWebText(t); if(Object.keys(d).length<100)throw new Error("dataset incompleto"); AUCTION_WEB_DATA=d;
+  try{localStorage.setItem("ryh_auction_2026_27",JSON.stringify({ts:Date.now(),data:d}))}catch(e){} return d;
+ }).catch(()=>{try{const x=JSON.parse(localStorage.getItem("ryh_auction_2026_27")||"null");if(x?.data)AUCTION_WEB_DATA=x.data}catch(e){} return AUCTION_WEB_DATA||{};})
+ .finally(()=>{AUCTION_WEB_LOADING=null;brain();renderIntel();}); return AUCTION_WEB_LOADING;
+}
+(function restoreAuctionCache(){try{const x=JSON.parse(localStorage.getItem("ryh_auction_2026_27")||"null");if(x?.data&&Date.now()-num(x.ts)<86400000)AUCTION_WEB_DATA=x.data}catch(e){}})();
+function auctionAverageForPlayer(p){
+ const d=AUCTION_WEB_DATA?.[normAuctionName(p?.name)],count=Math.max(2,num(S.participants?.length)||10),budget=Math.max(1,num(S.initial)||500),idx=(count<=8?0:1)+(budget<=400?0:2);
+ if(d&&d.values&&d.values[idx]!=null)return {value:Math.round(d.values[idx]),values:d.values,label:`${count<=8?8:10}×${budget<=400?350:500}`,current:d.current,name:d.name}; return null;
+}
+function auctionAverageText(p){const a=auctionAverageForPlayer(p);if(!a)return "📡 Prezzo medio asta: ricerca web in corso…";return `📊 Prezzo medio asta ${a.label}: ${a.value} cr · ${a.current?"2026/27":"2025/26"}`;}
+
 function teamIntel(team){return TEAM_INTEL[String(team||"")]||null;}
 function gkPairings(team){
  const i=GK_INDEX[team]; if(i==null)return [];
@@ -175,13 +178,15 @@ function renderIntel(){
  const box=$("intelPanel"); if(!box)return;
  const p=selected||null; if(!p){box.innerHTML="Seleziona un giocatore nell'asta.";return;}
  const ti=teamIntel(p.team); let html="";
+ const ma=auctionAverageForPlayer(p);
  html+=`<div class="intelGrid"><div class="intelBox"><b>FORMAZIONE</b><small>${ti?.formation||"—"}</small></div><div class="intelBox"><b>LISTONE</b><small>FVM ${num(p.fvm)||"—"} · Quot. ${num(p.quote)||"—"} · ${p.role||"—"}</small></div></div>`;
+ html+=`<div class="info"><b>💰 Prezzo medio asta</b><small style="display:block;margin-top:4px">${ma?`${ma.value} cr · ${ma.label} · ${ma.current?"dati 2026/27":"fallback 2025/26"}`:"Ricerca web in corso…"}</small></div>`;
  if(ti?.ballottaggi?.length)html+=`<div class="info"><b>⚠️ Ballottaggi:</b> ${ti.ballottaggi.join(" · ")}${isBallotPlayer(p)?"<br><b>Questo giocatore è indicato in un ballottaggio.</b>":""}</div>`;
  if(String(p.role).toUpperCase()==="P"){
    const pairs=gkPairings(p.team).slice(0,3);
    html+=`<div class="info"><b>🧤 Strategia portieri</b><small style="display:block;margin-top:4px;color:#9aa7b0">Griglia: più basso = incrocio più favorevole. Migliori abbinamenti:</small>${pairs.map(x=>`<div class="keeperPair"><b>${x.team}</b><span>${x.value} fuori-casa simultanee</span></div>`).join("")}</div>`;
  }
- html+=`<div class="sourceNote">Fonte: Infografica 2026/27 e Griglia portieri 2026/27; la lettura strategica è elaborata da Brain.</div>`;
+ html+=`<div class="sourceNote">Fonte: Listone 2026/27 + Infografica 2026/27 + Griglia portieri 2026/27 + prezzi medi d'asta Fantacalcio-Online; la lettura strategica è elaborata da Brain.</div>`;
  box.innerHTML=html;
 }
 function brain(){
@@ -203,7 +208,9 @@ function brain(){
 
  const pr=Math.max(0,num($("price").value));
  const sc=score(selected), q=num(selected.quote), fvm=num(selected.fvm);
- const base=Math.max(2,num(lim(selected))||q||Math.round(fvm/10)||Math.round(sc*.8)||10);
+ const marketAvg=auctionAverageForPlayer(selected);
+ const base0=Math.max(2,num(lim(selected))||q||Math.round(fvm/10)||Math.round(sc*.8)||10);
+ const base=marketAvg?Math.round(base0*.55+marketAvg.value*.45):base0;
  const guide=guideContext(selected,pr);
 
  // Prezzo consigliato: punto di partenza tecnico del giocatore,
@@ -304,9 +311,7 @@ function brain(){
  if($("liveAdvice"))$("liveAdvice").textContent=`${selected.name}: ${label}`;
  if($("brainAction"))$("brainAction").textContent=label;
  if($("brainDetail"))$("brainDetail").textContent=`LIVE ASTA · Prezzo ${pr} · Consigliato ${recommended} · Budget ${credits} · Acquisti registrati ${totalPurchases.length}`;
- if($("auctionAvgBrain"))$("auctionAvgBrain").textContent=roleAvg!==null
-   ?`📡 LIVE ASTA · ${role}: media acquisti ${Math.round(roleAvg)} cr · Brain ha aggiornato il consiglio`
-   :"🧠 LIVE ASTA · Prezzo consigliato basato sui dati disponibili e sugli acquisti registrati.";
+ if($("auctionAvgBrain"))$("auctionAvgBrain").textContent=auctionAverageText(selected)+(roleAvg!==null?` · LIVE ${role}: ${Math.round(roleAvg)} cr`:"");
  if($("playerInfo")){
    const ti=teamIntel(selected.team);
    $("playerInfo").textContent=[
@@ -466,6 +471,7 @@ function selectPlayer(p){
  render();
  renderIntel();
  updateBrainLivePrice();
+ loadAuctionWebData();
  $("price").focus();
 }
 $("player").addEventListener("input",function(){
@@ -476,14 +482,15 @@ $("player").addEventListener("input",function(){
  selected=exact || (a.length===1?a[0]:null);
  if(!q){selected=null;box.classList.add("hidden");brain();return}
  box.innerHTML=a.map((p,i)=>{
-   const m=lim(p),pr=Math.max(0,num($("price").value));
-   const status=pr<=0?"INSERISCI PREZZO":pr>m?"LASCIA":pr>=m*.9?"ULTIMO RILANCIO":pr<=m*.7?"AFFARE":"RIALZA";
-   return `<button type="button" class="suggestion" data-i="${i}"><div><b>${p.name}</b><small>${p.team||""} · ${p.role||""} · Q ${num(p.quote)||"—"} · FVM ${num(p.fvm)||"—"}</small></div><span class="miniBrain">🧠 ${status}<em>limite ${m}</em></span></button>`;
+   const m=lim(p),ma=auctionAverageForPlayer(p),ref=ma?Math.round(m*.55+ma.value*.45):m,pr=Math.max(0,num($("price").value));
+   const status=pr<=0?"INSERISCI PREZZO":pr>ref?"LASCIA":pr>=ref*.9?"ULTIMO RILANCIO":pr<=ref*.7?"AFFARE":"RIALZA";
+   return `<button type="button" class="suggestion" data-i="${i}"><div><b>${p.name}</b><small>${p.team||""} · ${p.role||""} · Q ${num(p.quote)||"—"} · FVM ${num(p.fvm)||"—"}${ma?` · Media ${ma.value}`:""}</small></div><span class="miniBrain">🧠 ${status}<em>consigliato ${ref}</em></span></button>`;
  }).join("");
  box.classList.toggle("hidden",!a.length);
  box.querySelectorAll("[data-i]").forEach(b=>b.addEventListener("click",()=>selectPlayer(a[Number(b.dataset.i)])));
  brain();
  renderIntel();
+ if(selected)loadAuctionWebData();
 });
 $("price").addEventListener("input",()=>{brain();renderDynamicBrain();});
 $("price").addEventListener("change",()=>{brain();renderDynamicBrain();});
